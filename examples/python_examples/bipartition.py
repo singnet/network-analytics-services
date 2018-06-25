@@ -7,6 +7,7 @@ import random
 import plotly as py
 import plotly.graph_objs as go
 import time
+import math
 
 
 
@@ -15,8 +16,8 @@ class graphx:
 
     def __init__(self):
 
-        # self.file = "book_readers"
-        self.file = "food_pref"
+        self.file = "book_readers"
+        # self.file = "food_pref"
         self.num_nodes = 0
 
     def create_bipartite_graph(self):
@@ -58,8 +59,28 @@ class graphx:
         print(primes)
         print(primes.__len__())
 
+        interval = 0.5/float(len(self.B))
+        print("interval =",interval)
+
+        i = 0
+
         for node in self.B.nodes(data=True):
-            node[1]['pos'] = [random.uniform(0,1),random.uniform(0,1)]
+
+            # node[1]['pos'] = [random.uniform(0,1),random.uniform(0,1)]
+
+            # theta = primes[i] * 2 * math.pi / 8
+            theta = random.uniform(0.01,2 * math.pi-0.01)
+            r = i * interval
+
+            x = r * math.cos(theta) + 0.5
+            y = r * math.sin(theta) + 0.5
+
+            print(x,y)
+
+            node[1]['pos'] = [x,y]
+
+            i = i + 1
+
 
         self.plot_graph(self.B,self.file)
         self.plot_graph_2(self.B,'Initial bipartite graph')
