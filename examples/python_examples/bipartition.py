@@ -15,8 +15,8 @@ class graphx:
 
     def __init__(self):
 
-        self.file = "book_readers"
-        # self.file = "food_pref"
+        # self.file = "book_readers"
+        self.file = "food_pref"
         self.num_nodes = 0
 
     def create_bipartite_graph(self):
@@ -32,7 +32,7 @@ class graphx:
         print(first_column)
         print(second_column)
 
-        self.num_nodes = len(first_column) + len(second_column)
+
 
         self.B = nx.Graph()
         self.B.add_nodes_from(first_column, bipartite=0)
@@ -43,6 +43,20 @@ class graphx:
 
         # Adding random locations for the nodes
         # Put towards center nodes that have the most connections perhaps?
+
+        # Get descending list of nodes
+        print('Degrees')
+        print(self.B.degree())
+        sorted_by_second = sorted(list(self.B.degree()), key=lambda tup: tup[1], reverse=True)
+        sorted_nodes_list = []
+        for s in sorted_by_second:
+            sorted_nodes_list.append(s[0])
+        print(sorted_nodes_list)
+        print(sorted_nodes_list.__len__())
+
+        primes = [0]+self.return_primes(sorted_nodes_list.__len__())
+        print(primes)
+        print(primes.__len__())
 
         for node in self.B.nodes(data=True):
             node[1]['pos'] = [random.uniform(0,1),random.uniform(0,1)]
@@ -165,7 +179,7 @@ class graphx:
         fig = go.Figure(data=[edge_trace, node_trace],layout=layout)
 
 
-        py.offline.plot(fig, filename='networkx.html')
+        py.offline.plot(fig, filename=graph_label+'.html')
 
 
     def plot_graph_3(self):
@@ -242,6 +256,23 @@ class graphx:
 
         py.offline.plot(fig, filename='networkx.html')
 
+    def prime(self,i, primes):
+        for prime in primes:
+            if not (i == prime or i % prime):
+                return False
+        primes.append(i)
+        return i
+
+    def return_primes(self,n):
+        primes = []
+        i, p = 2, 0
+        while True:
+            if self.prime(i, primes):
+                p += 1
+                if p == n:
+                    return primes
+            i += 1
+
 
 
 def sample_data_generation(file_name):
@@ -292,7 +323,6 @@ def run_projected_graph():
 def run_weighted_projected_graph():
     bi = graphx()
     bi.create_bipartite_graph()
-    time.sleep(5)
     bi.weighted_projected_graph()
 
 def run_collaboration_weighted_projected_graph():
