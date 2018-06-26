@@ -16,8 +16,8 @@ class graphx:
 
     def __init__(self):
 
-        self.file = "book_readers"
-        # self.file = "food_pref"
+        # self.file = "book_readers"
+        self.file = "food_pref"
         self.num_nodes = 0
 
     def create_bipartite_graph(self):
@@ -55,10 +55,6 @@ class graphx:
         print(sorted_nodes_list)
         print(sorted_nodes_list.__len__())
 
-        primes = [0]+self.return_primes(sorted_nodes_list.__len__())
-        print(primes)
-        print(primes.__len__())
-
         interval = 0.5/float(len(self.B))
         print("interval =",interval)
 
@@ -82,14 +78,17 @@ class graphx:
             i = i + 1
 
 
-        self.plot_graph(self.B,self.file)
+        # self.plot_graph(self.B,self.file)
         self.plot_graph_2(self.B,'Initial bipartite graph')
 
     def projected_graph(self):
         E = bipartite.sets(self.B)[0]
-        P = bipartite.projected_graph(self.B, E,multigraph=True)
-        self.plot_graph(P,'projected_gragh')
+        P = bipartite.projected_graph(self.B, E,multigraph=False)
+        # self.plot_graph(P,'projected_gragh')
         self.plot_graph_2(P,'projected_gragh')
+        print('projected_graph:number of edges:',P.number_of_edges())
+        print(P.edges())
+        print(list(P.edges(data=True)))
 
     def weighted_projected_graph(self):
 
@@ -109,18 +108,27 @@ class graphx:
         E = bipartite.sets(self.B)[0]
         P = bipartite.weighted_projected_graph(self.B,E,ratio=True)
 
-        self.plot_graph(P,'weighted_projected')
+        # self.plot_graph(P,'weighted_projected')
         self.plot_graph_2(P,'weighted_projected')
+        print('weighted_projected:number of edges:', P.number_of_edges())
+        print(P.edges())
+        print(list(P.edges(data=True)))
 
     def collaboration_weighted_projected_graph(self):
         E = bipartite.sets(self.B)[0]
         P = bipartite.collaboration_weighted_projected_graph(self.B, E)
-        self.plot_graph(P,'collaboration_weighted_projected')
+        self.plot_graph_2(P,'collaboration_weighted_projected')
+        print('collaboration_weighted_projected:number of edges:', P.number_of_edges())
+        print(P.edges())
+        print(list(P.edges(data=True)))
 
     def overlap_weighted_projected_graph(self):
         E = bipartite.sets(self.B)[0]
         P = bipartite.overlap_weighted_projected_graph(self.B, E,jaccard=False)
-        self.plot_graph(P,'overlap_weighted_projected_graph')
+        self.plot_graph_2(P,'overlap_weighted_projected_graph')
+        print('overlap_weighted_projected_graph:number of edges:', P.number_of_edges())
+        print(P.edges())
+        print(list(P.edges(data=True)))
 
     # ===============================================================
     # Assorted utilities and accessor functions
@@ -157,16 +165,38 @@ class graphx:
         edge_trace = go.Scatter(
             x=[],
             y=[],
+            text=[],
             line=dict(width=0.5, color='#888'),
             hoverinfo='none',
             mode='lines')
 
+        edge_weight_trace = go.Scatter(
+            x=[],
+            y=[],
+            text=[],
+            mode='markers+text',
+            textposition='top center',
+            marker=go.Marker(
+                opacity=0
+            )
+        )
 
-        for edge in G.edges():
+
+        for edge in G.edges(data=True):
             x0, y0 = G.node[edge[0]]['pos']
             x1, y1 = G.node[edge[1]]['pos']
             edge_trace['x'] += [x0, x1, None]
             edge_trace['y'] += [y0, y1, None]
+
+            edge_weight_trace['x'].append((x0+x1)/2)
+            edge_weight_trace['y'].append((y0+y1)/2)
+            try:
+                print('||||||||||||||||||||||||||||||')
+                print(edge)
+                edge_weight_trace['text'].append(round(edge[2]['weight'],3))
+            except:
+                print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+                edge_weight_trace['text'].append('')
 
         node_trace = go.Scatter(
             x=[],
@@ -197,7 +227,7 @@ class graphx:
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
 
-        fig = go.Figure(data=[edge_trace, node_trace],layout=layout)
+        fig = go.Figure(data=[edge_trace, node_trace, edge_weight_trace],layout=layout)
 
 
         py.offline.plot(fig, filename=graph_label+'.html')
@@ -356,15 +386,22 @@ def run_overlap_weighted_projected_graph():
     bi.create_bipartite_graph()
     bi.overlap_weighted_projected_graph()
 
-
+def run_combined_graphs():
+    bi = graphx()
+    bi.create_bipartite_graph()
+    bi.projected_graph()
+    bi.weighted_projected_graph()
+    bi.collaboration_weighted_projected_graph()
+    bi.overlap_weighted_projected_graph()
 
 if __name__ == '__main__':
 
     sample_data_generation('book_readers.csv')
 
+    run_combined_graphs()
     # run_overlap_weighted_projected_graph()
     # run_collaboration_weighted_projected_graph()
-    run_weighted_projected_graph()
+    # run_weighted_projected_graph()
     # run_projected_graph()
     # run_create_bipartite_graph()
     #
