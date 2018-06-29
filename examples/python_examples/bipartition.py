@@ -25,7 +25,7 @@ class graphx:
         self.read_file = "data/bipartite_data/"+self.file+".csv"
         self.file_df = pd.read_csv(self.read_file, encoding='ISO-8859-1')
 
-        # This is the set of family members
+        # This is the set of family members, only for the food_pref example
         first_column = set(self.file_df.iloc[:,0])
         print(type(first_column))
         # This is the set of food types
@@ -92,20 +92,10 @@ class graphx:
 
     def weighted_projected_graph(self):
 
-        # set node types for family or food
-        # print('faaaaaa')
-        # for n in bipartite.sets(self.B)[0]:
-        #     print(n)
-        #     self.B.add_node(n, type='family')
-        # print('foooooo')
-        # for n in bipartite.sets(self.B)[1]:
-        #     print(n)
-        #     self.B.add_node(n, type='food')
-
-        # print(bipartite.sets(B)[1])
-
-        # create a projection on the 'family' nodes
+        # create a projection on one of the nodes
         E = bipartite.sets(self.B)[0]
+        print('EEEEEEEEEEEEEEEEEEE')
+        print(E)
         P = bipartite.weighted_projected_graph(self.B,E,ratio=True)
 
         # self.plot_graph(P,'weighted_projected')
@@ -127,6 +117,14 @@ class graphx:
         P = bipartite.overlap_weighted_projected_graph(self.B, E,jaccard=False)
         self.plot_graph_2(P,'overlap_weighted_projected_graph')
         print('overlap_weighted_projected_graph:number of edges:', P.number_of_edges())
+        print(P.edges())
+        print(list(P.edges(data=True)))
+
+    def generic_weighted_projected_graph(self):
+        E = bipartite.sets(self.B)[0]
+        P = bipartite.generic_weighted_projected_graph(self.B, E)
+        self.plot_graph_2(P, 'generic_weighted_projected_graph')
+        print('generic_weighted_projected_graph:number of edges:', P.number_of_edges())
         print(P.edges())
         print(list(P.edges(data=True)))
 
@@ -233,99 +231,6 @@ class graphx:
         py.offline.plot(fig, filename=graph_label+'.html')
 
 
-    def plot_graph_3(self):
-
-        G = nx.random_geometric_graph(self.num_nodes, 1)
-        pos = nx.get_node_attributes(G, 'pos')
-
-        dmin = 1
-        ncenter = 0
-        for n in pos:
-            x, y = pos[n]
-            d = (x - 0.5) ** 2 + (y - 0.5) ** 2
-            if d < dmin:
-                ncenter = n
-                dmin = d
-
-        p = nx.single_source_shortest_path_length(G, ncenter)
-
-        edge_trace = go.Scatter(
-            x=[],
-            y=[],
-            line=dict(width=0.5, color='#888'),
-            hoverinfo='none',
-            mode='lines')
-
-        for edge in G.edges():
-            x0, y0 = G.node[edge[0]]['pos']
-            x1, y1 = G.node[edge[1]]['pos']
-            edge_trace['x'] += [x0, x1, None]
-            edge_trace['y'] += [y0, y1, None]
-
-        node_trace = go.Scatter(
-            x=[],
-            y=[],
-            text=[],
-            mode='markers',
-            hoverinfo='text',
-            marker=dict(
-                showscale=True,
-                # colorscale options
-                # 'Greys' | 'Greens' | 'Bluered' | 'Hot' | 'Picnic' | 'Portland' |
-                # Jet' | 'RdBu' | 'Blackbody' | 'Earth' | 'Electric' | 'YIOrRd' | 'YIGnBu'
-                colorscale='YIGnBu',
-                reversescale=True,
-                color=[],
-                size=10,
-                colorbar=dict(
-                    thickness=15,
-                    title='Node Connections',
-                    xanchor='left',
-                    titleside='right'
-                ),
-                line=dict(width=2)))
-
-        for node in G.nodes():
-            x, y = G.node[node]['pos']
-            node_trace['x'].append(x)
-            node_trace['y'].append(y)
-
-        fig = go.Figure(data=[edge_trace, node_trace],
-                     layout=go.Layout(
-                         title='<br>Network graph made with Python',
-                         titlefont=dict(size=16),
-                         showlegend=False,
-                         hovermode='closest',
-                         margin=dict(b=20, l=5, r=5, t=40),
-                         annotations=[dict(
-                             text="Python code: <a href='https://plot.ly/ipython-notebooks/network-graphs/'> https://plot.ly/ipython-notebooks/network-graphs/</a>",
-                             showarrow=False,
-                             xref="paper", yref="paper",
-                             x=0.005, y=-0.002)],
-                         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
-
-        py.offline.plot(fig, filename='networkx.html')
-
-    def prime(self,i, primes):
-        for prime in primes:
-            if not (i == prime or i % prime):
-                return False
-        primes.append(i)
-        return i
-
-    def return_primes(self,n):
-        primes = []
-        i, p = 2, 0
-        while True:
-            if self.prime(i, primes):
-                p += 1
-                if p == n:
-                    return primes
-            i += 1
-
-
-
 def sample_data_generation(file_name):
 
     persons = []
@@ -360,8 +265,6 @@ def sample_data_generation(file_name):
 
 
 
-
-
 def run_create_bipartite_graph():
     bi = graphx()
     bi.create_bipartite_graph()
@@ -393,15 +296,75 @@ def run_combined_graphs():
     bi.weighted_projected_graph()
     bi.collaboration_weighted_projected_graph()
     bi.overlap_weighted_projected_graph()
+    bi.generic_weighted_projected_graph()
+
+def misc_1():
+
+    def jaccard(G, u, v):
+        unbrs = set(G[u])
+
+        vnbrs = set(G[v])
+        return float(len(unbrs & vnbrs)) / len(unbrs | vnbrs)
+
+    def my_weight(G, u, v, weight='weight'):
+        w = 0
+        print('@@@@@@@@@@@@@@@@')
+        print(type(u))
+        print(G.edges())
+        print(set(G[u]) & set(G[v]))
+        for nbr in set(G[u]) & set(G[v]):
+            print('{{{{{{{{{{{{{{{{{{')
+            print((nbr))
+            # print(G[u][nbr].get(weight, 6))
+            # x0, y0 = G.node[edge[0]]['pos']
+            w += G[u][nbr][weight] + G[v][nbr][weight]
+            print('w=',w)
+            # w += G[u][nbr].get(weight, 1) + G[v][nbr].get(weight, 1)
+            # w += G.edge[u][nbr].get(weight, 1) + G.edge[v][nbr].get(weight, 1)
+        return w
+
+    B = nx.complete_bipartite_graph(2, 2)
+    # B = nx.complete_bipartite_graph(3, 3)
+
+    print('iiiiiiiiiiiiiiiiii')
+    for edge in B.edges(data=True):
+        print(edge)
+
+    j = 1
+
+    for i in B.edges(data=True):
+        print('///////////////')
+        # B[i[0]][i[1]]['weight'] = 22
+        # print(B[i[0]])
+        # print(B[i[0]][i[1]])
+        i[2]['weight'] = j # B[i[0]][i[1]]['weight'] = 22 does the same thing
+        j = j + 1
+
+
+
+    for edge in B.edges(data=True):
+        print(edge)
+
+    G = bipartite.generic_weighted_projected_graph(B, [0, 1])
+    print(G.edges(data=True))
+    for edge in G.edges(data=True):
+        # print()
+        print(edge)
+
+    G = bipartite.generic_weighted_projected_graph(B, [0, 1], weight_function=my_weight)
+    print('Final value')
+
+    print(G.edges(data=True))
 
 if __name__ == '__main__':
 
     sample_data_generation('book_readers.csv')
 
-    run_combined_graphs()
+    # run_combined_graphs()
     # run_overlap_weighted_projected_graph()
     # run_collaboration_weighted_projected_graph()
     # run_weighted_projected_graph()
     # run_projected_graph()
     # run_create_bipartite_graph()
     #
+    misc_1()
