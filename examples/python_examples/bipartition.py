@@ -1,3 +1,5 @@
+# Tested on python3.6
+
 import networkx as nx
 import pandas as pd
 import numpy as np
