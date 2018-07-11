@@ -89,6 +89,19 @@ class graphx:
         print('projected_graph:number of edges:',P.number_of_edges())
         print(P.edges())
         print(list(P.edges(data=True)))
+        print('kkkkkkkkkkkkkkkk')
+        print(list(P.nodes()))
+        print(P['Goeff'])
+        P = bipartite.projected_graph(self.B, E, multigraph=True)
+        # self.plot_graph(P, 'projected_gragh_multigraph')
+        self.plot_graph_2(P, 'projected_gragh_multigraph')
+        print('MMMMMMMMMMMMMMMMMMMMM')
+        print(P.nodes())
+        print(P.edges())
+        # for e in P.edges():
+        #     print(e)
+        #     print(e['edge'])
+        print('NNNNNNNNNNNNNNNNNNNNN')
 
     def weighted_projected_graph(self):
 
@@ -309,6 +322,8 @@ def misc_1():
     def my_weight(G, u, v, weight='weight'):
         w = 0
         print('@@@@@@@@@@@@@@@@')
+        print(G)
+        print((G[u]))
         print(type(u))
         print(G.edges())
         print(set(G[u]) & set(G[v]))
@@ -346,6 +361,9 @@ def misc_1():
         print(edge)
 
     G = bipartite.generic_weighted_projected_graph(B, [0, 1])
+    # bi = graphx()
+    # bi.plot_graph(B,'complete')
+    # bi.plot_graph(G,'complete')
     print(G.edges(data=True))
     for edge in G.edges(data=True):
         # print()
@@ -358,13 +376,13 @@ def misc_1():
 
 if __name__ == '__main__':
 
-    sample_data_generation('book_readers.csv')
+    # sample_data_generation('book_readers.csv')
 
     # run_combined_graphs()
     # run_overlap_weighted_projected_graph()
     # run_collaboration_weighted_projected_graph()
     # run_weighted_projected_graph()
-    # run_projected_graph()
+    run_projected_graph()
     # run_create_bipartite_graph()
     #
     misc_1()
