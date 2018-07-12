@@ -376,6 +376,9 @@ def misc_1():
 
     print(G.edges(data=True))
 
+
+__end__ = '__end__'
+
 if __name__ == '__main__':
 
     # sample_data_generation('book_readers.csv')
