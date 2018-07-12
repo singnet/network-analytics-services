@@ -10,8 +10,24 @@ import plotly as py
 import plotly.graph_objs as go
 import time
 import math
+import logging
 
 
+
+def dict_1():
+
+    r={'a':2,'b':3,5:8}
+
+    if 5 in r:
+        print('yes')
+
+    s = 5
+
+    try:
+        if 4 in s:
+            print('hi')
+    except Exception as e:
+        logging.exception("messagae")
 
 def bi_graph():
     B = nx.Graph()
@@ -34,6 +50,7 @@ __end__ = '__end__'
 if __name__ == '__main__':
 
 
-    bi_graph()
+    dict_1()
+    # bi_graph()
 
     pass
