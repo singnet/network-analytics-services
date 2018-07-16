@@ -173,17 +173,43 @@ class BipartiteGraphs:
         P = None
 
         if input_2 == 'none':
-            P = bipartite.projected_graph(self.G, input_1['nodes'])
-
+            P = bipartite.projected_graph(self.networkx_graph, input_1['nodes'])
+        elif input_2 == 'multigraph':
+            P = bipartite.projected_graph(self.networkx_graph, input_1['nodes'])
+        elif input_2 == 'degree':
+            P = bipartite.weighted_projected_graph(self.networkx_graph, input_1['nodes'])
+        elif input_2 == 'degree_ratio':
+            P = bipartite.weighted_projected_graph(self.networkx_graph, input_1['nodes'], ratio=True)
+        elif input_2 == 'Newman':
+            P = bipartite.collaboration_weighted_projected_graph(self.networkx_graph, input_1['nodes'])
+        elif input_2 == 'Jaccard':
+            P = bipartite.overlap_weighted_projected_graph(self.networkx_graph, input_1['nodes'])
+        elif input_2 == 'Jaccard_modified ​':
+            P = bipartite.overlap_weighted_projected_graph(self.networkx_graph, input_1['nodes'], jaccard=False)
+        else:
+            return [False, 'Unkown weighting logic specified', {}]
 
         output = {}
 
+        output['nodes'] = list(P.nodes())
+        output['edges'] = []
+        output['weights'] = []
+
+        weight_q_mark = True
+
+        for i in list(P.edges(data=True)):
+            output['edges'].append(list(i)[:2])
+
+            if weight_q_mark:
+                if 'weight' in list(i)[2]:
+                    output['weights'].append(list(i)[2]['weight'])
+                else:
+                    weight_q_mark = False
 
 
 
 
-
-        return output
+        return [True,'success',output]
 
 
 
