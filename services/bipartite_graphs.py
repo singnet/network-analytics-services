@@ -55,11 +55,11 @@ class BipartiteGraphs:
 
         for i in range(len(input_1['edges'])):
             if not isinstance(input_1['edges'][i],list):
-                return [False, 'Element of the input array edges at zero-indexed poistion {} is not an array', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} is not an array'.format(i),{}]
             if len(input_1['edges'][i]) != 2:
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain two edges', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain two edges'.format(i),{}]
             if input_1['edges'][i][0] is '' or input_1['edges'][i][0] is None or input_1['edges'][i][1] is '' or input_1['edges'][i][1] is None:
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain at least one element', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain at least one element'.format(i),{}]
 
 
         # With respect to the validity of edges provided, given an edge [bipartite_0_node_x,bipartite_1_node_y],
@@ -68,10 +68,11 @@ class BipartiteGraphs:
         # First we need to automatically determine whether index 0 or 1 correspond to bipartion_0 or bipartition_1
         edge_0 = None
         edge_1 = None
-        if input_1['edges'][0] in input_0['bipartite_0']:
+
+        if input_1['edges'][0][0] in input_0['bipartite_0']:
             edge_0 = 0
             edge_1 = 1
-        elif input_1['edges'][0] in input_0['bipartite_1']:
+        elif input_1['edges'][0][0] in input_0['bipartite_1']:
             edge_0 = 1
             edge_1 = 0
         else:
@@ -83,10 +84,12 @@ class BipartiteGraphs:
 
         # Make sure an edge element is found in at least one of the given bipartition inputs
         for i in range(len(input_1['edges'])):
-            if input_1['edges'][i][0] not in input_0[edge_0_text] or input_1['edges'][i][0] not in input_0[edge_1_text]:
+            if input_1['edges'][i][0] not in input_0[edge_0_text] and input_1['edges'][i][0] not in input_0[edge_1_text]:
                 return [False, 'Edge element at zero-indexed position {} is not contained in either of the bipartitions'.format(i),{}]
-            if input_1['edges'][i][1] not in input_0[edge_0_text] or input_1['edges'][i][1] not in input_0[edge_1_text]:
+            if input_1['edges'][i][1] not in input_0[edge_0_text] and input_1['edges'][i][1] not in input_0[edge_1_text]:
                 return [False, 'Edge element at zero-indexed position {} is not contained in either of the bipartitions'.format(i),{}]
+
+
 
         # Make sure all edge labels are found in the respecitve bipartitions
 
