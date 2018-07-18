@@ -13,6 +13,18 @@ import math
 import logging
 
 
+def list_1():
+
+    a = [[]]
+    print(a.__len__())
+
+def dict_2():
+
+    a=5
+
+    if 'r' not in a:
+        print('not in')
+
 
 def tuple_1():
     r = (4,'w',3)
@@ -84,9 +96,10 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-
+    list_1()
+    # dict_2()
     # tuple_1()
     # dict_1()
-    bi_graph()
+    # bi_graph()
 
     pass

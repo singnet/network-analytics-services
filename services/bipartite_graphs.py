@@ -55,11 +55,11 @@ class BipartiteGraphs:
 
         for i in range(len(input_1['edges'])):
             if not isinstance(input_1['edges'][i],list):
-                return [False, 'Element of the input array edges at zero-indexed poistion {} is not an array', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} is not an array'.format(i),{}]
             if len(input_1['edges'][i]) != 2:
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain two edges', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain two edges'.format(i),{}]
             if input_1['edges'][i][0] is '' or input_1['edges'][i][0] is None or input_1['edges'][i][1] is '' or input_1['edges'][i][1] is None:
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain at least one element', (i),{}]
+                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain at least one element'.format(i),{}]
 
 
         # With respect to the validity of edges provided, given an edge [bipartite_0_node_x,bipartite_1_node_y],
