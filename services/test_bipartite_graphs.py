@@ -88,7 +88,7 @@ class TestBipartiteGraphs(unittest.TestCase):
         self.assertEqual([False, 'Element of the input array edges at zero-indexed poistion 2 does not contain two edges', {}],ret)
 
         input_0_0 = {"bipartite_0": [8], "bipartite_1": [3, 4]}
-        input_0_1 = {"edges": [['q', 'w'], ['a', 'y'], [5], [0, 1], 5]}
+        input_0_1 = {"edges": [['q', 'w'], ['a', 'y'], [5,3,4,5], [0, 1], 5]}
         ret = b.bipartite_graph(input_0_0, input_0_1)
         self.assertEqual([False, 'Element of the input array edges at zero-indexed poistion 2 does not contain two edges', {}], ret)
 
@@ -127,8 +127,37 @@ class TestBipartiteGraphs(unittest.TestCase):
         ret = b.bipartite_graph(input_0_0, input_0_1)
         self.assertEqual([False, 'Element of the input array edges at zero-indexed poistion 2 does not contain at least one element', {}], ret)
 
-        # seems finished at line 63
-        
+        input_0_0 = {"bipartite_0": [8], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [['q', 'w'], ['a', 'y'], ['a', 9], [0, 1], [9,5]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 0 is not contained in either of the bipartitions',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8, 'w'], ['a', 'y'], ['a', 9], [0, 1], [9,5]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 0 is not contained in either of the bipartitions',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,3], [18,4], [9,5]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 is not contained in either of the bipartitions',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,3], [8,41], [9,5]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 is not contained in either of the bipartitions',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,3], [8,4], [8,5]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 2 is not contained in either of the bipartitions',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,31]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 0 is not contained in either of the bipartitions',{}], ret)
+
+        # next: Make sure all edge labels are found in the respecitve bipartitions
         print('ret=',ret)
 
 
