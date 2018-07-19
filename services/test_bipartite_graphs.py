@@ -157,7 +157,22 @@ class TestBipartiteGraphs(unittest.TestCase):
         ret = b.bipartite_graph(input_0_0, input_0_1)
         self.assertEqual([False, 'Edge element at zero-indexed position 0 is not contained in either of the bipartitions',{}], ret)
 
-        # next: Make sure all edge labels are found in the respecitve bipartitions
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,3],[4,3]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3,8],[3,4]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3,8],[3,7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
+
+
         print('ret=',ret)
 
 
