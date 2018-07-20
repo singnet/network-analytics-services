@@ -157,7 +157,88 @@ class TestBipartiteGraphs(unittest.TestCase):
         ret = b.bipartite_graph(input_0_0, input_0_1)
         self.assertEqual([False, 'Edge element at zero-indexed position 0 is not contained in either of the bipartitions',{}], ret)
 
-        # next: Make sure all edge labels are found in the respecitve bipartitions
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8,3],[4,3]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8, 3], [8, 3]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[8, 3], [8, 3]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8, 3], [7, 3]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[8, 3], [7, 3]]} ],ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8, 3], [7, 4]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[8, 3], [7, 4]]}],ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [3, 7]]}],ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [4, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [4, 7]]}],ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4]}
+        input_0_1 = {"edges": [[3, 8], [4, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges": [[3, 8], [4, 7]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4]}
+        input_0_1 = {"edges": [[3, 8], [4, 7], [5, 6]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges": [[3, 8], [4, 7], [5, 6]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8,7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3,8],[3,4]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [3, 7]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3, 8]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [3, 8]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[7, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 0 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[7, 8]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 0 belongs to the wrong bipartition',{}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3, 8]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [3, 8]]}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4]}
+        input_0_1 = {"edges": [[3, 8], [4, 7], [5, 6]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([True,'success',{"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges":[[3, 8], [4, 7], [5, 6]]}], ret)
+
+        # Seems quite extensive test for the moment. Might need to return in the future.
+
         print('ret=',ret)
 
 
