@@ -241,6 +241,121 @@ class TestBipartiteGraphs(unittest.TestCase):
 
         print('ret=',ret)
 
+    def test_projected_graph_validation(self):
+
+        b = bipartite_graphs.BipartiteGraphs()
+
+        input_0_0 = {"bipartite_2": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 7]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False,'Parameter bipartite_0 does not exist in given input',{}],ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_2": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 7]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter bipartite_1 does not exist in given input', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodess": [8, 7]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter nodes does not exist in given input', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 3]]}
+        input_0_1 = {"nodes": [8, 7]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges":[[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": 8}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter nodes does not contain an array', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": 'll'}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter nodes does not contain an array', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": []}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter nodes does not contain at least one element', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [[]]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 0 is not contained in either of the bipartitions', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [[8,41]]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 0 is not contained in either of the bipartitions', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [18, 41]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 0 is not contained in either of the bipartitions', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 41]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 1 is not contained in bipartite_0', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 41,77]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 1 is not contained in bipartite_0', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 6, 41]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 2 is not contained in bipartite_0', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [5, 6, 4]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 1 is not contained in bipartite_1', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [5, 3, 41]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 2 is not contained in bipartite_1', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [5, 5, 41]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 2 is not contained in bipartite_1', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [6, 5, 4]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Node element at zero-indexed position 1 is not contained in bipartite_0', {}], ret)
+
+        # Next: verify true conditions for each of the projection types ... then any other unit tests that need to be done
+
+
+        # input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges":[[3, 8], [4, 7], [5, 6], [3, 7]]}
+        # input_0_1 = {"nodes": [8, 7]}
+        # input_0_2 = 'none'
+        # ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+
+        print('ret=', ret)
 
 
 __end__ = '__end__'
