@@ -122,6 +122,10 @@ class graphx:
         print('weighted_projected:number of edges:', P.number_of_edges())
         print(P.edges())
         print(list(P.edges(data=True)))
+        weights = []
+        for i in list(P.edges(data=True)):
+            weights.append(i[2]['weight'])
+        print(weights)
 
         P = bipartite.weighted_projected_graph(self.B, E, ratio=False)
         self.plot_graph_2(P, 'weighted_projected_not_ratio')
@@ -139,6 +143,10 @@ class graphx:
         print('collaboration_weighted_projected:number of edges:', P.number_of_edges())
         print(P.edges())
         print(list(P.edges(data=True)))
+        weights = []
+        for i in list(P.edges(data=True)):
+            weights.append(i[2]['weight'])
+        print(weights)
 
     def overlap_weighted_projected_graph(self):
         E = bipartite.sets(self.B)[0]
@@ -147,8 +155,17 @@ class graphx:
         print('overlap_weighted_projected_graph:number of edges:', P.number_of_edges())
         print(P.edges())
         print(list(P.edges(data=True)))
+        weights = []
+        for i in list(P.edges(data=True)):
+            weights.append(i[2]['weight'])
+        print(weights)
         P = bipartite.overlap_weighted_projected_graph(self.B, E, jaccard=True)
         self.plot_graph_2(P, 'overlap_weighted_projected_graph_jaccard_True')
+        print('xxxxxxxxxxxxxxxxxxxxxx')
+        weights = []
+        for i in list(P.edges(data=True)):
+            weights.append(i[2]['weight'])
+        print(weights)
 
     def generic_weighted_projected_graph(self):
         E = bipartite.sets(self.B)[0]
