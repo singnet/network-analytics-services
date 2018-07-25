@@ -349,8 +349,69 @@ class TestBipartiteGraphs(unittest.TestCase):
 
         # Next: verify true conditions for each of the projection types ... then any other unit tests that need to be done
 
+        input_0_0 = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'], "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai', 'French', 'Hungarian', 'Lebanese', 'Greek'], "edges": [['Pam', 'French'], ['Pam', 'Hungarian'], ['Pam', 'Sushi'], ['Goeff', 'American Diner'], ['Goeff', 'Indian'], ['Goeff', 'Chinese'], ['Philip', 'Lebanese'], ['Philip', 'Italian'], ['Philip', 'Tapas'], ['Sam', 'American Diner'], ['Sam', 'Sushi'], ['Sam', 'Italian'], ['Fred', 'Italian'], ['Fred', 'Tapas'], ['Fred', 'Thai'], ['Jane', 'French'], ['Jane', 'Hungarian'], ['Jane', 'Sushi'], ['Sue', 'Greek'], ['Sue', 'Tapas'], ['Sue', 'Thai'], ['Charlie', 'American Diner'], ['Charlie', 'Indian'], ['Charlie', 'Chinese']]}
+        input_0_1 = {"nodes": ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
 
-        # input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4],"edges":[[3, 8], [4, 7], [5, 6], [3, 7]]}
+        resp = {}
+        resp['edges'] = [['Pam', 'Sam'], ['Pam', 'Jane'], ['Charlie', 'Sam'], ['Charlie', 'Goeff'], ['Goeff', 'Sam'], ['Fred', 'Sam'], ['Fred', 'Philip'], ['Fred', 'Sue'], ['Sam', 'Philip'], ['Sam', 'Jane'], ['Sue', 'Philip']]
+        resp['nodes'] = ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']
+        resp['weights'] = []
+
+        self.assertEqual([True,'success'],ret[:2])
+        self.assertCountEqual(resp['nodes'],ret[2]['nodes'])
+        self.assertCountEqual(resp['edges'],ret[2]['edges'])
+        self.assertCountEqual(resp['weights'],ret[2]['weights'])
+
+        input_0_0 = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'], "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai', 'French', 'Hungarian', 'Lebanese', 'Greek'], "edges": [['Pam', 'French'], ['Pam', 'Hungarian'], ['Pam', 'Sushi'], ['Goeff', 'American Diner'], ['Goeff', 'Indian'], ['Goeff', 'Chinese'], ['Philip', 'Lebanese'], ['Philip', 'Italian'], ['Philip', 'Tapas'], ['Sam', 'American Diner'], ['Sam', 'Sushi'], ['Sam', 'Italian'], ['Fred', 'Italian'], ['Fred', 'Tapas'], ['Fred', 'Thai'], ['Jane', 'French'], ['Jane', 'Hungarian'], ['Jane', 'Sushi'], ['Sue', 'Greek'], ['Sue', 'Tapas'], ['Sue', 'Thai'], ['Charlie', 'American Diner'], ['Charlie', 'Indian'], ['Charlie', 'Chinese']]}
+        input_0_1 = {"nodes": ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']}
+        input_0_2 = 'multigraph'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+
+        resp = {}
+        resp['edges'] = [['Sam', 'Pam'], ['Sam', 'Jane'], ['Sam', 'Goeff'], ['Sam', 'Charlie'], ['Sam', 'Fred'], ['Sam', 'Philip'], ['Pam', 'Jane'], ['Pam', 'Jane'], ['Pam', 'Jane'], ['Goeff', 'Charlie'], ['Goeff', 'Charlie'], ['Goeff', 'Charlie'], ['Fred', 'Sue'], ['Fred', 'Sue'], ['Fred', 'Philip'], ['Fred', 'Philip'], ['Sue', 'Philip']]
+        resp['nodes'] = ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']
+        resp['weights'] = []
+        self.assertEqual([True,'success'],ret[:2])
+        self.assertCountEqual(resp['nodes'],ret[2]['nodes'])
+
+        set_list = []
+        for s in resp['edges']:
+            set_list.append(set(s))
+        for r in range(len(ret[2]['edges'])):
+            self.assertIn(set(ret[2]['edges'][r]),set_list)
+            set_list[set_list.index(set(ret[2]['edges'][r]))] = ''
+        self.assertEqual(len(resp['edges']),len(ret[2]['edges'])) # Just as a checkup; not needed
+        self.assertCountEqual(resp['weights'],ret[2]['weights'])
+
+        input_0_0 = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'], "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai', 'French', 'Hungarian', 'Lebanese', 'Greek'], "edges": [['Pam', 'French'], ['Pam', 'Hungarian'], ['Pam', 'Sushi'], ['Goeff', 'American Diner'], ['Goeff', 'Indian'], ['Goeff', 'Chinese'], ['Philip', 'Lebanese'], ['Philip', 'Italian'], ['Philip', 'Tapas'], ['Sam', 'American Diner'], ['Sam', 'Sushi'], ['Sam', 'Italian'], ['Fred', 'Italian'], ['Fred', 'Tapas'], ['Fred', 'Thai'], ['Jane', 'French'], ['Jane', 'Hungarian'], ['Jane', 'Sushi'], ['Sue', 'Greek'], ['Sue', 'Tapas'], ['Sue', 'Thai'], ['Charlie', 'American Diner'], ['Charlie', 'Indian'], ['Charlie', 'Chinese']]}
+        input_0_1 = {"nodes": ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']}
+        input_0_2 = 'degree'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+
+        resp = {}
+        resp['edges'] = [['Charlie', 'Goeff'], ['Charlie', 'Sam'], ['Sue', 'Philip'], ['Sue', 'Fred'], ['Philip', 'Fred'], ['Philip', 'Sam'], ['Goeff', 'Sam'], ['Sam', 'Jane'], ['Sam', 'Pam'], ['Sam', 'Fred'], ['Jane', 'Pam']]
+        resp['nodes'] = ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']
+        resp['weights'] = [1, 3, 2, 1, 2, 1, 1, 1, 3, 1, 1]
+
+
+        self.assertEqual([True,'success'],ret[:2])
+        self.assertCountEqual(resp['nodes'],ret[2]['nodes'])
+        set_list = []
+        for s in resp['edges']:
+            set_list.append(set(s))
+        for r in range(len(ret[2]['edges'])):
+            self.assertIn(set(ret[2]['edges'][r]),set_list)
+            set_list[set_list.index(set(ret[2]['edges'][r]))] = ''
+        self.assertEqual(len(resp['edges']),len(ret[2]['edges'])) # Just as a checkup; not needed
+
+
+        self.assertCountEqual(resp['weights'],ret[2]['weights'])
+
+
+
+        # input_0_0 = {"bipartite_0": [8, 7, 6,10,12,13], "bipartite_1": [5, 3, 4,1,2,3],"edges":[[3, 8], [4, 7], [5, 6], [3, 7]]}
         # input_0_1 = {"nodes": [8, 7]}
         # input_0_2 = 'none'
         # ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
