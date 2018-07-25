@@ -178,7 +178,7 @@ class BipartiteGraphs:
         if input_2 == 'none':
             P = bipartite.projected_graph(self.networkx_graph, input_1['nodes'])
         elif input_2 == 'multigraph':
-            P = bipartite.projected_graph(self.networkx_graph, input_1['nodes'])
+            P = bipartite.projected_graph(self.networkx_graph, input_1['nodes'],multigraph=True)
         elif input_2 == 'degree':
             P = bipartite.weighted_projected_graph(self.networkx_graph, input_1['nodes'])
         elif input_2 == 'degree_ratio':
@@ -187,7 +187,7 @@ class BipartiteGraphs:
             P = bipartite.collaboration_weighted_projected_graph(self.networkx_graph, input_1['nodes'])
         elif input_2 == 'Jaccard':
             P = bipartite.overlap_weighted_projected_graph(self.networkx_graph, input_1['nodes'])
-        elif input_2 == 'Jaccard_modified ​':
+        elif input_2 == 'Jaccard_modified':
             P = bipartite.overlap_weighted_projected_graph(self.networkx_graph, input_1['nodes'], jaccard=False)
         else:
             return [False, 'Unkown weighting logic specified', {}]
