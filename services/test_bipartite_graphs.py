@@ -203,6 +203,21 @@ class TestBipartiteGraphs(unittest.TestCase):
         self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition',{}], ret)
 
         input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3,7], [3, 4]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 2 belongs to the wrong bipartition', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[8, 3], [7, 3], [4, 3]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 2 belongs to the wrong bipartition', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
+        input_0_1 = {"edges": [[3, 8], [3, 4], [3, 7]]}
+        ret = b.bipartite_graph(input_0_0, input_0_1)
+        self.assertEqual([False, 'Edge element at zero-indexed position 1 belongs to the wrong bipartition', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7], "bipartite_1": [3, 4]}
         input_0_1 = {"edges": [[3, 8], [3, 7]]}
         ret = b.bipartite_graph(input_0_0, input_0_1)
         self.assertEqual([True,'success',{"bipartite_0": [8, 7], "bipartite_1": [3, 4],"edges": [[3, 8], [3, 7]]}], ret)
@@ -256,6 +271,12 @@ class TestBipartiteGraphs(unittest.TestCase):
         input_0_2 = 'none'
         ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
         self.assertEqual([False, 'Parameter bipartite_1 does not exist in given input', {}], ret)
+
+        input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "ledges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
+        input_0_1 = {"nodes": [8, 7]}
+        input_0_2 = 'none'
+        ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
+        self.assertEqual([False, 'Parameter edges does not exist in given input', {}], ret)
 
         input_0_0 = {"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]}
         input_0_1 = {"nodess": [8, 7]}
@@ -482,7 +503,7 @@ class TestBipartiteGraphs(unittest.TestCase):
             set_list[set_list.index(set(ret[2]['edges'][r]))] = ''
         self.assertEqual(len(resp['edges']), len(ret[2]['edges']))  # Just as a checkup; not needed
 
-        
+
         input_0_0 = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                      "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
                                      'French', 'Hungarian', 'Lebanese', 'Greek'],
@@ -551,7 +572,7 @@ class TestBipartiteGraphs(unittest.TestCase):
 
         input_0_0 = {"bipartite_0": [8, 7, 6,10,12,13], "bipartite_1": [5, 3, 4,1,2,3],"edges":[[3, 8], [4, 7], [5, 6], [3, 7]]}
         input_0_1 = {"nodes": [8, 7]}
-        input_0_2 = 'falseLogic'
+        input_0_2 = 'false_logic'
         ret = b.projected_graph(input_0_0, input_0_1, input_0_2)
         self.assertEqual([False, 'Unkown weighting logic specified', {}], ret)
 
