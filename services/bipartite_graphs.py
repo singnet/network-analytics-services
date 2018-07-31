@@ -22,6 +22,8 @@ class BipartiteGraphs:
 
     def bipartite_graph(self,input_0,input_1):
 
+        # 1 / 0
+
         # Make sure that the right fields exist and are array data types
         if 'bipartite_0' not in input_0:
             return[False,'Parameter bipartite_0 does not exist in given input',{}]
