@@ -1,10 +1,13 @@
 # Tested on python3.6
 
-# import logging
-
 from aiohttp import web
 from jsonrpcserver.aio import methods
 from jsonrpcserver.exceptions import InvalidParams
+from jsonrpcserver.exceptions import ServerError
+import time
+import bipartite_graphs
+import logging
+
 
 # logger = logging.getLogger(__name__)
 app = web.Application()
@@ -14,13 +17,96 @@ app = web.Application()
 @methods.add
 async def bipartite_graph(**kwargs):
 
+    print('>>>>>>>>>>>>>>In endpoint bipartite_graph')
+    print(time.strftime("%c"))
 
-    print('Somebody is in.')
+    nodes = kwargs.get("nodes", None)
+    edges = kwargs.get("edges", None)
 
-    param1 = kwargs.get("param1", None)
-    print(param1)
+    if nodes is None:
+        InvalidParams.message = 'nodes parameter is required'
+        raise InvalidParams
+    else:
+        print('nodes parameter is present')
 
-    return {"test": "test_response"}
+
+    if edges is None:
+        InvalidParams.message = 'edges parameter is required'
+        raise InvalidParams
+    else:
+        print('edges parameter is present')
+
+
+    b = bipartite_graphs.BipartiteGraphs()
+
+
+    try:
+
+        ret = b.bipartite_graph(nodes,{'edges':edges})
+        if ret[0]:
+            return ret[2]
+        else:
+            InvalidParams.message = ret[1]
+            raise  InvalidParams
+
+
+    except Exception as e:
+
+        logging.exception("message")
+
+        ServerError.message = str(e)
+        raise ServerError
+
+
+@methods.add
+async def projected_graph(**kwargs):
+
+    print('>>>>>>>>>>>>>>In endpoint projected_graph')
+    print(time.strftime("%c"))
+
+    bipartite_graph = kwargs.get("bipartite_graph", None)
+    nodes = kwargs.get("nodes", None)
+    weight = kwargs.get("weight", None)
+
+    if bipartite_graph is None:
+        InvalidParams.message = 'bipartite_graph parameter is required'
+        raise InvalidParams
+    else:
+        print('bipartite_graph parameter is present')
+
+    if nodes is None:
+        InvalidParams.message = 'nodes parameter is required'
+        raise InvalidParams
+    else:
+        print('nodes parameter is present')
+
+    if weight is None:
+        InvalidParams.message = 'weight parameter is required'
+        raise InvalidParams
+    else:
+        print('weight parameter is present')
+
+
+    b = bipartite_graphs.BipartiteGraphs()
+
+
+    try:
+
+        ret = b.projected_graph(bipartite_graph,{'nodes':nodes},weight)
+        if ret[0]:
+            return ret[2]
+        else:
+            InvalidParams.message = ret[1]
+            raise  InvalidParams
+
+
+    except Exception as e:
+
+        logging.exception("message")
+
+        ServerError.message = str(e)
+        raise ServerError
+
 
 
 
