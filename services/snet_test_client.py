@@ -9,9 +9,7 @@ def test_1():
 
     resp = jsonrpcclient.request('http://127.0.0.1:5000','bipartite_graph',{'nodes':{"bipartite_0": [8, 7], "bipartite_1": [3, 4]},"edges": [[3, 8], [4, 7]]})
 
-    # resp = jsonrpcclient.request('http://127.0.0.1:5000','bipartite_graph',{'nodes':{"bipartite_0": [8, 7], "bipartite_1": [3, 4]},"edges": [[7, 7]]})
-    # print(type(resp))
-    # print((resp['test']))
+    print(resp)
 
 
 
@@ -58,8 +56,8 @@ if __name__ == '__main__':
 
     test_1()
     # print('Using test_2')
-    time.sleep(2)
+    # time.sleep(2)
     # print('Hi')
-    test_1()
+    # test_1()
     # test_2()
     # test_3()
