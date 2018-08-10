@@ -133,6 +133,6 @@ if __name__ == '__main__':
 
 
     # logging.basicConfig(level=config.LOG_LEVEL, format="%(asctime)s - [%(levelname)8s] - %(name)s - %(message)s")
-    app.router.add_post('/net', handle)
+    app.router.add_post('/', handle)
     web.run_app(app, host="127.0.0.1", port=5000)
 
