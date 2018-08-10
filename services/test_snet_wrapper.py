@@ -12,7 +12,7 @@ class TestSnetWrapper(unittest.TestCase):
 
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'bipartite_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'bipartite_graph',
                                      {'nodess': {"bipartite_0": [8, 7], "bipartite_1": [3, 4]},
                                       "edges": [[3, 8], [4, 7]]})
         except Exception as e:
@@ -22,7 +22,7 @@ class TestSnetWrapper(unittest.TestCase):
 
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'bipartite_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'bipartite_graph',
                                      {'nodes': {"bipartite_0": [8, 7], "bipartite_1": [3, 4]},
                                       "edgess": [[3, 8], [4, 7]]})
         except Exception as e:
@@ -30,14 +30,14 @@ class TestSnetWrapper(unittest.TestCase):
             self.assertEqual('edges parameter is required', str(e))
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'bipartite_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'bipartite_graph',
                                      {'nodes': {"bipartitee_0": [8, 7], "bipartite_1": [3, 4]},
                                       "edges": [[3, 8], [4, 7]]})
         except Exception as e:
 
             self.assertEqual('Parameter bipartite_0 does not exist in given input', str(e))
 
-        resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'bipartite_graph',
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'bipartite_graph',
                                      {'nodes': {"bipartite_0": [8, 7], "bipartite_1": [3, 4]},
                                       "edges": [[3, 8], [4, 7]]})
 
@@ -49,7 +49,7 @@ class TestSnetWrapper(unittest.TestCase):
     def test_projected_graph(self):
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'projected_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
                                      {"bipartite_graphh":{"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                      "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
                                      'French', 'Hungarian', 'Lebanese', 'Greek'],
@@ -65,7 +65,7 @@ class TestSnetWrapper(unittest.TestCase):
             self.assertEqual('bipartite_graph parameter is required', str(e))
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'projected_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
                                      {"bipartite_graph":{"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                      "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
                                      'French', 'Hungarian', 'Lebanese', 'Greek'],
@@ -82,7 +82,7 @@ class TestSnetWrapper(unittest.TestCase):
 
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'projected_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
                                      {"bipartite_graph":{"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                      "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
                                      'French', 'Hungarian', 'Lebanese', 'Greek'],
@@ -99,14 +99,14 @@ class TestSnetWrapper(unittest.TestCase):
 
 
         try:
-            resp = jsonrpcclient.request('http://127.0.0.1:5000/net', 'projected_graph',
+            resp = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
                                      {"bipartite_graph":{"bipartite_0": [8, 7, 6], "bipartite_1": [5, 3, 4], "edges": [[3, 8], [4, 7], [5, 6], [3, 7]]},"nodes": [5, 5, 41],"weight":"none"})
         except Exception as e:
 
             self.assertEqual('Node element at zero-indexed position 2 is not contained in bipartite_1', str(e))
 
 
-        ret = jsonrpcclient.request('http://127.0.0.1:5000/net', 'projected_graph',
+        ret = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
                                      {"bipartite_graph": {
                                          "bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue',
                                                          'Charlie'],
