@@ -23,7 +23,7 @@ def test_2():
 
     async def main(loop):
         async with aiohttp.ClientSession(loop=loop) as session:
-            client = aiohttpClient(session, 'http://127.0.0.1:5000')
+            client = aiohttpClient(session, 'http://127.0.0.1:35000')
             print('hi')
 
             try:
@@ -49,7 +49,7 @@ def test_3():
     input_0_1 = [8, 7]
     input_0_2 = 'none'
 
-    resp = jsonrpcclient.request('http://127.0.0.1:5000', 'projected_graph',
+    resp = jsonrpcclient.request('http://127.0.0.1:35000', 'projected_graph',
                                  {'bipartite_graph':input_0_0, "nodes": input_0_1, 'weight':'kk'})
 
 
