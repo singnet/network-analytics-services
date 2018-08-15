@@ -24,15 +24,15 @@ async def bipartite_graph(**kwargs):
     edges = kwargs.get("edges", None)
 
     if nodes is None:
-        InvalidParams.message = 'nodes parameter is required'
-        raise InvalidParams
+        # InvalidParams.message = 'nodes parameter is required'
+        # raise InvalidParams
+        return jsonify_response([False,'nodes parameter is required',{}])
     else:
         print('nodes parameter is present')
 
 
     if edges is None:
-        InvalidParams.message = 'edges parameter is required'
-        raise InvalidParams
+        return jsonify_response([False,'edges parameter is required',{}])
     else:
         print('edges parameter is present')
 
@@ -43,19 +43,14 @@ async def bipartite_graph(**kwargs):
     try:
 
         ret = b.bipartite_graph(nodes,{'edges':edges})
-        if ret[0]:
-            return ret[2]
-        else:
-            InvalidParams.message = ret[1]
-            raise  InvalidParams
+        return jsonify_response(ret)
 
 
     except Exception as e:
 
         logging.exception("message")
 
-        ServerError.message = str(e)
-        raise ServerError
+        return jsonify_response([False,str(e),{}])
 
 
 @methods.add
@@ -69,20 +64,17 @@ async def projected_graph(**kwargs):
     weight = kwargs.get("weight", None)
 
     if bipartite_graph is None:
-        InvalidParams.message = 'bipartite_graph parameter is required'
-        raise InvalidParams
+        return jsonify_response([False,'bipartite_graph parameter is required',{}])
     else:
         print('bipartite_graph parameter is present')
 
     if nodes is None:
-        InvalidParams.message = 'nodes parameter is required'
-        raise InvalidParams
+        return jsonify_response([False,'nodes parameter is required',{}])
     else:
         print('nodes parameter is present')
 
     if weight is None:
-        InvalidParams.message = 'weight parameter is required'
-        raise InvalidParams
+        return jsonify_response([False,'weight parameter is required',{}])
     else:
         print('weight parameter is present')
 
@@ -93,19 +85,14 @@ async def projected_graph(**kwargs):
     try:
 
         ret = b.projected_graph(bipartite_graph,{'nodes':nodes},weight)
-        if ret[0]:
-            return ret[2]
-        else:
-            InvalidParams.message = ret[1]
-            raise  InvalidParams
+        return jsonify_response(ret)
 
 
     except Exception as e:
 
         logging.exception("message")
 
-        ServerError.message = str(e)
-        raise ServerError
+        return jsonify_response([False,str(e),{}])
 
 
 
@@ -121,6 +108,9 @@ async def handle(request):
 
 
 
+def jsonify_response(resp):
+
+    return {'status': resp[0], 'message': resp[1], 'output': resp[2]}
 
 
 
@@ -134,6 +124,5 @@ if __name__ == '__main__':
 
     # logging.basicConfig(level=config.LOG_LEVEL, format="%(asctime)s - [%(levelname)8s] - %(name)s - %(message)s")
     app.router.add_post('/', handle)
-    # web.run_app(app, host="127.0.0.1", port=5000)
-    web.run_app(app, host="0.0.0.0", port=35000)
+    web.run_app(app, host="127.0.0.1", port=5000)
 
