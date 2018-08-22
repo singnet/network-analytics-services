@@ -15,8 +15,13 @@ Projected Graph: Returns the projection of a bipartite graph on a given set of n
 
 ### Service:Bipartite Graph
 
+<details>
+
 **Description**: Create a bipartite graph from two given nodes
 and a set of edges.
+<summary>
+Detailed specs
+</summary>
 
 **Service endpoint**: bipartite_graph
 
@@ -73,10 +78,17 @@ sample output 2 for error invocation:
 5. With respect to the validity of edges provided, given an edge [bipartite_0_node_x,bipartite_1_node_y], if either of the elements doesn’t belong to the respective bipartition_0 or bipartition_1, then an error occurs.
 6. If no edge is formed in either steps 3, 4 or 5, then a bipartite would not be returned. Instead, an error message would be returned.
 
+</details>
 
 ### Service:Projected Graph
 
 **Description**: Returns the projection of a bipartite graph on a given set of nodes.
+
+<details>
+
+<summary>
+Detailed specs
+</summary>
 
 **Service endpoint**: projected_graph
 
@@ -160,3 +172,4 @@ sample output 2 for error invocation:
 4. If nodes contain more than one element, then all elements should come from one bipartition
 5. If an unknown weighting technique is specified then an error is returned
 
+</details>
