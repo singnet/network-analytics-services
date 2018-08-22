@@ -15,10 +15,11 @@ Projected Graph: Returns the projection of a bipartite graph on a given set of n
 
 ### Service:Bipartite Graph
 
-<details>
-
 **Description**: Create a bipartite graph from two given nodes
 and a set of edges.
+
+<details>
+
 <summary>
 Detailed specs
 </summary>
