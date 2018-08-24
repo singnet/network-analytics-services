@@ -83,6 +83,13 @@ def bi_graph():
     print(f)
 
 
+def graph_1():
+    G = nx.Graph()
+    G.add_nodes_from([2, 3, 5, 6, 7,'hey'])
+    G.add_edges_from([(2, 3), (5, 3),(6,7)])
+    G.add_edges_from([[3,6],[3,7],[3,'key']])
+    print(list(G.nodes()))
+    print(list(G.edges()))
 
 
 
@@ -96,7 +103,8 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-    list_1()
+    graph_1()
+    # list_1()
     # dict_2()
     # tuple_1()
     # dict_1()
