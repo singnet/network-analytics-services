@@ -4,6 +4,8 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 from networkx.algorithms import bipartite
+from networkx.algorithms import distance_measures
+from networkx.algorithms import centrality
 import matplotlib.pyplot as plt
 import random
 import plotly as py
@@ -85,11 +87,26 @@ def bi_graph():
 
 def graph_1():
     G = nx.Graph()
-    G.add_nodes_from([2, 3, 5, 6, 7,'hey'])
-    G.add_edges_from([(2, 3), (5, 3),(6,7)])
-    G.add_edges_from([[3,6],[3,7],[3,'key']])
+    G.add_nodes_from([2, 3, 5, 6, 7])
+    G.add_edges_from([[2, 3], [5, 3],[6,7],[7,2],[5,7]])
     print(list(G.nodes()))
     print(list(G.edges()))
+    print(distance_measures.center(G,e={12: 2, 13: 3, 15: 2, 16: 3}))
+    print(distance_measures.eccentricity(G))
+
+
+def graph_2():
+    G = nx.nx.DiGraph()
+    # G.add_nodes_from([2, 3, 5, 6, 7])
+    G.add_edges_from([[2, 3], [5, 3], [6, 7], [7, 2], [5, 7]])
+    # G.add_path([2,3,6,7])
+    # G.add_path([2,4,5])
+    # print(list(G.nodes()))
+    print(list(G.edges()))
+    print(list(G.out_degree()))
+    print(list(G.in_degree()))
+    print(centrality.in_degree_centrality(G))
+
 
 
 
@@ -103,7 +120,8 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-    graph_1()
+    graph_2()
+    # graph_1()
     # list_1()
     # dict_2()
     # tuple_1()
