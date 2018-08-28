@@ -6,6 +6,7 @@ import numpy as np
 from networkx.algorithms import bipartite
 from networkx.algorithms import distance_measures
 from networkx.algorithms import centrality
+from networkx.algorithms import link_analysis
 import matplotlib.pyplot as plt
 import random
 import plotly as py
@@ -106,6 +107,8 @@ def graph_2():
     print(list(G.out_degree()))
     print(list(G.in_degree()))
     print(centrality.in_degree_centrality(G))
+    print(link_analysis.pagerank(G,personalization={2:-4}))
+    print(link_analysis.pagerank(G,dangling={5:0,7:1}))
 
 
 
