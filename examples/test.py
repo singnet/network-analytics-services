@@ -92,7 +92,9 @@ def graph_1():
     G.add_edges_from([[2, 3], [5, 3],[6,7],[7,2],[5,7]])
     print(list(G.nodes()))
     print(list(G.edges()))
-    print(distance_measures.center(G,e={12: 2, 13: 3, 15: 2, 16: 3}))
+    print(distance_measures.center(G))
+    # print(distance_measures.center(G,e={12: 2, 13: 3, 15: 2, 16: 3}))
+    print(distance_measures.center(G,e={333: 3}))
     print(distance_measures.eccentricity(G))
 
 
@@ -123,8 +125,8 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-    graph_2()
-    # graph_1()
+    # graph_2()
+    graph_1()
     # list_1()
     # dict_2()
     # tuple_1()
