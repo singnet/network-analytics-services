@@ -93,8 +93,9 @@ def graph_1():
     print(list(G.nodes()))
     print(list(G.edges()))
     print(distance_measures.center(G))
+    print(distance_measures.periphery(G))
     # print(distance_measures.center(G,e={12: 2, 13: 3, 15: 2, 16: 3}))
-    print(distance_measures.center(G,e={333: 3}))
+    # print(distance_measures.center(G,e={333: 3}))
     print(distance_measures.eccentricity(G))
 
 
