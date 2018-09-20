@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+
+//message Nodes {
+//
+//    repeated string nodes_0 = 1;
+//    repeated string nodes_1 = 2;
+//
+//}
+
+message Edge{
+
+    repeated string edge = 1;
+}
+
+message Edges{
+
+    repeated Edge edges = 1;
+}
+
+
+//message Graph {
+//
+//    Nodes nodes = 1;
+//    Edges edges = 2;
+//
+//}
+
+//message GraphOutput{
+//
+//    bool status = 1;
+//    string message = 2;
+//    Graph graph = 3;
+//
+//}

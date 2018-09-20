@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+import "bipartite_graph/bipartite_graph_messages.proto";
+
+
+service NetowrkAnalytics {
+
+
+    rpc BipartiteGraph (BipartiteGraphRequest) returns (BipartiteGraphResponse) {};
+
+    rpc ProjectedGraph (ProjecetedGraphRequest) returns (ProjecetedGraphResponse) {};
+
+
+}
