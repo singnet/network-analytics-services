@@ -1,9 +1,23 @@
 syntax = "proto3";
 
 
-import "../graph/graph_messages.proto";
+///// Graph
+
+message Edge{
+
+    repeated string edge = 1;
+}
+
+message Edges{
+
+    repeated Edge edges = 1;
+}
+
+///// End Graph
 
 
+
+///// Bipartite graph
 
 message BipartiteNodes {
 
@@ -61,3 +75,25 @@ message ProjecetedGraphResponse{
     BipartiteGraph output = 3;
 
 }
+
+
+///// End Bipartite graph
+
+
+
+
+
+
+///// Network Analytics Services
+
+service NetowrkAnalytics {
+
+
+    rpc BipartiteGraph (BipartiteGraphRequest) returns (BipartiteGraphResponse) {};
+
+    rpc ProjectedGraph (ProjecetedGraphRequest) returns (ProjecetedGraphResponse) {};
+
+
+}
+
+///// End Network Analytics Services
