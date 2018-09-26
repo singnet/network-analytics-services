@@ -3,6 +3,13 @@
 import logging
 import time
 
+import grpc
+
+import network_analytics_pb2
+import network_analytics_pb2_grpc
+
+
+
 def test_1():
 
     import jsonrpcclient
@@ -54,9 +61,43 @@ def test_3():
                                  {'bipartite_graph':input_0_0, "nodes": input_0_1, 'weight':'kk'})
 
 
+
+def test_4():
+    channel = grpc.insecure_channel('localhost:5000')
+    stub = network_analytics_pb2_grpc.NetowrkAnalyticsStub(channel)
+
+    input_0_0 = {"bipartite_0": ['8', '7', '6'], "bipartite_1": ['5', '3', '4']}
+    input_0_1 = {"edges": [[3, 8], [4, 7], [5, 6]]}
+
+    edgess = [['3', '8'], ['4', '7'], ['5', '6']]
+    i = 1
+
+    edge_1 = network_analytics_pb2.Edge(edge=edgess[i])
+    edge_2 = network_analytics_pb2.Edge(edge=['5','6'])
+
+    edges_1= [edge_1,edge_2]
+
+
+    graph_in = network_analytics_pb2.BipartiteNodes(bipartite_0=input_0_0["bipartite_0"],bipartite_1=input_0_0["bipartite_1"])
+
+
+
+
+
+    graph_1 = network_analytics_pb2.BipartiteGraphRequest(edges=edges_1)
+    # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph=)
+    # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph.nodes=input_0_0,graph.edges=input_0_1)
+
+    response = stub.BipartiteGraph(graph_1)
+    print(response)
+    print(response.status)
+    print(response.message)
+
+
 if __name__ == '__main__':
 
-    test_1()
+    test_4()
+    # test_1()
     # print('Using test_2')
     # time.sleep(2)
     # print('Hi')

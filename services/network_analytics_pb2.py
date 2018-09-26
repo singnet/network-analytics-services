@@ -19,52 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x17network_analytics.proto\"\x14\n\x04\x45\x64ge\x12\x0c\n\x04\x65\x64ge\x18\x01 \x03(\t\"\x1d\n\x05\x45\x64ges\x12\x14\n\x05\x65\x64ges\x18\x01 \x03(\x0b\x32\x05.Edge\"2\n\x0e\x42ipartiteNodes\x12\x0f\n\x07nodes_0\x18\x01 \x03(\t\x12\x0f\n\x07nodes_1\x18\x02 \x03(\t\"X\n\x0e\x42ipartiteGraph\x12\x1e\n\x05nodes\x18\x01 \x01(\x0b\x32\x0f.BipartiteNodes\x12\x15\n\x05\x65\x64ges\x18\x02 \x01(\x0b\x32\x06.Edges\x12\x0f\n\x07weights\x18\x03 \x03(\x01\"7\n\x15\x42ipartiteGraphRequest\x12\x1e\n\x05graph\x18\x01 \x01(\x0b\x32\x0f.BipartiteGraph\"Z\n\x16\x42ipartiteGraphResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x1f\n\x06output\x18\x03 \x01(\x0b\x32\x0f.BipartiteGraph\"\xb8\x01\n\x16ProjecetedGraphRequest\x12\x1e\n\x05graph\x18\x01 \x01(\x0b\x32\x0f.BipartiteGraph\x12\r\n\x05nodes\x18\x02 \x03(\t\"o\n\x06weight\x12\x08\n\x04NONE\x10\x00\x12\x0e\n\nMULTIGRAPH\x10\x01\x12\n\n\x06\x44\x45GREE\x10\x02\x12\x10\n\x0c\x44\x45GREE_RATIO\x10\x03\x12\n\n\x06NEWMAN\x10\x04\x12\x0b\n\x07JACCARD\x10\x05\x12\x14\n\x10JACCARD_MODIFIED\x10\x06\"[\n\x17ProjecetedGraphResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x1f\n\x06output\x18\x03 \x01(\x0b\x32\x0f.BipartiteGraph2\x9e\x01\n\x10NetowrkAnalytics\x12\x43\n\x0e\x42ipartiteGraph\x12\x16.BipartiteGraphRequest\x1a\x17.BipartiteGraphResponse\"\x00\x12\x45\n\x0eProjectedGraph\x12\x17.ProjecetedGraphRequest\x1a\x18.ProjecetedGraphResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x17network_analytics.proto\"\x14\n\x04\x45\x64ge\x12\x0c\n\x04\x65\x64ge\x18\x01 \x03(\t\",\n\x05Graph\x12\r\n\x05nodes\x18\x01 \x03(\t\x12\x14\n\x05\x65\x64ges\x18\x02 \x03(\x0b\x32\x05.Edge\":\n\x0e\x42ipartiteNodes\x12\x13\n\x0b\x62ipartite_0\x18\x01 \x03(\t\x12\x13\n\x0b\x62ipartite_1\x18\x02 \x03(\t\"a\n\x0e\x42ipartiteGraph\x12\x13\n\x0b\x62ipartite_0\x18\x01 \x03(\t\x12\x13\n\x0b\x62ipartite_1\x18\x02 \x03(\t\x12\x14\n\x05\x65\x64ges\x18\x03 \x03(\x0b\x32\x05.Edge\x12\x0f\n\x07weights\x18\x04 \x03(\x01\"M\n\x15\x42ipartiteGraphRequest\x12\x1e\n\x05nodes\x18\x01 \x01(\x0b\x32\x0f.BipartiteNodes\x12\x14\n\x05\x65\x64ges\x18\x02 \x03(\x0b\x32\x05.Edge\"Z\n\x16\x42ipartiteGraphResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x1f\n\x06output\x18\x03 \x01(\x0b\x32\x0f.BipartiteGraph\"W\n\x16ProjecetedGraphRequest\x12\x1e\n\x05graph\x18\x01 \x01(\x0b\x32\x0f.BipartiteGraph\x12\r\n\x05nodes\x18\x02 \x03(\t\x12\x0e\n\x06weight\x18\x03 \x01(\t\"R\n\x17ProjecetedGraphResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x16\n\x06output\x18\x03 \x01(\x0b\x32\x06.Graph2\x9e\x01\n\x10NetowrkAnalytics\x12\x43\n\x0e\x42ipartiteGraph\x12\x16.BipartiteGraphRequest\x1a\x17.BipartiteGraphResponse\"\x00\x12\x45\n\x0eProjectedGraph\x12\x17.ProjecetedGraphRequest\x1a\x18.ProjecetedGraphResponse\"\x00\x62\x06proto3')
 )
 
 
-
-_PROJECETEDGRAPHREQUEST_WEIGHT = _descriptor.EnumDescriptor(
-  name='weight',
-  full_name='ProjecetedGraphRequest.weight',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NONE', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MULTIGRAPH', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DEGREE', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DEGREE_RATIO', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NEWMAN', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='JACCARD', index=5, number=5,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='JACCARD_MODIFIED', index=6, number=6,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=445,
-  serialized_end=556,
-)
-_sym_db.RegisterEnumDescriptor(_PROJECETEDGRAPHREQUEST_WEIGHT)
 
 
 _EDGE = _descriptor.Descriptor(
@@ -98,16 +56,23 @@ _EDGE = _descriptor.Descriptor(
 )
 
 
-_EDGES = _descriptor.Descriptor(
-  name='Edges',
-  full_name='Edges',
+_GRAPH = _descriptor.Descriptor(
+  name='Graph',
+  full_name='Graph',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='edges', full_name='Edges.edges', index=0,
-      number=1, type=11, cpp_type=10, label=3,
+      name='nodes', full_name='Graph.nodes', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='edges', full_name='Graph.edges', index=1,
+      number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -125,7 +90,7 @@ _EDGES = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=49,
-  serialized_end=78,
+  serialized_end=93,
 )
 
 
@@ -137,14 +102,14 @@ _BIPARTITENODES = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nodes_0', full_name='BipartiteNodes.nodes_0', index=0,
+      name='bipartite_0', full_name='BipartiteNodes.bipartite_0', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='nodes_1', full_name='BipartiteNodes.nodes_1', index=1,
+      name='bipartite_1', full_name='BipartiteNodes.bipartite_1', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -162,8 +127,8 @@ _BIPARTITENODES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=80,
-  serialized_end=130,
+  serialized_start=95,
+  serialized_end=153,
 )
 
 
@@ -175,22 +140,29 @@ _BIPARTITEGRAPH = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nodes', full_name='BipartiteGraph.nodes', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='bipartite_0', full_name='BipartiteGraph.bipartite_0', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='edges', full_name='BipartiteGraph.edges', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='bipartite_1', full_name='BipartiteGraph.bipartite_1', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='weights', full_name='BipartiteGraph.weights', index=2,
-      number=3, type=1, cpp_type=5, label=3,
+      name='edges', full_name='BipartiteGraph.edges', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='weights', full_name='BipartiteGraph.weights', index=3,
+      number=4, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -207,8 +179,8 @@ _BIPARTITEGRAPH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=132,
-  serialized_end=220,
+  serialized_start=155,
+  serialized_end=252,
 )
 
 
@@ -220,9 +192,16 @@ _BIPARTITEGRAPHREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='graph', full_name='BipartiteGraphRequest.graph', index=0,
+      name='nodes', full_name='BipartiteGraphRequest.nodes', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='edges', full_name='BipartiteGraphRequest.edges', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -238,8 +217,8 @@ _BIPARTITEGRAPHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=222,
-  serialized_end=277,
+  serialized_start=254,
+  serialized_end=331,
 )
 
 
@@ -283,8 +262,8 @@ _BIPARTITEGRAPHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=279,
-  serialized_end=369,
+  serialized_start=333,
+  serialized_end=423,
 )
 
 
@@ -309,12 +288,18 @@ _PROJECETEDGRAPHREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='weight', full_name='ProjecetedGraphRequest.weight', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
-    _PROJECETEDGRAPHREQUEST_WEIGHT,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -322,8 +307,8 @@ _PROJECETEDGRAPHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=372,
-  serialized_end=556,
+  serialized_start=425,
+  serialized_end=512,
 )
 
 
@@ -367,20 +352,19 @@ _PROJECETEDGRAPHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=558,
-  serialized_end=649,
+  serialized_start=514,
+  serialized_end=596,
 )
 
-_EDGES.fields_by_name['edges'].message_type = _EDGE
-_BIPARTITEGRAPH.fields_by_name['nodes'].message_type = _BIPARTITENODES
-_BIPARTITEGRAPH.fields_by_name['edges'].message_type = _EDGES
-_BIPARTITEGRAPHREQUEST.fields_by_name['graph'].message_type = _BIPARTITEGRAPH
+_GRAPH.fields_by_name['edges'].message_type = _EDGE
+_BIPARTITEGRAPH.fields_by_name['edges'].message_type = _EDGE
+_BIPARTITEGRAPHREQUEST.fields_by_name['nodes'].message_type = _BIPARTITENODES
+_BIPARTITEGRAPHREQUEST.fields_by_name['edges'].message_type = _EDGE
 _BIPARTITEGRAPHRESPONSE.fields_by_name['output'].message_type = _BIPARTITEGRAPH
 _PROJECETEDGRAPHREQUEST.fields_by_name['graph'].message_type = _BIPARTITEGRAPH
-_PROJECETEDGRAPHREQUEST_WEIGHT.containing_type = _PROJECETEDGRAPHREQUEST
-_PROJECETEDGRAPHRESPONSE.fields_by_name['output'].message_type = _BIPARTITEGRAPH
+_PROJECETEDGRAPHRESPONSE.fields_by_name['output'].message_type = _GRAPH
 DESCRIPTOR.message_types_by_name['Edge'] = _EDGE
-DESCRIPTOR.message_types_by_name['Edges'] = _EDGES
+DESCRIPTOR.message_types_by_name['Graph'] = _GRAPH
 DESCRIPTOR.message_types_by_name['BipartiteNodes'] = _BIPARTITENODES
 DESCRIPTOR.message_types_by_name['BipartiteGraph'] = _BIPARTITEGRAPH
 DESCRIPTOR.message_types_by_name['BipartiteGraphRequest'] = _BIPARTITEGRAPHREQUEST
@@ -396,12 +380,12 @@ Edge = _reflection.GeneratedProtocolMessageType('Edge', (_message.Message,), dic
   ))
 _sym_db.RegisterMessage(Edge)
 
-Edges = _reflection.GeneratedProtocolMessageType('Edges', (_message.Message,), dict(
-  DESCRIPTOR = _EDGES,
+Graph = _reflection.GeneratedProtocolMessageType('Graph', (_message.Message,), dict(
+  DESCRIPTOR = _GRAPH,
   __module__ = 'network_analytics_pb2'
-  # @@protoc_insertion_point(class_scope:Edges)
+  # @@protoc_insertion_point(class_scope:Graph)
   ))
-_sym_db.RegisterMessage(Edges)
+_sym_db.RegisterMessage(Graph)
 
 BipartiteNodes = _reflection.GeneratedProtocolMessageType('BipartiteNodes', (_message.Message,), dict(
   DESCRIPTOR = _BIPARTITENODES,
@@ -453,8 +437,8 @@ _NETOWRKANALYTICS = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=652,
-  serialized_end=810,
+  serialized_start=599,
+  serialized_end=757,
   methods=[
   _descriptor.MethodDescriptor(
     name='BipartiteGraph',
