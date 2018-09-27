@@ -28,36 +28,53 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
         b = bipartite_graphs.BipartiteGraphs()
 
-        res = network_analytics_pb2.BipartiteGraphResponse()
+
 
         try:
 
-            nodes_in = {'bipartite_0':nodes.bipartite_0,'bipartite_1':nodes.bipartite_1}
-            edges_in = {'edges': edges}
+            edges_list = []
+
+
+            for edges_proto in edges:
+                edges_list.append(list(edges_proto.edge))
+
+
+            nodes_in = {"bipartite_0":list(nodes.bipartite_0),"bipartite_1":list(nodes.bipartite_1)}
+            edges_in = {"edges": edges_list}
 
             ret = b.bipartite_graph(nodes_in, edges_in)
 
-            res =  protofy(ret,res)
+            resp = network_analytics_pb2.BipartiteGraphResponse(status=ret[0],message=ret[1])
 
-            if res.status:
-                edges_res = []
-                for edge_ret in ret[2]['edges']:
-                    edges_res.append(network_analytics_pb2.Edge(edge=edge_ret))
-                graph_res = network_analytics_pb2.BipartiteGraph()
-                graph_res.bipartite_0 = res[2]['bipartite_0']
-                graph_res.bipartite_1 = res[2]['bipartite_1']
-                graph_res.edges = res[2]['edges']
-                res.output = graph_res
+            if resp.status:
+                edges_resp = []
+                for edge_ret in ret[2]["edges"]:
+                    edges_resp.append(network_analytics_pb2.Edge(edge=edge_ret))
+
+                graph_resp = network_analytics_pb2.BipartiteGraph(bipartite_0=ret[2]["bipartite_0"],bipartite_1=ret[2]["bipartite_1"],edges=edges_resp)
 
 
-            return res
+                resp = network_analytics_pb2.BipartiteGraphResponse(status=ret[0],message=ret[1],output=graph_resp)
+
+
+            print('status:',resp.status)
+            print('message:',resp.message)
+            print('Waiting for next call on port 5000.')
+
+            return resp
 
 
         except Exception as e:
 
             logging.exception("message")
 
-            return protofy([False, str(e)],res)
+            resp = network_analytics_pb2.BipartiteGraphResponse(status=False,message=str(e))
+
+            print('status:', resp.status)
+            print('message:', resp.message)
+            print('Waiting for next call on port 5000.')
+
+            return resp
 
 
 
@@ -65,13 +82,6 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
         pass
 
-
-def protofy(ret,res):
-
-    res.status = ret[0]
-    res.message = ret[1]
-
-    return res
 
 
 

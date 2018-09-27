@@ -13,6 +13,7 @@ message Graph{
 
     repeated string nodes = 1;
     repeated Edge edges = 2;
+    repeated double weights = 3;
 
 }
 

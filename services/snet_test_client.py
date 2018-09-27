@@ -76,22 +76,23 @@ def test_4():
     edge_2 = network_analytics_pb2.Edge(edge=['5','6'])
 
     edges_1= [edge_1,edge_2]
+    # print("edge_1:")
+    # print(type(edge_1.edge))
 
 
-    graph_in = network_analytics_pb2.BipartiteNodes(bipartite_0=input_0_0["bipartite_0"],bipartite_1=input_0_0["bipartite_1"])
+    # graph_in = network_analytics_pb2.BipartiteNodes(bipartite_0=input_0_0["bipartite_0"],bipartite_1=input_0_0["bipartite_1"])
+    graph_in = network_analytics_pb2.BipartiteNodes(bipartite_1=input_0_0["bipartite_1"])
 
 
-
-
-
-    graph_1 = network_analytics_pb2.BipartiteGraphRequest(edges=edges_1)
+    graph_1 = network_analytics_pb2.BipartiteGraphRequest(nodes=graph_in,edges=edges_1)
     # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph=)
     # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph.nodes=input_0_0,graph.edges=input_0_1)
 
     response = stub.BipartiteGraph(graph_1)
-    print(response)
     print(response.status)
     print(response.message)
+    print(response.output)
+
 
 
 if __name__ == '__main__':
