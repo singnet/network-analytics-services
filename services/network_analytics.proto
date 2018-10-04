@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 
+
 ///// Graph
 
 message Edge{
@@ -8,39 +9,42 @@ message Edge{
     repeated string edge = 1;
 }
 
-message Edges{
+message Graph{
 
-    repeated Edge edges = 1;
+    repeated string nodes = 1;
+    repeated Edge edges = 2;
+    repeated double weights = 3;
+
 }
+
 
 ///// End Graph
 
 
-
 ///// Bipartite graph
+
 
 message BipartiteNodes {
 
-    repeated string nodes_0 = 1;
-    repeated string nodes_1 = 2;
-
+    repeated string bipartite_0 = 1;
+    repeated string bipartite_1 = 2;
 }
 
 
 message BipartiteGraph {
 
+    repeated string bipartite_0 = 1;
+    repeated string bipartite_1 = 2;
+    repeated Edge edges = 3;
+    repeated double weights = 4;
+
+}
+
+message BipartiteGraphRequest {
+
     BipartiteNodes nodes = 1;
-    Edges edges = 2;
-    repeated double weights = 3;
+    repeated Edge edges = 2;
 }
-
-
-message BipartiteGraphRequest{
-
-    BipartiteGraph graph = 1;
-
-}
-
 
 message BipartiteGraphResponse{
 
@@ -55,15 +59,7 @@ message ProjecetedGraphRequest{
 
     BipartiteGraph graph = 1;
     repeated string nodes = 2;
-    enum weight {
-        NONE = 0;
-        MULTIGRAPH = 1;
-        DEGREE = 2;
-        DEGREE_RATIO = 3;
-        NEWMAN = 4;
-        JACCARD = 5;
-        JACCARD_MODIFIED = 6;
-    }
+    string weight = 3;
 
 }
 
@@ -72,13 +68,12 @@ message ProjecetedGraphResponse{
 
     bool status = 1;
     string message = 2;
-    BipartiteGraph output = 3;
+    Graph output = 3;
 
 }
 
 
 ///// End Bipartite graph
-
 
 
 
