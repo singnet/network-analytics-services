@@ -7,6 +7,10 @@ import grpc
 
 import network_analytics_pb2
 import network_analytics_pb2_grpc
+from google.protobuf.json_format import MessageToJson, Parse
+
+import subprocess
+import yaml
 
 
 
@@ -130,9 +134,45 @@ def test_5():
     print(response.message)
     print(response.output)
 
+def test_6():
+
+    endpoint = "159.69.56.49:2222" # NetworkAnalyticsServices deployed to Kovan
+    channel = grpc.insecure_channel(endpoint)
+    stub = network_analytics_pb2_grpc.NetowrkAnalyticsStub(channel)
+
+    job_address = ''
+    job_signature = ''
+
+    nodes_list = {"bipartite_0": ['8', '7'], "bipartite_1": ['3', '4']}
+    edges_list = [['3', '8'], ['4', '7']]
+    nodes = network_analytics_pb2.BipartiteNodes(bipartite_0=nodes_list["bipartite_0"],
+                                                 bipartite_1=nodes_list["bipartite_1"])
+    edges = []
+    for e in edges_list:
+        edges.append(network_analytics_pb2.Edge(edge=e))
+
+    response = stub.BipartiteGraph(network_analytics_pb2.BipartiteGraphRequest(nodes=nodes, edges=edges),metadata=[("snet-job-address", job_address), ("snet-job-signature", job_signature)])
+    print(response.status)
+    print(response.message)
+    print(response.output)
+
+def generate_call_credentials():
+    agent_address = "0xb57B4c70379E84CD8d42a867cF326d5e0743E11d"  # NetworkAnalyticsServices deployed to Kovan
+    result = subprocess.check_output(["snet", "agent", "--at", agent_address, "create-jobs", "--funded", "--signed", "--no-confirm", "--max-price","3"])
+    job = yaml.load(result)["jobs"][0]
+    job_address = job["job_address"]
+    job_signature = job["job_signature"]
+    print("job_address------------------------------")
+    print(job_address)
+    print("job_signature----------------------------")
+    print(job_signature)
+
+
 if __name__ == '__main__':
 
-    test_5()
+    # generate_call_credentials()
+    test_6()
+    # test_5()
     # test_4()
     # test_1()
     # print('Using test_2')
