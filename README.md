@@ -1,7 +1,17 @@
-# Network Analysis Service
+# Network Analytics Services
 
-Network analysis service for SingularityNET. Below is a list of currently available services
-under different categories. Also detailed services input/output specifications.
+This repository contains various network analytics services for SingularityNET. The services are wrapped using
+gRPC. To work with the service wrapper code "snet_grpc_wrapper.py" and other codes that make use of gRPC
+functionality, run the following in the "services" directory
+
+```
+python3.6 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+```
+
+This will generate the files "network_analytics_pb2.py" and "network_analytics_pb2_grpc.py" in the "services" directory
+which you can then use with the rest of the code in the repository.
+
+Below is a list of currently available services under different categories. Also detailed services input/output specifications.
 
 ## List of Services
 
