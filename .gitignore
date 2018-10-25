@@ -107,3 +107,7 @@ venv.bak/
 .idea/
 
 *.html
+services/network_analytics_pb2.py
+services/network_analytics_pb2_grpc.py
+services/snet_wrapper.py
+services/test_snet_wrapper.py
