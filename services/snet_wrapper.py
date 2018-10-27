@@ -95,8 +95,88 @@ async def projected_graph(**kwargs):
         return jsonify_response([False,str(e),{}])
 
 
+@methods.add
+async def min_nodes_to_remove(**kwargs):
+
+    print('>>>>>>>>>>>>>>In endpoint min_nodes_to_remove')
+    print(time.strftime("%c"))
+
+    nodes = kwargs.get("nodes", None)
+    edges = kwargs.get("edges", None)
+    source_node = kwargs.get("source_node", None)
+    target_node = kwargs.get("target_node", None)
+
+    if nodes is None:
+        return jsonify_response([False,'nodes parameter is required',{}])
+    else:
+        print('nodes parameter is present')
 
 
+    if edges is None:
+        return jsonify_response([False,'edges parameter is required',{}])
+    else:
+        print('edges parameter is present')
+
+    if source_node is None:
+        return jsonify_response([False,'source_node parameter is required',{}])
+    else:
+        print('source_node parameter is present')
+
+    if target_node is None:
+        return jsonify_response([False,'target_node parameter is required',{}])
+    else:
+        print('target_node parameter is present')
+
+    b = bipartite_graphs.BipartiteGraphs()
+
+    try:
+        ret = b.min_nodes_to_remove({'nodes':nodes,'edges':edges}, source_node, target_node)
+        return jsonify_response(ret)
+    except Exception as e:
+        logging.exception("message")
+        return jsonify_response([False,str(e),{}])
+
+@methods.add
+async def most_important_nodes(**kwargs):
+
+    print('>>>>>>>>>>>>>>In endpoint min_nodes_to_remove')
+    print(time.strftime("%c"))
+
+    nodes = kwargs.get("nodes", None)
+    edges = kwargs.get("edges", None)
+    source_nodes = kwargs.get("source_nodes", None)
+    target_nodes = kwargs.get("target_nodes", None)
+    processes = kwargs.get("processess", None)
+
+    if nodes is None:
+        return jsonify_response([False,'nodes parameter is required',{}])
+    else:
+        print('nodes parameter is present')
+
+
+    if edges is None:
+        return jsonify_response([False,'edges parameter is required',{}])
+    else:
+        print('edges parameter is present')
+
+    if source_nodes is None:
+        return jsonify_response([False,'source_nodes parameter is required',{}])
+    else:
+        print('source_nodes parameter is present')
+
+    if target_nodes is None:
+        return jsonify_response([False,'target_nodes parameter is required',{}])
+    else:
+        print('target_nodes parameter is present')
+
+    b = bipartite_graphs.BipartiteGraphs()
+
+    try:
+        ret = b.most_important_nodes({'nodes':nodes,'edges':edges}, source_nodes, target_nodes, processes)
+        return jsonify_response(ret)
+    except Exception as e:
+        logging.exception("message")
+        return jsonify_response([False,str(e),{}])
 
 async def handle(request):
     request = await request.text()

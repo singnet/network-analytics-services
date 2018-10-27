@@ -142,6 +142,80 @@ class TestSnetWrapper(unittest.TestCase):
         self.assertEqual(len(resp['edges']), len(ret['output']['edges']))  # Just as a checkup; not needed
 
 
+    def test_min_nodes_to_remove(self):
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'min_nodes_to_remove',
+                                     {'edges':[[1,3]],'source_node':1,'target_node':3}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'nodes parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'min_nodes_to_remove',
+                                     {'nodes':[1,2,3],'source_node':1,'target_node':3}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'edges parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'min_nodes_to_remove',
+                                     {'nodes':[1,2,3],'edges':[[1,2],[3,4]],'target_node':3}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'source_node parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'min_nodes_to_remove',
+                                     {'nodes':[1,2,3],'edges':[[1,2],[3,4]],'source_node':1}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'target_node parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'min_nodes_to_remove',
+                                     {'nodes':[1,2,3,4,5],
+                                      'edges':[[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[4,6]],
+                                      'source_node': 1,
+                                      'target_node': 6
+                                      }
+                                    )
+
+        self.assertEqual(resp,jsonify_response([True, 'success', {'edges': [[4, 6], [3, 6]], 'nodes': [3, 4]}]))
+
+    def test_most_important_nodes_edges(self):
+        self.assertEqual.__self__.maxDiff = None
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'most_important_nodes_edges',
+                                     {'edges':[[1,3]],'source_nodes':[1],'target_node':[3]}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'nodes parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'most_important_nodes_edges',
+                                     {'nodes':[1,2,3],'source_node':[1],'target_node':[3]}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'edges parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'most_important_nodes_edges',
+                                     {'nodes':[1,2,3],'edges':[[1,2],[3,4]],'target_nodes':[3]}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'source_nodes parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'most_important_nodes_edges',
+                                     {'nodes':[1,2,3],'edges':[[1,2],[3,4]],'source_nodes':[1]}
+                                    )
+
+        self.assertEqual(resp,jsonify_response([False,'target_nodes parameter is required',{}]))
+
+        resp = jsonrpcclient.request('http://127.0.0.1:5000', 'most_important_nodes_edges',
+                                     {'nodes':[1,2,3,4,5,6,7,8],
+                                      'edges':[[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]],
+                                      'source_nodes': [5,7],
+                                      'target_nodes': [6]
+                                      }
+                                    )
+
+        self.assertEqual(resp,jsonify_response([True, 'success', {'betweenness_centrality':{'3': 0.5833333333333333,'2': 0.16666666666666666,'4': 0.16666666666666666,'1': 0.08333333333333333}}]))
+
+
 __end__ = '__end__'
 
 if __name__ == '__main__':
