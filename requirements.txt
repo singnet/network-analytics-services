@@ -1,0 +1,9 @@
+networkx=1.12
+aiohttp
+jsonrpcserver
+requests
+jsonrpcclient
+grpcio
+grpcio_tools
+pandas
+numpy
