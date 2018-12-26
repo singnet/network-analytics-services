@@ -1,16 +1,27 @@
 # Tested on python3.6
 
 import unittest
+import snet_grpc_wrapper
 import grpc
 import network_analytics_pb2
 import network_analytics_pb2_grpc
-
 
 # You need to start running 'python3.6 snet_grpc_wrapper.py' first before running these tests
 
 
 
 class TestSnetWrapper(unittest.TestCase):
+
+
+    def setUp(self):
+
+        self.server = snet_grpc_wrapper.serve_test()
+        self.server.start()
+
+
+    def tearDown(self):
+        self.server.stop(0)
+        print('Server stopped')
 
 
     def test_BipartiteGraph(self):

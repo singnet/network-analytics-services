@@ -12,6 +12,7 @@ import time
 import bipartite_graphs
 import logging
 
+
 SLEEP_TIME = 86400 # One day
 
 
@@ -147,6 +148,15 @@ def serve():
             time.sleep(SLEEP_TIME)
     except KeyboardInterrupt:
         server.stop(0)
+
+def serve_test():
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    network_analytics_pb2_grpc.add_NetowrkAnalyticsServicer_to_server(NetworkAnalytics(), server)
+    print('Starting server. Listening on port 5000.')
+    server.add_insecure_port('127.0.0.1:5000')
+    return server
+
 
 
 
