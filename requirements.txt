@@ -5,5 +5,5 @@ requests
 jsonrpcclient
 grpcio
 grpcio_tools
-pandas
 numpy
+pandas

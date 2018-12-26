@@ -30,7 +30,7 @@ RUN pip --version
 
 #RUN git clone https://github.com/singnet/network-analytics-services.git
 
-RUN echo 2 && git clone https://github.com/edyirdaw/network-analytics-services.git
+RUN echo 3 && git clone https://github.com/edyirdaw/network-analytics-services.git
 
 RUN cd network-analytics-services && git checkout --track origin/example_bipartition
 
