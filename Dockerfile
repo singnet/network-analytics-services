@@ -34,5 +34,7 @@ RUN echo 2 && git clone https://github.com/edyirdaw/network-analytics-services.g
 
 RUN cd network-analytics-services && git checkout --track origin/example_bipartition
 
-RUN sudo pip install -r requirements.txt
+#RUN pwd
+
+RUN sudo pip install -r network-analytics-services/requirements.txt
 	
