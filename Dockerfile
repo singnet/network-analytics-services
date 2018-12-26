@@ -30,11 +30,16 @@ RUN pip --version
 
 #RUN git clone https://github.com/singnet/network-analytics-services.git
 
-RUN echo 5 && git clone https://github.com/edyirdaw/network-analytics-services.git
+RUN echo 7 && git clone https://github.com/edyirdaw/network-analytics-services.git
 
 RUN cd network-analytics-services && git checkout --track origin/example_bipartition
 
 #RUN pwd
 
 RUN sudo pip install -r network-analytics-services/requirements.txt
+RUN sudo pip install -r network-analytics-services/requirements_2.txt
+
+RUN cd network-analytics-services/services && python3.6 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+
+WORKDIR /home/netk/network-analytics-services/services
 	
