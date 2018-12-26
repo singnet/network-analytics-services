@@ -21,13 +21,13 @@ class TestGraphs(unittest.TestCase):
 		source_node = 1
 		target_node = 2
 		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'graph should atleast contain two nodes',{}],ret)
+		self.assertEqual([False, 'graph should at least contain two nodes',{}],ret)
 		graph = {
 		"nodes": [1],
 		"edges": []
 		}
 		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'graph should atleast contain one edge',{}],ret)
+		self.assertEqual([False, 'graph should at least contain one edge',{}],ret)
 		graph = {
 		"nodes": [1,2],
 		"edges": 3
@@ -78,12 +78,21 @@ class TestGraphs(unittest.TestCase):
 		"nodes": [1,2,3,4],
 		"edges": [[1,2],[2,3]]
 		}
-		source_node = 1
-		target_node = 4
-		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'no path exists between node 1 and node 4',{}],ret)
+		# source_node = 1
+		# target_node = 4
+		# ret = b.min_nodes_to_remove(graph, source_node, target_node)
+		# self.assertEqual([False, 'no path exists between node 1 and node 4',{}],ret)
 		graph = {
 		"nodes": [1,2,3,4,5],
+		"edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[4,6]]
+		}
+		source_node = 1
+		target_node = 6
+		ret = b.min_nodes_to_remove(graph, source_node, target_node)
+		self.assertEqual([False, 'node 6 doesn’t exist in the graph',{}],ret)
+
+		graph = {
+		"nodes": [1,2,3,4,5,6],
 		"edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[4,6]]
 		}
 		source_node = 1
@@ -102,13 +111,13 @@ class TestGraphs(unittest.TestCase):
 		source_nodes = [1]
 		target_nodes = [2]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
-		self.assertEqual([False, 'graph should atleast contain two nodes',{}],ret)
+		self.assertEqual([False, 'graph should at least contain two nodes',{}],ret)
 		graph = {
 		    "nodes": [1],
 		    "edges": []
 		}
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
-		self.assertEqual([False, 'graph should atleast contain one edge',{}],ret)
+		self.assertEqual([False, 'graph should at least contain one edge',{}],ret)
 		graph = {
 		    "nodes": [1,2],
 		    "edges": 3
@@ -135,7 +144,7 @@ class TestGraphs(unittest.TestCase):
 		    "weights": [3]
 		}
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 17) 
-		self.assertEqual([False, 'type can only be 0 or 1',{}],ret) # type=0(most important nodes) type=1(most important edges)
+		self.assertEqual([False, 'Parameter T can only be 0 or 1',{}],ret) # type=0(most important nodes) type=1(most important edges)
 		graph = {
 		    "nodes": [1,2,3],
 		    "edges": [[1,2],2,3]
@@ -193,14 +202,14 @@ class TestGraphs(unittest.TestCase):
 		# self.assertEqual([False, 'no path exists from node 20 to node 6', {}],ret) #since 5,6,7 are consecutive and are ok?!
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],
-		    "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]],
+		    "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]]
 		  
 		}
 		
 		source_nodes = [5,7]
 		target_nodes = [6]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 0)
-		self.assertEqual([True, 'success', {'betweenness_centrality':{1: 0.0, 2: 0.047619047619047616, 3: 0.047619047619047616, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0}}],ret)
+		self.assertEqual([True, 'success',{'betweenness_centrality': [2, 0.047619047619047616]}],ret)
 		
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],
@@ -210,7 +219,7 @@ class TestGraphs(unittest.TestCase):
 		source_nodes = [5,7]
 		target_nodes = [6]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 1)
-		self.assertEqual([True, 'success', {'betweenness_centrality':{(1, 2): 0.0, (1, 4): 0.0, (2, 3): 0.03571428571428571, (2, 5): 0.017857142857142856, (2, 7): 0.017857142857142856, (3, 4): 0.0, (3, 6): 0.03571428571428571, (3, 8): 0.0}}],ret)
+		self.assertEqual([True, 'success', {'betweenness_centrality': [(2, 3), 0.03571428571428571]}],ret)
 
 
 
