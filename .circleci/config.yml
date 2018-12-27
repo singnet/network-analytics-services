@@ -60,8 +60,8 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            cp ~/project/network-analytics-services /home/netk/
-            cd network-analytics-services/services
+            cp network-analytics-services /home/netk/
+            cd /home/netk/network-analytics-services/services
             python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
             python3 test_bipartite_graphs.py
             python3 test_snet_grpc_wrapper.py
