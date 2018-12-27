@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/edyirdaw/network-analytics-services/tree/example_bipartition.svg?style=svg)](https://circleci.com/gh/edyirdaw/network-analytics-services/tree/example_bipartition)
 # Network Analytics Services
 
 This repository contains various network analytics services for SingularityNET. The services are wrapped using
