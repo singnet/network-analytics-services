@@ -3,9 +3,7 @@ workflows:
   build-deploy:
     jobs:
       - build:
-          filters:
-            branches:
-              only: example_bipartition
+
 #      - deploy:
 #          requires:
 #            - build
@@ -17,6 +15,9 @@ workflows:
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - example_bipartition
     docker:
       - image: edyirdaw/snet_network_analytics
 
