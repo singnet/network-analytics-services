@@ -55,13 +55,12 @@ jobs:
   build:
     docker:
       - image: edyirdaw/snet_network_analytics:v1
-    working_directory: /home/netk
     steps:
       - checkout
       - run:
           name: Run unit tests
           command: |
-            ls
+            cp ~/project/network-analytics-services/* /home/netk/network-analytics-services
             cd network-analytics-services/services
             python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
             python3 test_bipartite_graphs.py
