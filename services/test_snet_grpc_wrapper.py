@@ -36,7 +36,7 @@ class TestSnetWrapper(unittest.TestCase):
             edges.append(network_analytics_pb2.Edge(edge=e))
         bgr = network_analytics_pb2.BipartiteGraphRequest(edges=edges)
         resp =stub.BipartiteGraph(bgr)
-        expected = network_analytics_pb2.BipartiteGraphResponse(status=False,message='Parameter bipartite_0 does not contain at least one element1')
+        expected = network_analytics_pb2.BipartiteGraphResponse(status=False,message='Parameter bipartite_0 does not contain at least one element')
 
         self.assertEqual(resp,expected)
 
