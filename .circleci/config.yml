@@ -8,6 +8,7 @@ workflows:
               only:
                 - master
                 - example_bipartition
+                - dummy
 #      - deploy:
 #          requires:
 #            - build
