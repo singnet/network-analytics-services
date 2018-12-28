@@ -5,8 +5,9 @@ workflows:
       - build:
           filters:
             branches:
-              - master
-              - example_bipartition
+              only:
+                - master
+                - example_bipartition
 #      - deploy:
 #          requires:
 #            - build
