@@ -1,38 +1,3 @@
-#workflows:
-#  version: 2
-#  build-deploy:
-#    jobs:
-#      - build:
-
-#      - deploy:
-#          requires:
-#            - build
-#          filters:
-#            branches:
-#              only: master
-
-
-#version: 2
-#jobs:
-#  build:
-#    branches:
-#      only:
-#        - example_bipartition
-#    docker:
-#      - image: edyirdaw/snet_network_analytics
-#
-#    steps:
-#      - checkout
-#      - run:
-#          name: Run unit tests
-#          command: |
-#            cd network-analytics-services/services
-#            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
-#            python3 test_bipartite_graphs.py
-#            python3 test_snet_grpc_wrapper.py
-
-
-
 workflows:
   version: 2
   build-deploy:
@@ -40,7 +5,8 @@ workflows:
       - build:
           filters:
             branches:
-              only: example_bipartition
+              - master
+              - example_bipartition
 #      - deploy:
 #          requires:
 #            - build
