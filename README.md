@@ -1,3 +1,5 @@
+![singnetlogo](docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')
+
 # Network Analytics Services
 
 This repository contains various network analytics services for SingularityNET. The services are wrapped using
