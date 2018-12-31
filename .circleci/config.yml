@@ -22,8 +22,8 @@ jobs:
   build:
     docker:
       - image: edyirdaw/snet_network_analytics:v1
+    working_directory: /tmp
     steps:
-      - working_directory: /home/netk
       - checkout
       - run:
           name: Run unit tests
