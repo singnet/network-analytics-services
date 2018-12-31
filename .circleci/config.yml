@@ -40,10 +40,7 @@ jobs:
     docker:
       machine:
         enabled: true
-#      - image: edyirdaw/snet_network_analytics:v1
-#    working_directory: /home/netk/dep
     steps:
-#      - checkout
       - run:
           name: Run deploy script
           command: |
