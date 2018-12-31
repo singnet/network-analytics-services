@@ -37,7 +37,8 @@ RUN echo 1
 COPY requirements_2.txt /tmp/
 RUN sudo pip install -r requirements_2.txt
 
-WORKDIR /home/netk/
+RUN mkdir dep
+WORKDIR /home/netk/dep
 
 #RUN git clone https://github.com/singnet/network-analytics-services.git && \
 #	cd network-analytics-services
