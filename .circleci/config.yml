@@ -38,8 +38,7 @@ jobs:
 
   deploy:
     docker:
-      machine:
-        enabled: "true"
+      - image: edyirdaw/snet_network_analytics:v1
     steps:
       - run:
           name: Run deploy script
