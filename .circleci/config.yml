@@ -40,7 +40,10 @@ jobs:
     docker:
       - image: edyirdaw/snet_network_analytics:v1
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "bd:0f:2b:48:e4:ab:fb:11:15:12:cf:be:17:70:d0:fb"
       - run:
           name: Run deploy script
           command: |
-            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 bash -c "/home/eyob/scr.sh"
+            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "bash /home/eyob/scr.sh"
