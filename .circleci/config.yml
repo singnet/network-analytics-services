@@ -36,7 +36,7 @@ jobs:
             python3 test_snet_grpc_wrapper.py
 
 
-    deploy:
+  deploy:
     docker:
 #      - image: edyirdaw/snet_network_analytics:v1
 #    working_directory: /home/netk/dep
