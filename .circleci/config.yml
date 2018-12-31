@@ -39,9 +39,9 @@ jobs:
   deploy:
     docker:
       machine:
-        enabled: true
+        enabled: "true"
     steps:
       - run:
           name: Run deploy script
-          command: echo 4
-#            ssh -o StrictHostKeyChecking=no  $SSH_USER@$SSH_HOST "bash /home/eyob/scr.sh"
+          command: |
+            ssh -o StrictHostKeyChecking=no  $SSH_USER@$SSH_HOST "bash /home/eyob/scr.sh"
