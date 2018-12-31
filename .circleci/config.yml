@@ -43,4 +43,4 @@ jobs:
        - run:
           name: Run deploy script
           command: |
-            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "touch r.txt"
+            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "bash scr.sh"
