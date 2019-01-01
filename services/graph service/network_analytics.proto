@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+
+
+///// Graph
+
+message Edge{
+
+    repeated string edge = 1;
+}
+
+message Graph{
+
+    repeated string nodes = 1;
+    repeated Edge edges = 2;
+    repeated double weights = 3;
+
+}
+
+message node_betweenness{
+
+    string node = 1;
+    double node_centrality_value = 2;
+
+}
+
+message edge_betweenness{
+
+    Edge edge = 1;
+    double edge_centrality_value = 2;
+
+}
+
+
+///// End Graph
+
+
+message MinNodeGraphRequest{
+
+    Graph graph = 1;
+    string source_node = 2;
+    string target_node = 3;
+
+}
+
+message MinNodeGraphResponse{
+
+    bool status = 1;
+    string message = 2;
+    repeated string nodes_output = 3;
+    repeated Edge edges_output = 4;
+}
+
+///// End MinNodeGraph
+
+message MostImportantGraphRequest{
+
+    Graph graph = 1;
+    repeated string source_nodes = 2;
+    repeated string target_nodes = 3;
+    
+    int32 Type=4; 
+    bool normalized = 5;
+    bool directed = 6;
+    
+}
+
+message MostImportantGraphResponse{
+
+    bool status = 1;
+    string message = 2;
+    node_betweenness node_betweenness_centrality = 3;
+    edge_betweenness edge_betweenness_centrality = 4;
+}
+
+
+///// End Bipartite graph
+
+
+
+
+///// Network Analytics Services
+
+service NetowrkAnalytics {
+
+    rpc MinNodeGraph (MinNodeGraphRequest) returns (MinNodeGraphResponse) {};
+
+    rpc MostImportantGraph (MostImportantGraphRequest) returns (MostImportantGraphResponse) {};    
+
+}
+
+///// End Network Analytics Services

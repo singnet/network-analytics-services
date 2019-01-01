@@ -1,0 +1,22 @@
+{
+    "name": "NetworkAnalyticsServices",
+    "model": "model/",
+    "organization": "SNET",
+    "path": "",
+    "price": 1,
+    "endpoint": "http://159.69.56.49:2222",
+    "tags": [
+        "network",
+        "analytics",
+        "graph",
+        "data"
+    ],
+    "metadata": {
+        "description": "Network analytics services for SingularityNet"
+    },
+    "networks": {
+        "42": {
+            "agentAddress": "0xb57B4c70379E84CD8d42a867cF326d5e0743E11d"
+        }
+    }
+}
