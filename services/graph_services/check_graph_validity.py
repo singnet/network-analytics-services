@@ -8,7 +8,7 @@ class Graphs:
         pass
 
 
-    def isValidGraph(self,graph):
+    def is_valid_graph(self,graph):
         # make sure there are at least two nodes
         if(not(isinstance(graph['nodes'],list))):
             return [False, 'the supplied nodes is not type array']  
@@ -36,26 +36,28 @@ class Graphs:
 
             # make sure all nodes specified in the edges exist in the nodes list
             if(not(graph['edges'][i][0] in graph['nodes'])):
-                
-                return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
+                return [False, "edge value at ["+ str(i) + "][0] is not a node"]
+                #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
                 #graph['nodes'].append(graph['edges'][i][0])
             if(not(graph['edges'][i][1] in graph['nodes'])):
-                return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
+            	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
+                #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
         return [True] 
 
 
-    def isValidMinNodesGraph(self,graph,source_node,target_node):
+    def is_valid_min_nodes_graph(self,graph,source_node,target_node):
 
-        isValid=self.isValidGraph(graph)
+        isValid=self.is_valid_graph(graph)
         print(isValid[0])
 
         if(isValid[0]):  
               #check source node and target node
               if(not(source_node in graph['nodes'])):
-                return [False, 'node {} doesn’t exist in the graph'.format(source_node)]
+                return [False, 'The source node doesn’t exist in graph']
               if(not(target_node in graph['nodes'])):
-                return [False, 'node {} doesn’t exist in the graph'.format(target_node)]
+              	return [False, "The target node doesn’t exist in graph"]
+               
 
               return [True] 
 
@@ -64,10 +66,10 @@ class Graphs:
         
     
 
-    def isValidMostImportantGraph(self, graph, source_nodes, target_nodes, T=0, normalized=True, directed=False):
+    def is_valid_most_important_graph(self, graph, source_nodes, target_nodes, T=0, normalized=True, directed=False):
         # make sure the edges are in a proper format
            
-        isValid=self.isValidGraph(graph)
+        isValid=self.is_valid_graph(graph)
         print(isValid[0])
 
         if(isValid[0]):  
@@ -89,14 +91,14 @@ class Graphs:
 
            
            # make sure source_node and target_node exist in the graph
-            if (not(all(elem in graph['nodes']  for elem in source_nodes))):    
-                diff = list(set(source_nodes).difference(graph['nodes']))
-                return [False, 'node {} doesn’t exist in the graph'.format(diff[0])]
+            for i in range(len(source_nodes)):
+            	if(not(source_nodes[i] in graph['nodes'])):
+                    return [False, "source_nodes ["+str(i)+"] doesn’t exist in graph"]
 
-            if(not(all(elem in graph['nodes']  for elem in target_nodes))):
-                diff = list(set(target_nodes).difference(graph['nodes']))
-                return [False, 'node {} doesn’t exist in the graph'.format(diff[0])]
-
+            # make sure source_node and target_node exist in the graph
+            for i in range(len(target_nodes)):
+            	if(not(target_nodes[i] in graph['nodes'])):
+                    return [False, "target_nodes ["+str(i)+"] doesn’t exist in graph"]        
 
             if(T != 0 and T != 1 ):
                 return [False, 'Parameter T can only be 0 or 1']

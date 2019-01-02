@@ -1,0 +1,3 @@
+#ignore output files generated from the proto
+network_analytics_util_pb2.py
+network_analytics_util_pb2_grpc

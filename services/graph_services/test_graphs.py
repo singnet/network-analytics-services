@@ -65,7 +65,7 @@ class TestGraphs(unittest.TestCase):
 		source_node = 1
 		target_node = 4
 		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'node 4 doesn’t exist in the graph',{}], ret)
+		self.assertEqual([False, 'The target node doesn’t exist in graph',{}], ret)
 		graph = {
 		"nodes": [1,2,3],
 		"edges": [[1,2],[2,3]]
@@ -73,7 +73,7 @@ class TestGraphs(unittest.TestCase):
 		source_node = 5
 		target_node = 3
 		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'node 5 doesn’t exist in the graph',{}],ret)
+		self.assertEqual([False, 'The source node doesn’t exist in graph',{}],ret)
 		graph = {
 		"nodes": [1,2,3,4],
 		"edges": [[1,2],[2,3]]
@@ -89,7 +89,7 @@ class TestGraphs(unittest.TestCase):
 		source_node = 1
 		target_node = 6
 		ret = b.min_nodes_to_remove(graph, source_node, target_node)
-		self.assertEqual([False, 'node 6 doesn’t exist in the graph',{}],ret)
+		self.assertEqual([False, 'edge value at [5][1] is not a node',{}],ret)
 
 		graph = {
 		"nodes": [1,2,3,4,5,6],
@@ -185,12 +185,12 @@ class TestGraphs(unittest.TestCase):
 		source_nodes = [5,7,10]
 		target_nodes = [6]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes,0)
-		self.assertEqual([False, 'node 10 doesn’t exist in the graph',{}],ret) #everything in source/target nodes must be in graph
+		self.assertEqual([False, 'source_nodes [2] doesn’t exist in graph',{}],ret) #everything in source/target nodes must be in graph
 
 		source_nodes = [5,7]
 		target_nodes = [6,11]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
-		self.assertEqual([False, 'node 11 doesn’t exist in the graph',{}],ret)
+		self.assertEqual([False, 'target_nodes [1] doesn’t exist in graph',{}],ret)
 
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],

@@ -77,8 +77,6 @@ message MostImportantGraphResponse{
 ///// End Bipartite graph
 
 
-
-
 ///// Network Analytics Services
 
 service NetowrkAnalytics {
