@@ -7,7 +7,7 @@ import networkx as nx
 from networkx.algorithms.connectivity import minimum_st_node_cut
 from networkx.algorithms.connectivity import minimum_st_edge_cut
 
-import checkValidity
+import check_graph_validity
 
 class Graphs:
 
@@ -18,8 +18,8 @@ class Graphs:
 
     def min_nodes_to_remove(self,graph,source_node,target_node):
 
-        cv = checkValidity.Graphs()
-        ret = cv.isValidMinNodesGraph(graph, source_node, target_node)
+        cv = check_graph_validity.Graphs()
+        ret = cv.isValidMinNodesGraph(graph,source_node,target_node)
         if(not ret[0]):
             ret.append({})
             print (ret)
@@ -50,7 +50,7 @@ class Graphs:
 
     def most_important_nodes_edges(self, graph, source_nodes, target_nodes, T=0, normalized=True, directed=False):
 
-        cv = checkValidity.Graphs()
+        cv=check_graph_validity.Graphs()
         ret = cv.isValidMostImportantGraph(graph, source_nodes, target_nodes,T,normalized,directed)
         if(not ret[0]):
             ret.append({})

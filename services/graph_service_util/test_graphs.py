@@ -192,14 +192,6 @@ class TestGraphs(unittest.TestCase):
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
 		self.assertEqual([False, 'node 11 doesn’t exist in the graph',{}],ret)
 
-		# graph = {
-		#     "nodes": [1,2,3,4,5,6,7,8,20],
-		#     "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]]
-		# }
-		# source_nodes = [5,7,20]
-		# target_nodes = [6]
-		# ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
-		# self.assertEqual([False, 'no path exists from node 20 to node 6', {}],ret) #since 5,6,7 are consecutive and are ok?!
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],
 		    "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]]
