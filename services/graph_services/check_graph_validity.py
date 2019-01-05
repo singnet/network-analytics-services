@@ -66,8 +66,9 @@ class Graphs:
         
     
 
-    def is_valid_most_important_graph(self, graph, source_nodes, target_nodes, T=0, normalized=True, directed=False):
-        # make sure the edges are in a proper format
+    def is_valid_most_important_graph(self, graph, source_nodes, target_nodes, T=0):
+        
+        #make sure graph is correct
            
         isValid=self.is_valid_graph(graph)
         print(isValid[0])
@@ -81,6 +82,9 @@ class Graphs:
                     return [False, 'the supplied weight is not type array']
                 if(len(graph['edges']) != len(graph['weights'])):
                     return [False, 'the length of supplied edges and weights does not match']
+                #the edge weights must be greater than zero     
+                if(0 in graph['weights']):
+                    return [False, 'all edge weights must be greater than zero']   
 
 
             # make sure source_nodes and target_nodes are a 1D array

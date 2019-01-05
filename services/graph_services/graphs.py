@@ -48,10 +48,10 @@ class Graphs:
 
         return [True, 'success', output]
 
-    def most_important_nodes_edges(self, graph, source_nodes, target_nodes, T=0, normalized=True, directed=False):
+    def most_important_nodes_edges(self, graph, source_nodes, target_nodes, T=0, normalized=False, directed=False):
 
         cv=check_graph_validity.Graphs()
-        ret = cv.is_valid_most_important_graph(graph, source_nodes, target_nodes,T,normalized,directed)
+        ret = cv.is_valid_most_important_graph(graph, source_nodes, target_nodes,T)
         if(not ret[0]):
             ret.append({})
             print (ret)
@@ -59,7 +59,10 @@ class Graphs:
       
         try:
             # construct networkx graph from given graph
-            G = nx.Graph()
+            if (directed):
+                G=nx.DiGraph()
+            else:    
+                G = nx.Graph()
             G.add_nodes_from(graph['nodes'])
             G.add_edges_from(graph['edges'])
 
@@ -70,17 +73,28 @@ class Graphs:
                 	return ["False", str(e),{}]
 
         output={}
+        clearDict={}
        
         if (T == 0):
-        	result=nx.betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
-        	print(result)
+            
+            result=nx.betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
+            #remove nodes that are either in source_node or in target_node
+            for key,val in result.items():
+                if (not(key in source_nodes or key in target_nodes)):
+                 clearDict[key]=val   
+            print(clearDict)
+
+            
         elif (T == 1):
             result =nx.edge_betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
-            print(result)
+            for key,val in result.items():
+                 #remove nodes that are either in source_node or in target_node
+                if(not(key[0] in source_nodes or key[0] in target_nodes or key[1] in source_nodes or key[1] in target_nodes)):
+                    clearDict[key]=val
+            print(clearDict)
 
 
-
-        output["betweenness_centrality"] = list(max(result.items(), key=lambda k: k[1]))    #result
+        output["betweenness_centrality"] = list(max(clearDict.items(), key=lambda k: k[1]))    #result
 
         print (output)
 
