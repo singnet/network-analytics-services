@@ -130,7 +130,31 @@ class NodeImportance:
             return False
         G = self.construct_graph(graph,directed)
 
-        result = nx.algorithms.centrality.eigenvector_centrality(G, max_iter=100, tol=1e-06, nstart=None, weight=None)
+        result = nx.algorithms.centrality.eigenvector_centrality(G, max_iter, tol, nstart, weight)
+
+        return result
+
+    def find_hub_matrix(graph, nodelist=None,directed=False):
+        ret = self.cv.is_valid_graph(graph)
+
+        if not ret:
+            print("Input is not a Valid graph")
+            return False
+        G = self.construct_graph(graph,directed)
+
+        result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G,  nodelist)
+
+        return result
+
+    def find_authority_matrix(graph, nodelist=None,directed=False):
+        ret = self.cv.is_valid_graph(graph)
+
+        if not ret:
+            print("Input is not a Valid graph")
+            return False
+        G = self.construct_graph(graph,directed)
+
+        result = networkx.algorithms.link_analysis.hits_alg.authority_matrix(G,  nodelist)
 
         return result
 
