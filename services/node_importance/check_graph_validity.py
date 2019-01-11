@@ -1,3 +1,5 @@
+
+
 class Graphs:
 
     def __init__(self):
@@ -41,7 +43,7 @@ class Graphs:
             	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
-        return True
+        return [True] 
 
 
     def is_valid_min_nodes_graph(self,graph,source_node,target_node):
