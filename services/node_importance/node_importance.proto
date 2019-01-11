@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+
+message Edge{
+    repeated string edge = 1;
+}
+
+message Graph{
+
+    repeated string nodes = 2;
+    repeated Edge edges = 3;
+    repeated double weights = 4;
+
+}
+
+
+message CentralNodeInput{
+	Graph graph = 5;
+
+}
+
+message CentralNodeOutput{
+	bool status = 6;
+	string messgae = 7;
+	string output = 8;
+
+}
+
+
+
+
+
+service NodeImportance { 
+	rpc CentralNodes (CentralNodeInput) returns (CentralNodeOutput) {};
+
+}
+
+

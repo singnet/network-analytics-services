@@ -49,7 +49,10 @@ class NodeImportance:
 
         result = nx.algorithms.distance_measures.center(G)
 
-        return result
+        output={}
+        output["central_nodes"] = result
+
+        return True,'success',str(output)
 
     def find_eccentricity(self,graph, v=None, sp=None,directed=False):
 
@@ -66,8 +69,10 @@ class NodeImportance:
 
         result_sorted = sorted(result,key=result.__getitem__)
 
-        print(result)
-        return result_sorted
+        output={}
+        output["eccentricity"] = result_sorted
+
+        return [True,'success',output]
 
     def find_degree_centrality(self,graph,directed=False):
 
@@ -80,7 +85,10 @@ class NodeImportance:
 
         result = nx.algorithms.centrality.degree_centrality(G)
 
-        return result
+        output={}
+        output["degree_centrality"] = result
+
+        return [True,'success',output]
 
 
     def find_closeness_centrality(self,graph, nodes, normalized=True,directed=False):
@@ -94,7 +102,12 @@ class NodeImportance:
 
         result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized=True)
         
-        return result
+
+        output={}
+        output["closeness_centrality"] = result
+
+        return [True,'success',output]
+        
 
 
     def find_betweenness_centrality(self,graph,k=None, normalized=True, weight=None, endpoints=False, seed=None,directed=False):
@@ -108,7 +121,10 @@ class NodeImportance:
 
         result = nx.algorithms.centrality.betweenness_centrality(G,k=None, normalized=True, weight=None, endpoints=False, seed=None)
 
-        return result
+        output={}
+        output["betweenness_centrality"] = result
+
+        return [True,'success',output]
 
     def find_pagerank(self,graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None, weight='weight', dangling=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -120,7 +136,10 @@ class NodeImportance:
 
         result = nx.algorithms.link_analysis.pagerank_alg.pagerank(G, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None, weight='weight', dangling=None)
 
-        return result
+        output={}
+        output["pagerank"] = result
+
+        return [True,'success',output]
 
     def find_eigenvector_centrality(self,graph, max_iter=100, tol=1e-06, nstart=None, weight=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -132,9 +151,12 @@ class NodeImportance:
 
         result = nx.algorithms.centrality.eigenvector_centrality(G, max_iter, tol, nstart, weight)
 
-        return result
+        output={}
+        output["eigenvector_centrality"] = result
 
-    def find_hub_matrix(graph, nodelist=None,directed=False):
+        return [True,'success',output]
+
+    def find_hub_matrix(self,graph, nodelist=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
@@ -144,9 +166,12 @@ class NodeImportance:
 
         result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G,  nodelist)
 
-        return result
+        output={}
+        output["hub_matrix"] = result
 
-    def find_authority_matrix(graph, nodelist=None,directed=False):
+        return [True,'success',output]
+
+    def find_authority_matrix(self,graph, nodelist=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
@@ -154,14 +179,13 @@ class NodeImportance:
             return False
         G = self.construct_graph(graph,directed)
 
-        result = networkx.algorithms.link_analysis.hits_alg.authority_matrix(G,  nodelist)
+        result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G,  nodelist)
 
-        return result
+        output={}
+        output["authority_matrix"] = result
 
+        return [True,'success',output]
 
-
-   
-# hub/authority score
 
 
 
