@@ -1,5 +1,4 @@
 import unittest
-import graphs
 from node_importance import NodeImportance
 
 import networkx as nx
