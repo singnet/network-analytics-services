@@ -72,10 +72,9 @@ class NodeImportance:
         output={}
         output["eccentricity"] = result_sorted
 
-        return [True,'success',output]
+        return True,'success',str(output)
 
     def find_degree_centrality(self,graph,directed=False):
-
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
@@ -88,7 +87,7 @@ class NodeImportance:
         output={}
         output["degree_centrality"] = result
 
-        return [True,'success',output]
+        return True,'success',str(output)
 
 
     def find_closeness_centrality(self,graph, nodes, normalized=True,directed=False):
@@ -124,7 +123,7 @@ class NodeImportance:
         output={}
         output["betweenness_centrality"] = result
 
-        return [True,'success',output]
+        return True,'success',str(output)
 
     def find_pagerank(self,graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None, weight='weight', dangling=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -139,7 +138,7 @@ class NodeImportance:
         output={}
         output["pagerank"] = result
 
-        return [True,'success',output]
+        return True,'success',str(output)
 
     def find_eigenvector_centrality(self,graph, max_iter=100, tol=1e-06, nstart=None, weight=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -154,7 +153,7 @@ class NodeImportance:
         output={}
         output["eigenvector_centrality"] = result
 
-        return [True,'success',output]
+        return True,'success',str(output)
 
     def find_hub_matrix(self,graph, nodelist=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -166,10 +165,10 @@ class NodeImportance:
 
         result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G,  nodelist)
 
-        output={}
-        output["hub_matrix"] = result
+        # output={}
+        # output["hub_matrix"] = result
 
-        return [True,'success',output]
+        return True,'success',str(result)
 
     def find_authority_matrix(self,graph, nodelist=None,directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -184,7 +183,7 @@ class NodeImportance:
         output={}
         output["authority_matrix"] = result
 
-        return [True,'success',output]
+        return True,'success',str(result)
 
 
 

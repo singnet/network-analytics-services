@@ -27,11 +27,125 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
 		responce = node_importance_pb2.CentralNodeOutput()
 		responce.status,responce.messgae,responce.output = ni.find_central_nodes(graph_in)
-
-		print(responce)
 		return responce
 
+	def Eccentricity(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
 
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.EccentricityOutput()
+		responce.status,responce.messgae,responce.output = ni.find_eccentricity(graph_in)
+		return responce
+
+	def DegreeCentrality(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.DegreeCentralityOutput()
+		responce.status,responce.messgae,responce.output = ni.find_degree_centrality(graph_in)
+		return responce
+	def BetweennessCentrality(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.BetweennessCentralityOutput()
+		responce.status,responce.messgae,responce.output = ni.find_betweenness_centrality(graph_in)
+		return responce
+
+	def PageRank(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.PageRankOutput()
+		responce.status,responce.messgae,responce.output = ni.find_pagerank(graph_in)
+		return responce
+
+	def EigenvectorCentrality(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.EigenvectorCentralityOutput()
+		responce.status,responce.messgae,responce.output = ni.find_eigenvector_centrality(graph_in)
+		return responce
+
+	def HubMatrix(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.HubMatrixOutput()
+		responce.status,responce.messgae,responce.output = ni.find_hub_matrix(graph_in)
+		return responce
+
+	def AuthorityMatrix(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+		except Exception as e:
+                    return ["False", str(e),{}]
+
+
+		responce = node_importance_pb2.AuthorityMatrixOutput()
+		responce.status,responce.messgae,responce.output = ni.find_authority_matrix(graph_in)
+		return responce
 
 
 class Server():
