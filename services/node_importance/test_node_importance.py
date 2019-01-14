@@ -29,7 +29,7 @@ class TestNodeImportance(unittest.TestCase):
 		self.assertEqual(result[2],"{'eccentricity': ['2', '3', '1', '4', '5', '6', '7', '8']}")
 		
 
-	# # def 
+	
 	def test_find_degree_centrality(self):
 		result = self.N.find_degree_centrality(self.graph)
 		self.assertEqual(result[0],True)
@@ -67,13 +67,16 @@ class TestNodeImportance(unittest.TestCase):
 		result = self.N.find_hub_matrix(self.graph)
 		self.assertEqual(result[0],True)
 		self.assertEqual(result[1],'success')
-		# self.assertEqual(result[2],"")
+		self.assertEqual(result[2],'[[ 25.   0.  43.   0.  18.   0.  27.   0.]\n [  0. 151.   0.  47.   0.  40.   0.  50.]\n [ 43.   0. 238.   0.  30.   0.  45.   0.]\n [  0.  47.   0.  65.   0.  56.   0.  70.]\n [ 18.   0.  30.   0.  36.   0.  54.   0.]\n [  0.  40.   0.  56.   0.  64.   0.  80.]\n [ 27.   0.  45.   0.  54.   0.  81.   0.]\n [  0.  50.   0.  70.   0.  80.   0. 100.]]')
 		
+		
+
 	def test_find_authority_matrix(self):
 		result = self.N.find_authority_matrix(self.graph)
 		self.assertEqual(result[0],True)
 		self.assertEqual(result[1],'success')
-		# self.assertEqual(result[2],"")
+		self.assertEqual(result[2],'[[ 25.   0.  43.   0.  18.   0.  27.   0.]\n [  0. 151.   0.  47.   0.  40.   0.  50.]\n [ 43.   0. 238.   0.  30.   0.  45.   0.]\n [  0.  47.   0.  65.   0.  56.   0.  70.]\n [ 18.   0.  30.   0.  36.   0.  54.   0.]\n [  0.  40.   0.  56.   0.  64.   0.  80.]\n [ 27.   0.  45.   0.  54.   0.  81.   0.]\n [  0.  50.   0.  70.   0.  80.   0. 100.]]')
+
 
 
 if __name__ == '__main__':

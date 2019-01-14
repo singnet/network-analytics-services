@@ -59,7 +59,7 @@ class TestNodeImportance(unittest.TestCase):
 		self.assertEqual(result.status,True)
 		self.assertEqual(result.messgae,'success')
 		self.assertEqual(result.output,"{'pagerank': {'1': 0.12113884655309373, '2': 0.23955113566709454, '3': 0.23955113566709454, '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583, '7': 0.06965500888990583, '8': 0.06965500888990583}}")
-		
+
 	def test_find_eigenvector_centrality(self):
 		result = self.client.find_eigenvector_centrality(self.stub,self.graph)
 		self.assertEqual(result.status,True)
@@ -70,15 +70,13 @@ class TestNodeImportance(unittest.TestCase):
 		result = self.client.find_hub_matrix(self.stub,self.graph)
 		self.assertEqual(result.status,True)
 		self.assertEqual(result.messgae,'success')
-		# self.assertEqual(result.output,"{'eigenvector_centrality': {'1': 0.35775018836999806, '2': 0.5298994260311778, '3': 0.5298994260311778, '4': 0.35775018836999806, '5': 0.2135666184274351, '6': 0.2135666184274351, '7': 0.2135666184274351, '8': 0.2135666184274351}}")
-
+		self.assertEqual(result.output,'[[2. 0. 2. 0. 1. 0. 1. 0.]\n [0. 4. 0. 2. 0. 1. 0. 1.]\n [2. 0. 4. 0. 1. 0. 1. 0.]\n [0. 2. 0. 2. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]]')
+		
 	def test_find_authority_matrix(self):
 		result = self.client.find_authority_matrix(self.stub,self.graph)
 		self.assertEqual(result.status,True)
 		self.assertEqual(result.messgae,'success')
-		# self.assertEqual(result.output,"{'eigenvector_centrality': {'1': 0.35775018836999806, '2': 0.5298994260311778, '3': 0.5298994260311778, '4': 0.35775018836999806, '5': 0.2135666184274351, '6': 0.2135666184274351, '7': 0.2135666184274351, '8': 0.2135666184274351}}")
-	
-
+		self.assertEqual(result.output,'[[2. 0. 2. 0. 1. 0. 1. 0.]\n [0. 4. 0. 2. 0. 1. 0. 1.]\n [2. 0. 4. 0. 1. 0. 1. 0.]\n [0. 2. 0. 2. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]]')
 
 	def tearDown(self):
 		self.server.stop_server()
@@ -94,6 +92,6 @@ if __name__ == '__main__':
     suite.addTest(TestNodeImportance("test_find_betweenness_centrality"))
     suite.addTest(TestNodeImportance("test_find_pagerank"))
     suite.addTest(TestNodeImportance("test_find_eigenvector_centrality"))
-    # suite.addTest(TestNodeImportance("test_find_hub_matrix"))
-    # suite.addTest(TestNodeImportance("test_find_authority_matrix"))
+    suite.addTest(TestNodeImportance("test_find_hub_matrix"))
+    suite.addTest(TestNodeImportance("test_find_authority_matrix"))
     unittest.main()
