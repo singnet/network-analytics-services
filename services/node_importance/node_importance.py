@@ -105,7 +105,7 @@ class NodeImportance:
         output={}
         output["closeness_centrality"] = result
 
-        return [True,'success',output]
+        return True,'success',str(output)
         
 
 

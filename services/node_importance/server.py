@@ -46,6 +46,31 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 		responce.status,responce.messgae,responce.output = ni.find_eccentricity(graph_in)
 		return responce
 
+	def ClosenessCentrality(self,request,context):
+		ni = NodeImportance()
+		graph = request.graph
+
+		try:
+			edges_list = []
+			for edges_proto in graph.edges:
+				edges_list.append(list(edges_proto.edge))
+			graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+
+			nodes_list = []
+			for nodes_ in request.nodes:
+				if nodes_ not in ['[',',',']']:
+					nodes_list.append(nodes_)
+			# print(nodes_list)
+		except Exception as e:
+                    return ["False", str(e),{}]
+        
+
+
+		responce = node_importance_pb2.ClosenessCentralityOutput()
+		responce.status,responce.messgae,responce.output = ni.find_closeness_centrality(graph_in,nodes_list)
+		return responce
+
+
 	def DegreeCentrality(self,request,context):
 		ni = NodeImportance()
 		graph = request.graph

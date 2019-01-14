@@ -68,8 +68,19 @@ message DegreeCentralityOutput {
 
 // find_closeness_centrality
 
-// TODO
+message ClosenessCentralityInput {
+	Graph graph = 5;
+	string nodes = 6;
+	bool normalized = 7;
+	bool directed = 8;
+}
 
+
+message ClosenessCentralityOutput {
+	bool status = 9;
+	string messgae = 10;
+	string output = 11;
+}
 
 // find_betweenness_centrality
 
@@ -175,6 +186,7 @@ service NodeImportance {
 	rpc EigenvectorCentrality (EigenvectorCentralityInput) returns (EigenvectorCentralityOutput) {};
 	rpc HubMatrix (HubMatrixInput) returns (HubMatrixOutput) {};
 	rpc AuthorityMatrix (AuthorityMatrixInput) returns (AuthorityMatrixOutput) {};
+	rpc ClosenessCentrality (ClosenessCentralityInput) returns (ClosenessCentralityOutput) {};
 }
 
 
