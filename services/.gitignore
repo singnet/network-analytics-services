@@ -1,0 +1,8 @@
+
+#ignore output files generated from the proto
+network_analytics_pb2
+network_analytics_pb2_grpc
+
+#ignore output files generated from the proto
+graph_service_util/network_analytics_util_pb2.py
+graph_service_util/network_analytics_util_pb2_grpc
