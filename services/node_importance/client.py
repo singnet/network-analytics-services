@@ -8,8 +8,6 @@ class ClientTest():
 	def __init__(self,port='localhost:50051',image_output='client_out'):
 		self.port = port
 		
-
-
 	def open_grpc_channel(self):
 		channel = grpc.insecure_channel(self.port)
 		stub = node_importance_pb2_grpc.NodeImportanceStub(channel)
@@ -121,21 +119,21 @@ class ClientTest():
 		pass
 
 # if __name__ == "__main__":
-	# graph = {
- #        "nodes": ['1','2','3','4','5','6','7','8'],
- #        "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
- #        "weights": [3,4,5,6,7,8,9,10]
- #    }
-	# client = ClientTest()
-	# stub = client.open_grpc_channel()
-	# client.find_closeness_centrality(stub,graph)
-	# client.find_central(stub,graph)
-	# client.find_eccentricity(stub,graph)
-	# client.find_degree_centrality(stub,graph)
-	# client.find_betweenness_centrality(stub,graph)
-	# client.find_pagerank(stub,graph)
-	# client.find_eigenvector_centrality(stub,graph)
-	# client.find_hub_matrix(stub,graph)
-	# client.find_authority_matrix(stub,graph)
+# 	graph = {
+#         "nodes": ['1','2','3','4','5','6','7','8'],
+#         "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
+#         "weights": [3,4,5,6,7,8,9,10]
+#     }
+# 	client = ClientTest()
+# 	stub = client.open_grpc_channel()
+# 	client.find_closeness_centrality(stub,graph)
+# 	client.find_central(stub,graph)
+# 	client.find_eccentricity(stub,graph)
+# 	client.find_degree_centrality(stub,graph)
+# 	client.find_betweenness_centrality(stub,graph)
+# 	client.find_pagerank(stub,graph)
+# 	client.find_eigenvector_centrality(stub,graph)
+# 	client.find_hub_matrix(stub,graph)
+# 	client.find_authority_matrix(stub,graph)
 
 	

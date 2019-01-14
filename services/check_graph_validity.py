@@ -1,4 +1,4 @@
-#Tested on python3.6
+
 
 class Graphs:
 
@@ -40,7 +40,7 @@ class Graphs:
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
                 #graph['nodes'].append(graph['edges'][i][0])
             if(not(graph['edges'][i][1] in graph['nodes'])):
-                return [False, "edge value at ["+ str(i) + "][1] is not a node"]
+            	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
         return [True] 
@@ -54,9 +54,9 @@ class Graphs:
         if(isValid[0]):  
               #check source node and target node
               if(not(source_node in graph['nodes'])):
-                return [False, 'The source node does not exist in graph']
+                return [False, 'The source node doesn’t exist in graph']
               if(not(target_node in graph['nodes'])):
-              	return [False, "The target node does not exist in graph"]
+              	return [False, "The target node doesn’t exist in graph"]
                
 
               return [True] 
@@ -83,7 +83,7 @@ class Graphs:
                 if(len(graph['edges']) != len(graph['weights'])):
                     return [False, 'the length of supplied edges and weights does not match']
                 #the edge weights must be greater than zero     
-                if not all(i > 0 for i in graph['weights']):
+                if(0 in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']   
 
 
@@ -97,12 +97,12 @@ class Graphs:
            # make sure source_node and target_node exist in the graph
             for i in range(len(source_nodes)):
             	if(not(source_nodes[i] in graph['nodes'])):
-                    return [False, "source_nodes ["+str(i)+"] does not exist in graph"]
+                    return [False, "source_nodes ["+str(i)+"] doesn’t exist in graph"]
 
             # make sure source_node and target_node exist in the graph
             for i in range(len(target_nodes)):
             	if(not(target_nodes[i] in graph['nodes'])):
-                    return [False, "target_nodes ["+str(i)+"] does not exist in graph"]
+                    return [False, "target_nodes ["+str(i)+"] doesn’t exist in graph"]        
 
             if(T != 0 and T != 1 ):
                 return [False, 'Parameter T can only be 0 or 1']

@@ -28,7 +28,6 @@ class TestNodeImportance(unittest.TestCase):
 		self.assertEqual(result[1],'success')
 		self.assertEqual(result[2],"{'eccentricity': ['2', '3', '1', '4', '5', '6', '7', '8']}")
 		
-
 	
 	def test_find_degree_centrality(self):
 		result = self.N.find_degree_centrality(self.graph)
@@ -81,16 +80,15 @@ class TestNodeImportance(unittest.TestCase):
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    suite.addTest(TestNodeImportance("test_find_central_nodes"))
-    suite.addTest(TestNodeImportance("test_find_eccentricity"))
-    suite.addTest(TestNodeImportance("test_find_degree_centrality"))
-    suite.addTest(TestNodeImportance("test_find_closeness_centrality"))
-    suite.addTest(TestNodeImportance("test_find_betweenness_centrality"))
-    suite.addTest(TestNodeImportance("test_find_pagerank"))
-    suite.addTest(TestNodeImportance("test_find_eigenvector_centrality"))
-    suite.addTest(TestNodeImportance("test_find_hub_matrix"))
-    suite.addTest(TestNodeImportance("test_find_authority_matrix"))
-    
+    # suite.addTest(TestNodeImportance("test_find_central_nodes"))
+    # suite.addTest(TestNodeImportance("test_find_eccentricity"))
+    # suite.addTest(TestNodeImportance("test_find_degree_centrality"))
+    # suite.addTest(TestNodeImportance("test_find_closeness_centrality"))
+    # suite.addTest(TestNodeImportance("test_find_betweenness_centrality"))
+    # suite.addTest(TestNodeImportance("test_find_pagerank"))
+    # suite.addTest(TestNodeImportance("test_find_eigenvector_centrality"))
+    # suite.addTest(TestNodeImportance("test_find_hub_matrix"))
+    # suite.addTest(TestNodeImportance("test_find_authority_matrix")) 
     unittest.main()
 
 
