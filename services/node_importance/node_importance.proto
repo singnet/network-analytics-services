@@ -25,7 +25,7 @@ message CentralNodeInput{
 
 message CentralNodeOutput{
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 
 }
@@ -44,7 +44,7 @@ message EccentricityInput {
 
 message EccentricityOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 	
 }
@@ -60,7 +60,7 @@ message DegreeCentralityInput {
 
 message DegreeCentralityOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 	
 }
@@ -78,7 +78,7 @@ message ClosenessCentralityInput {
 
 message ClosenessCentralityOutput {
 	bool status = 9;
-	string messgae = 10;
+	string message = 10;
 	string output = 11;
 }
 
@@ -97,7 +97,7 @@ message BetweennessCentralityInput {
 
 message BetweennessCentralityOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 }
 
@@ -119,7 +119,7 @@ message PageRankInput{
 
 message PageRankOutput{
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;	
 }
 
@@ -139,7 +139,7 @@ message EigenvectorCentralityInput {
 
 message EigenvectorCentralityOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;	
 }
 
@@ -153,7 +153,7 @@ message HubMatrixInput {
 
 message HubMatrixOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 }
 
@@ -171,7 +171,7 @@ message AuthorityMatrixInput {
 
 message AuthorityMatrixOutput {
 	bool status = 6;
-	string messgae = 7;
+	string message = 7;
 	string output = 8;
 }
 

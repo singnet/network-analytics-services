@@ -22,7 +22,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.CentralNodeInput(graph = graph_in,directed=False)
 		responce = stub.CentralNodes(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_eccentricity(self,stub,graph):
@@ -33,7 +33,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.EccentricityInput(graph = graph_in,directed=False)
 		responce = stub.Eccentricity(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 
@@ -45,7 +45,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.DegreeCentralityInput(graph = graph_in,directed=False)
 		responce = stub.DegreeCentrality(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_closeness_centrality(self,stub,graph,nodes):
@@ -56,7 +56,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.ClosenessCentralityInput(graph = graph_in,nodes="[1,2]",directed=False)
 		responce = stub.ClosenessCentrality(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_betweenness_centrality(self,stub,graph):
@@ -67,7 +67,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.BetweennessCentralityInput(graph = graph_in,directed=False)
 		responce = stub.BetweennessCentrality(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_pagerank(self,stub,graph):
@@ -78,7 +78,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.PageRankInput(graph = graph_in,directed=False)
 		responce = stub.PageRank(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 
@@ -90,7 +90,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.EigenvectorCentralityInput(graph = graph_in,directed=False)
 		responce = stub.EigenvectorCentrality(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_hub_matrix(self,stub,graph):
@@ -101,7 +101,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.HubMatrixInput(graph = graph_in,directed=False)
 		responce = stub.HubMatrix(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 
 	def find_authority_matrix(self,stub,graph):
@@ -112,7 +112,7 @@ class ClientTest():
 		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
 		input_graph = node_importance_pb2.AuthorityMatrixInput(graph = graph_in,directed=False)
 		responce = stub.AuthorityMatrix(input_graph)
-		# print(responce.status,responce.messgae,responce.output)
+		# print(responce.status,responce.message,responce.output)
 		return responce
 		
 	def close_channel(self,channel):

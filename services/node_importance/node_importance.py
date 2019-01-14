@@ -105,7 +105,7 @@ class NodeImportance:
             return False
         G = self.construct_graph(graph,directed)
 
-        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized=False)
+        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized=True)
         
 
         output={}
@@ -173,7 +173,6 @@ class NodeImportance:
 
         # output={}
         # output["hub_matrix"] = result
-
         return True,'success',str(result)
 
     def find_authority_matrix(self,graph, nodelist=None,directed=False):
@@ -186,8 +185,8 @@ class NodeImportance:
 
         result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G,  nodelist)
 
-        output={}
-        output["authority_matrix"] = result
+        # output={}
+        # output["authority_matrix"] = result
 
         return True,'success',str(result)
 
