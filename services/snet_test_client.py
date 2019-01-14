@@ -134,6 +134,8 @@ def test_5():
     print(response.message)
     print(response.output)
 
+
+
 def test_6():
 
     endpoint = "159.69.56.49:2222" # NetworkAnalyticsServices deployed to Kovan
@@ -171,9 +173,9 @@ def generate_call_credentials():
 if __name__ == '__main__':
 
     # generate_call_credentials()
-    test_6()
-    # test_5()
-    # test_4()
+    #test_6()
+    test_5()
+    test_4()
     # test_1()
     # print('Using test_2')
     # time.sleep(2)

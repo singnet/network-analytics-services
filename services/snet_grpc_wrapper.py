@@ -3,14 +3,13 @@
 import grpc
 from concurrent import futures
 import time
-
+import logging
 
 import network_analytics_pb2
 import network_analytics_pb2_grpc
 
-import time
 import bipartite_graphs
-import logging
+
 
 
 SLEEP_TIME = 86400 # One day
@@ -88,6 +87,8 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
         nodes = request.nodes
         weight = request.weight
 
+        print (bipartite_graph)
+
         b = bipartite_graphs.BipartiteGraphs()
 
         try:
@@ -133,7 +134,7 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
             print('message:', resp.message)
             print('Waiting for next call on port 5000.')
 
-            return resp
+            return resp     
 
 
 def serve():

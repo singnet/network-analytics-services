@@ -9,6 +9,7 @@ message Edge{
     repeated string edge = 1;
 }
 
+
 message Graph{
 
     repeated string nodes = 1;
@@ -16,7 +17,6 @@ message Graph{
     repeated double weights = 3;
 
 }
-
 
 ///// End Graph
 
@@ -40,6 +40,7 @@ message BipartiteGraph {
 
 }
 
+
 message BipartiteGraphRequest {
 
     BipartiteNodes nodes = 1;
@@ -54,6 +55,7 @@ message BipartiteGraphResponse{
 
 }
 
+///// End Bipartite graph
 
 message ProjecetedGraphRequest{
 
@@ -78,8 +80,6 @@ message ProjecetedGraphResponse{
 
 
 
-
-
 ///// Network Analytics Services
 
 service NetowrkAnalytics {
@@ -87,8 +87,7 @@ service NetowrkAnalytics {
 
     rpc BipartiteGraph (BipartiteGraphRequest) returns (BipartiteGraphResponse) {};
 
-    rpc ProjectedGraph (ProjecetedGraphRequest) returns (ProjecetedGraphResponse) {};
-
+    rpc ProjectedGraph (ProjecetedGraphRequest) returns (ProjecetedGraphResponse) {};  
 
 }
 
