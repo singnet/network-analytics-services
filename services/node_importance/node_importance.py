@@ -75,10 +75,8 @@ class NodeImportance:
 
         result = nx.algorithms.distance_measures.eccentricity(G, v,sp)
 
-        result_sorted = sorted(result,key=result.__getitem__)
-
         output={}
-        output["eccentricity"] = result_sorted
+        output["eccentricity"] = result
 
         return True,'success',str(output)
 

@@ -24,9 +24,10 @@ class TestNodeImportance(unittest.TestCase):
 
 	def test_find_eccentricity(self):
 		result = self.N.find_eccentricity(self.graph)
+		print(result[2])
 		self.assertEqual(result[0],True)
 		self.assertEqual(result[1],'success')
-		self.assertEqual(result[2],"{'eccentricity': ['2', '3', '1', '4', '5', '6', '7', '8']}")
+		self.assertEqual(result[2],"{'eccentricity': {'1': 3, '2': 2, '3': 2, '4': 3, '5': 3, '6': 3, '7': 3, '8': 3}}")
 		
 	
 	def test_find_degree_centrality(self):

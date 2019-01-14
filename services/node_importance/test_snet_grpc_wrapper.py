@@ -30,7 +30,7 @@ class TestNodeImportance(unittest.TestCase):
 		result = self.client.find_eccentricity(self.stub,self.graph)
 		self.assertEqual(result.status,True)
 		self.assertEqual(result.messgae,'success')
-		self.assertEqual(result.output,"{'eccentricity': ['2', '3', '1', '4', '5', '6', '7', '8']}")
+		self.assertEqual(result.output,"{'eccentricity': {'1': 3, '2': 2, '3': 2, '4': 3, '5': 3, '6': 3, '7': 3, '8': 3}}")
 		
 
 	def test_find_degree_centrality(self):
