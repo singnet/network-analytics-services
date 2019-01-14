@@ -22,7 +22,7 @@ class NodeImportance:
     def __init__(self):
         self.cv = check_graph_validity.Graphs()
 
-    def construct_graph(self,graph,directed):
+    def construct_graph(self,graph,directed=False):
         try:
             # construct networkx graph from given graph
             if (directed):

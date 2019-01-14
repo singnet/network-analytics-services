@@ -3,7 +3,15 @@ from node_importance import NodeImportance
 
 import networkx as nx
 import numpy as np
+import sys
+import os
 
+PACKAGE_PARENT = '..'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+
+import check_graph_validity
 
 class TestNodeImportance(unittest.TestCase):
 
@@ -14,6 +22,19 @@ class TestNodeImportance(unittest.TestCase):
 	        "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
 	        "weights": [3,4,5,6,7,8,9,10]
 	    }
+		self.graph_01 = {
+	        "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
+	        "weights": [3,4,5,6,7,8,9,10]
+	    }
+		self.graph_02= {
+	        "nodes": ['1','2','3','4','5','6','7','8'],
+	        "weights": [3,4,5,6,7,8,9,10]
+	    }
+		self.graph_03 = {
+	        "nodes": ['1','2','3','4','5','6','7','8'],
+	        "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']]
+	    }
+	    
 
 	def test_find_central_nodes(self):
 		result = self.N.find_central_nodes(self.graph)
@@ -79,18 +100,26 @@ class TestNodeImportance(unittest.TestCase):
 		self.assertEqual(result[2],'[[ 25.   0.  43.   0.  18.   0.  27.   0.]\n [  0. 151.   0.  47.   0.  40.   0.  50.]\n [ 43.   0. 238.   0.  30.   0.  45.   0.]\n [  0.  47.   0.  65.   0.  56.   0.  70.]\n [ 18.   0.  30.   0.  36.   0.  54.   0.]\n [  0.  40.   0.  56.   0.  64.   0.  80.]\n [ 27.   0.  45.   0.  54.   0.  81.   0.]\n [  0.  50.   0.  70.   0.  80.   0. 100.]]')
 
 
+	def test_construct_graph(self):
+		# Graph without nodes Test
+	    result = self.N.construct_graph(self.graph_01)
+	    self.assertEqual(result[0],'False')
+	    self.assertEqual(result[1],"'nodes'")
+	    self.assertEqual(result[2],{})
+
+	    # Graph without edges Test
+	    result = self.N.construct_graph(self.graph_02)
+	    self.assertEqual(result[0],'False')
+	    self.assertEqual(result[1],"'edges'")
+	    self.assertEqual(result[2],{})
+
+	    # Graph without weights Test
+	    result = self.N.construct_graph(self.graph_03)
+	    self.assertEqual(str(type(result)),"<class 'networkx.classes.graph.Graph'>")
+	    
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    # suite.addTest(TestNodeImportance("test_find_central_nodes"))
-    # suite.addTest(TestNodeImportance("test_find_eccentricity"))
-    # suite.addTest(TestNodeImportance("test_find_degree_centrality"))
-    # suite.addTest(TestNodeImportance("test_find_closeness_centrality"))
-    # suite.addTest(TestNodeImportance("test_find_betweenness_centrality"))
-    # suite.addTest(TestNodeImportance("test_find_pagerank"))
-    # suite.addTest(TestNodeImportance("test_find_eigenvector_centrality"))
-    # suite.addTest(TestNodeImportance("test_find_hub_matrix"))
-    # suite.addTest(TestNodeImportance("test_find_authority_matrix")) 
     unittest.main()
 
 

@@ -2,8 +2,8 @@ import grpc
 from concurrent import futures
 import time
 
-import node_importance_pb2
-import node_importance_pb2_grpc
+from service_spec import node_importance_pb2
+from service_spec import node_importance_pb2_grpc
 
 from node_importance import NodeImportance
 # import graphs

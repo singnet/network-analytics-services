@@ -22,7 +22,7 @@ This service have The following functionalities
        - find_authority_matrix
 
 
-The user must provide a request satisfying the [proto descriptions](https://github.com/IsraelAbebe/network-analytics-services/blob/master/services/node_importance/node_importance.proto) given.
+The user must provide a request satisfying the [proto descriptions](https://github.com/IsraelAbebe/network-analytics-services/blob/master/services/node_importance/service_spec/node_importance.proto) given.
 
 #### Example input 
 The following Graph is used as an input for the following examples

@@ -1,7 +1,7 @@
 import os
 import grpc
-import node_importance_pb2
-import node_importance_pb2_grpc
+from service_spec import node_importance_pb2
+from service_spec import node_importance_pb2_grpc
 
 
 class ClientTest():
@@ -16,105 +16,160 @@ class ClientTest():
 
 	def find_central(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.CentralNodeInput(graph = graph_in,directed=False)
-		responce = stub.CentralNodes(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.CentralNodeInput(graph = graph_in,directed=False)
+			responce = stub.CentralNodes(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_eccentricity(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.EccentricityInput(graph = graph_in,directed=False)
-		responce = stub.Eccentricity(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.EccentricityInput(graph = graph_in,directed=False)
+			responce = stub.Eccentricity(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
+
 
 
 	def find_degree_centrality(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.DegreeCentralityInput(graph = graph_in,directed=False)
-		responce = stub.DegreeCentrality(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.DegreeCentralityInput(graph = graph_in,directed=False)
+			responce = stub.DegreeCentrality(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
+		
 
 	def find_closeness_centrality(self,stub,graph,nodes):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.ClosenessCentralityInput(graph = graph_in,nodes="[1,2]",directed=False)
-		responce = stub.ClosenessCentrality(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.ClosenessCentralityInput(graph = graph_in,nodes="[1,2]",directed=False)
+			responce = stub.ClosenessCentrality(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_betweenness_centrality(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.BetweennessCentralityInput(graph = graph_in,directed=False)
-		responce = stub.BetweennessCentrality(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.BetweennessCentralityInput(graph = graph_in,directed=False)
+			responce = stub.BetweennessCentrality(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_pagerank(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.PageRankInput(graph = graph_in,directed=False)
-		responce = stub.PageRank(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
-
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.PageRankInput(graph = graph_in,directed=False)
+			responce = stub.PageRank(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_eigenvector_centrality(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.EigenvectorCentralityInput(graph = graph_in,directed=False)
-		responce = stub.EigenvectorCentrality(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.EigenvectorCentralityInput(graph = graph_in,directed=False)
+			responce = stub.EigenvectorCentrality(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_hub_matrix(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.HubMatrixInput(graph = graph_in,directed=False)
-		responce = stub.HubMatrix(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.HubMatrixInput(graph = graph_in,directed=False)
+			responce = stub.HubMatrix(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 
 	def find_authority_matrix(self,stub,graph):
 		edges_req = []
-		for e in graph["edges"]:
-			edges_req.append(node_importance_pb2.Edge(edge=e))
+		try:
+			for e in graph["edges"]:
+				edges_req.append(node_importance_pb2.Edge(edge=e))
+		except Exception as e:
+                    return ["False", str(e),{}]
 
-		graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
-		input_graph = node_importance_pb2.AuthorityMatrixInput(graph = graph_in,directed=False)
-		responce = stub.AuthorityMatrix(input_graph)
-		# print(responce.status,responce.message,responce.output)
-		return responce
-		
+		try:
+			graph_in = node_importance_pb2.Graph(nodes=graph["nodes"],edges=edges_req,weights=graph['weights'])
+			input_graph = node_importance_pb2.AuthorityMatrixInput(graph = graph_in,directed=False)
+			responce = stub.AuthorityMatrix(input_graph)
+			# print(responce.status,responce.message,responce.output)
+			return responce
+		except Exception as e:
+                    return ["False", str(e),{}]
 	def close_channel(self,channel):
 		pass
 
