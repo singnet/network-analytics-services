@@ -105,7 +105,7 @@ class NodeImportance:
             return False
         G = self.construct_graph(graph,directed)
 
-        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized=True)
+        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized=False)
         
 
         output={}

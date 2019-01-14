@@ -13,7 +13,7 @@ class TestNodeImportance(unittest.TestCase):
 	        "nodes": ['1','2','3','4','5','6','7','8'],
 	        "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
 	        "weights": [3,4,5,6,7,8,9,10]
-	    	}
+	    }
 
 	def test_find_central_nodes(self):
 		result = self.N.find_central_nodes(self.graph)
@@ -24,7 +24,6 @@ class TestNodeImportance(unittest.TestCase):
 
 	def test_find_eccentricity(self):
 		result = self.N.find_eccentricity(self.graph)
-		print(result[2])
 		self.assertEqual(result[0],True)
 		self.assertEqual(result[1],'success')
 		self.assertEqual(result[2],"{'eccentricity': {'1': 3, '2': 2, '3': 2, '4': 3, '5': 3, '6': 3, '7': 3, '8': 3}}")
@@ -37,10 +36,12 @@ class TestNodeImportance(unittest.TestCase):
 		self.assertEqual(result[2],"{'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714, '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285, '7': 0.14285714285714285, '8': 0.14285714285714285}}")
 		
 	def test_find_closeness_centrality(self):
-		result = self.N.find_closeness_centrality(self.graph,['1','2'])
+		result = self.N.find_closeness_centrality(self.graph,['8','8'])
 		self.assertEqual(result[0],True)
 		self.assertEqual(result[1],'success')
-		# print(result[2]) closness centrality seems to change 
+		if 'closeness_centrality' not in result[2]:
+			raise AssertionError()
+		#closness centrality seems to change 
 	
 	def test_find_betweenness_centrality(self):
 		result = self.N.find_betweenness_centrality(self.graph)

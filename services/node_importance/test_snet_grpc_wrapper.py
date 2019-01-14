@@ -43,9 +43,8 @@ class TestNodeImportance(unittest.TestCase):
 		result = self.client.find_closeness_centrality(self.stub,self.graph,[1,2])
 		self.assertEqual(result.status,True)
 		self.assertEqual(result.messgae,'success')
-		# self.assertEqual(repr(result.output),"{'closeness_centrality': {'1': 0.5714285714285714, '2': 0.8, '8': 0.75, '6': 0.75, '3': 1.2, '5': 0.75, '4': 0.8571428571428571, '7': 0.75}}")
-		# self.assertEqual(repr(result.output),"{'closeness_centrality': {'2': 0.8, '1': 0.5714285714285714, '5': 0.75, '8': 0.75, '3': 1.2, '7': 0.75, '6': 0.75, '4': 0.8571428571428571}}")
-		
+		if 'closeness_centrality' not in result.output:
+			raise AssertionError()
 
 	def test_find_betweenness_centrality(self):
 		result = self.client.find_betweenness_centrality(self.stub,self.graph)
