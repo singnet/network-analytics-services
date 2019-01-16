@@ -2,8 +2,8 @@
 
 import unittest
 import grpc
-from service_spec import network_analytics_bipartite_pb2
-from service_spec import network_analytics_bipartite_pb2_grpc
+from service_spec_bipartite import network_analytics_bipartite_pb2
+from service_spec_bipartite import network_analytics_bipartite_pb2_grpc
 import snet_grpc_wrapper_bipartite
 
 

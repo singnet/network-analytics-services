@@ -40,7 +40,7 @@ class Graphs:
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
                 #graph['nodes'].append(graph['edges'][i][0])
             if(not(graph['edges'][i][1] in graph['nodes'])):
-            	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
+                return [False, "edge value at ["+ str(i) + "][1] is not a node"]
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
         return [True] 

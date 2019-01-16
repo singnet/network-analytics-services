@@ -4,7 +4,7 @@ import logging
 
 import grpc
 
-from service_spec import network_analytics_bipartite_pb2_grpc, network_analytics_bipartite_pb2
+from service_spec_bipartite import network_analytics_bipartite_pb2_grpc, network_analytics_bipartite_pb2
 
 import subprocess
 import yaml

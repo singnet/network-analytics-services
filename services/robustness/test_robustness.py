@@ -1,18 +1,17 @@
-# coding: utf-8
-
+#Tested on python3.6
 
 import unittest
-import graphs
+import robustness
 
 import networkx as nx
 
 
 
-class TestGraphs(unittest.TestCase):
+class TestRobustness(unittest.TestCase):
 
 
 	def test_min_nodes_to_remove(self):
-		b = graphs.Graphs()
+		b = robustness.Robustness()
 		graph = {
 		"nodes": [],
 		"edges": [[1,2]]
@@ -103,7 +102,7 @@ class TestGraphs(unittest.TestCase):
 
 
 	def test_most_important_nodes_edges(self):
-		b = graphs.Graphs()
+		b = robustness.Robustness()
 		graph = {
 		    "nodes": [],
 		    "edges": [[1,2]]
@@ -242,4 +241,4 @@ __end__ = '__end__'
 
 
 if __name__ == '__main__':
-    unittest.main()
+	unittest.main()

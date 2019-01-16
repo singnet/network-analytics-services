@@ -74,12 +74,11 @@ message MostImportantGraphResponse{
 }
 
 
-///// End Bipartite graph
+///// End MostImportantGraph
 
+///// Network Analytics Robustness Services
 
-///// Network Analytics Services
-
-service NetowrkAnalytics {
+service NetowrkAnalyticsRobustness {
 
     rpc MinNodeGraph (MinNodeGraphRequest) returns (MinNodeGraphResponse) {};
 

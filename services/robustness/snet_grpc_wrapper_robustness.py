@@ -5,17 +5,17 @@ from concurrent import futures
 import time
 import logging
 
-import network_analytics_util_pb2
-import network_analytics_util_pb2_grpc
+from service_spec_robustness import network_analytics_robustness_pb2
+from service_spec_robustness import network_analytics_robustness_pb2_grpc
 
-import graphs
+import robustness
 
 
 
 SLEEP_TIME = 86400 # One day
 
 
-class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer):
+class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessServicer):
 
     def MinNodeGraph(self,request,context):
 
@@ -26,7 +26,7 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
         source_nodes = request.source_node
         target_nodes = request.target_node
 
-        g = graphs.Graphs()
+        g = robustness.Robustness()
 
         try:
 
@@ -49,16 +49,16 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
             print (ret[0])
             print (ret[1])
             
-            resp = network_analytics_util_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1])
 
             if resp.status:
                 nodes_resp=ret[2]["nodes"]
                 edges_resp = []
                 for edge_ret in ret[2]["edges"]:
-                    edges_resp.append(network_analytics_util_pb2.Edge(edge=edge_ret))
+                    edges_resp.append(network_analytics_robustness_pb2.Edge(edge=edge_ret))
 
                 print(edges_resp)
-                resp = network_analytics_util_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
+                resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
 
 
             print('status:',resp.status)
@@ -72,7 +72,7 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
 
             logging.exception("message")
 
-            resp = network_analytics_util_pb2.MinNodeGraphResponse(status=False,message=str(e))
+            resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=False,message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)
@@ -92,7 +92,7 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
         T = request.Type
 
 
-        g = graphs.Graphs()
+        g = robustness.Robustness()
 
         try:
 
@@ -113,21 +113,21 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
 
             ret = g.most_important_nodes_edges(graph_in,source_nodes_in,target_nodes_in,T)    
             
-            resp = network_analytics_util_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1])
 
             if resp.status:
                 betweenness_centrality=ret[2]["betweenness_centrality"]
                 print([betweenness_centrality[1]][0])
 
                 if (T==0):
-                    node_resp=network_analytics_pb2.node_betweenness(node=[betweenness_centrality[0]][0], node_centrality_value=[betweenness_centrality[1]][0])
-                    resp = network_analytics_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
+                    node_resp=network_analytics_robustness_pb2.node_betweenness(node=[betweenness_centrality[0]][0], node_centrality_value=[betweenness_centrality[1]][0])
+                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
                 
                 elif(T==1):
                     edge=list([betweenness_centrality[0]][0])
-                    proto_edge=network_analytics_util_pb2.Edge(edge=edge)
-                    edge_resp=network_analytics_util_pb2.edge_betweenness(edge=proto_edge, edge_centrality_value=[betweenness_centrality[1]][0]) 
-                    resp = network_analytics_util_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=edge_resp) 
+                    proto_edge=network_analytics_robustness_pb2.Edge(edge=edge)
+                    edge_resp=network_analytics_robustness_pb2.edge_betweenness(edge=proto_edge, edge_centrality_value=[betweenness_centrality[1]][0])
+                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=edge_resp)
 
 
             print('status:',resp.status)
@@ -143,7 +143,7 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
 
             logging.exception("message")
 
-            resp = network_analytics_util_pb2.MostImportantGraphResponse(status=False,message=str(e))
+            resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=False,message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)
@@ -155,7 +155,7 @@ class NetworkAnalytics(network_analytics_util_pb2_grpc.NetowrkAnalyticsServicer)
 def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_util_pb2_grpc.add_NetowrkAnalyticsServicer_to_server(NetworkAnalytics(), server)
+    network_analytics_robustness_pb2_grpc.add_NetowrkAnalyticsRobustnessServicer_to_server(NetworkAnalyticsRobustness(), server)
     print('Starting server. Listening on port 5000.')
     server.add_insecure_port('127.0.0.1:5000')
     server.start()

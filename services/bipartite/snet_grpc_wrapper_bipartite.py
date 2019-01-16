@@ -6,8 +6,8 @@ import time
 import logging
 
 import bipartite_graphs
-from service_spec import network_analytics_bipartite_pb2
-from service_spec import network_analytics_bipartite_pb2_grpc
+from service_spec_bipartite import network_analytics_bipartite_pb2
+from service_spec_bipartite import network_analytics_bipartite_pb2_grpc
 
 SLEEP_TIME = 86400 # One day
 
@@ -137,7 +137,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsServicer_to_server(NetowrkAnalyticsBipartite(), server)
+    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsBipartiteServicer_to_server(NetowrkAnalyticsBipartite(), server)
     print('Starting server. Listening on port 5000.')
     server.add_insecure_port('127.0.0.1:5000')
     server.start()

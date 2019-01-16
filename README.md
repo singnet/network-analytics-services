@@ -17,7 +17,7 @@ Below is a list of currently available services under different categories. Also
 
 ## List of Services
 
-### Bipartite Graphs
+### Bipartite robustness
 
 Bipartite Graph: Create a bipartite graph from two given nodes and a set of edges
 

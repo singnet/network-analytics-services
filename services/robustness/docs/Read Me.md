@@ -24,11 +24,11 @@ Below is a list of currently available services under different categories. Also
 
 List of Services
 
-Bipartite Graphs
+Bipartite robustness
 Bipartite Graph: Create a bipartite graph from two given nodes and a set of edges
 Projected Graph: Returns the projection of a bipartite graph on a given set of nodes.
 
-Graphs
+robustness
 min_nodes_to_remove: gives the minimum set of nodes/edges to disconnect source node and targert node.
 most_important_nodes_edges: provides the betweness centrality of the subset
 

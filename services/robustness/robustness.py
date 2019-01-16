@@ -1,15 +1,19 @@
 # Tested on python3.6
-import pandas as pd
-import numpy as np
+
+import sys
+import pathlib
+import os
+
+sys.path.append(str(pathlib.Path(os.path.abspath('')).parents[0])+'/network-analytics-services')
 
 import networkx as nx
 
 from networkx.algorithms.connectivity import minimum_st_node_cut
 from networkx.algorithms.connectivity import minimum_st_edge_cut
 
-import check_graph_validity
+from services import check_graph_validity
 
-class Graphs:
+class Robustness:
 
     def __init__(self):
 
