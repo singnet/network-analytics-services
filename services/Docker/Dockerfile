@@ -51,7 +51,7 @@ WORKDIR /home/netk/dep
 
 #RUN pwd
 
-#RUN cd network-analytics-services/services && python3.6 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+#RUN cd network-analytics-services/services && python3.6 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics_bipartite.proto
 
 #WORKDIR /home/netk/network-analytics-services/services
 

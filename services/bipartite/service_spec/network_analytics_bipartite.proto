@@ -80,9 +80,9 @@ message ProjecetedGraphResponse{
 
 
 
-///// Network Analytics Services
+///// Network Analytics Bipartite Services
 
-service NetowrkAnalytics {
+service NetowrkAnalyticsBipartite {
 
 
     rpc BipartiteGraph (BipartiteGraphRequest) returns (BipartiteGraphResponse) {};
