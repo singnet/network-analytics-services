@@ -11,7 +11,7 @@ import snet_grpc_wrapper_bipartite
 
 
 
-class TestSnetWrapper(unittest.TestCase):
+class TestSnetWrapperBipartite(unittest.TestCase):
 
 
     def setUp(self):

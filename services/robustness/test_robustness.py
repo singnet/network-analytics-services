@@ -142,7 +142,7 @@ class TestRobustness(unittest.TestCase):
 		    "edges": [[1,2]],
 		    "weights": [3]
 		}
-		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 17) 
+		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 17)
 		self.assertEqual([False, 'Parameter T can only be 0 or 1',{}],ret) # type=0(most important nodes) type=1(most important edges)
 		graph = {
 		    "nodes": [1,2,3],
@@ -191,6 +191,8 @@ class TestRobustness(unittest.TestCase):
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes)
 		self.assertEqual([False, 'target_nodes [1] doesn’t exist in graph',{}],ret)
 
+
+
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],
 		    "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]],
@@ -200,6 +202,21 @@ class TestRobustness(unittest.TestCase):
 		target_nodes = [6]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 1)
 		self.assertEqual([True, 'success', {'betweenness_centrality': [(2, 3), 1.0]}],ret) 
+
+
+		graph = {
+		    "nodes": [1,2,3,4,5,6,7,8],
+		    "edges": [[1,2],[1,4],[2,3],[2,5],[3,4],[3,6],[2,7],[3,8]],
+		    "weights": [0,4,5,6,7,8,9,10]
+		}
+		source_nodes = [5,7]
+		target_nodes = [6]
+		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 1)
+		self.assertEqual([False, 'all edge weights must be greater than zero', {}],ret)
+
+
+
+
 
 		graph = {
 		    "nodes": [1,2,3,4,5,6,7,8],
@@ -234,7 +251,9 @@ class TestRobustness(unittest.TestCase):
 		source_nodes = [5,7]
 		target_nodes = [6]
 		ret = b.most_important_nodes_edges(graph, source_nodes, target_nodes, 1, False, True)
-		self.assertEqual([True, 'success', {'betweenness_centrality': [(1, 2), 0.0]}],ret) 
+		self.assertEqual([True, 'success', {'betweenness_centrality': [(1, 2), 0.0]}],ret)
+
+
 
 
 __end__ = '__end__'

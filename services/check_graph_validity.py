@@ -83,7 +83,7 @@ class Graphs:
                 if(len(graph['edges']) != len(graph['weights'])):
                     return [False, 'the length of supplied edges and weights does not match']
                 #the edge weights must be greater than zero     
-                if(0 in graph['weights']):
+                if not all(i > 0 for i in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']   
 
 

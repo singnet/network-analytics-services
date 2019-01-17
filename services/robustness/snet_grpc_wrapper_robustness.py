@@ -166,6 +166,15 @@ def serve():
         server.stop(0)
 
 
+def serve_test():
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    network_analytics_robustness_pb2_grpc.add_NetowrkAnalyticsRobustnessServicer_to_server(NetworkAnalyticsRobustness(), server)
+    print('Starting server. Listening on port 5000.')
+    server.add_insecure_port('127.0.0.1:5000')
+    return server
+
+
 
 __end__ = '__end__'
 

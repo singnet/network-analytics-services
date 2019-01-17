@@ -71,10 +71,10 @@ class Robustness:
             G.add_edges_from(graph['edges'])
 
             if 'weights' in graph:
-            	for i in range(len(graph['edges'])):
-            	    G[graph['edges'][i][0]][graph['edges'][i][1]]['weight'] = graph['weights'][i]
+                for i in range(len(graph['edges'])):
+                    G[graph['edges'][i][0]][graph['edges'][i][1]]['weight'] = graph['weights'][i]
         except Exception as e:
-                	return ["False", str(e),{}]
+            return ["False", str(e),{}]
 
         output={}
         clearDict={}
