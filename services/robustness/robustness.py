@@ -77,28 +77,33 @@ class Robustness:
             return ["False", str(e),{}]
 
         output={}
-        clearDict={}
+        # clearDict={}
        
+        result = None
+
         if (T == 0):
             
             result=nx.betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
             #remove nodes that are either in source_node or in target_node
-            for key,val in result.items():
-                if (not(key in source_nodes or key in target_nodes)):
-                 clearDict[key]=val   
-            print(clearDict)
+            # for key,val in result.items():
+            #     if (not(key in source_nodes or key in target_nodes)):
+            #      clearDict[key]=val
+            # print(clearDict)
 
             
         elif (T == 1):
             result =nx.edge_betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
-            for key,val in result.items():
-                 #remove nodes that are either in source_node or in target_node
-                if(not(key[0] in source_nodes or key[0] in target_nodes or key[1] in source_nodes or key[1] in target_nodes)):
-                    clearDict[key]=val
-            print(clearDict)
+            # for key,val in result.items():
+            #      #remove nodes that are either in source_node or in target_node
+            #     if(not(key[0] in source_nodes or key[0] in target_nodes or key[1] in source_nodes or key[1] in target_nodes)):
+            #         clearDict[key]=val
+            # print(clearDict)
 
+        # output["betweenness_centrality"] = list(max(clearDict.items(), key=lambda k: k[1]))
 
-        output["betweenness_centrality"] = list(max(clearDict.items(), key=lambda k: k[1]))    #result
+        highest = max(result.values())
+        nodes_list = [k for k, v in result.items() if v == highest]
+        output["betweenness_centrality"] = [nodes_list,highest]    #result
 
         print (output)
 
