@@ -126,7 +126,7 @@ def bet_subset():
 
 
 
-    G = nx.Graph()
+    # G = nx.Graph()
     G = nx.DiGraph()
     G.add_nodes_from(graph['nodes'])
     G.add_edges_from(graph['edges'])
