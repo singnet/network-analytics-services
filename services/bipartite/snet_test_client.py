@@ -1,13 +1,10 @@
 # Tested on python3.6
 
 import logging
-import time
 
 import grpc
 
-import network_analytics_pb2
-import network_analytics_pb2_grpc
-from google.protobuf.json_format import MessageToJson, Parse
+from service_spec_bipartite import network_analytics_bipartite_pb2_grpc, network_analytics_bipartite_pb2
 
 import subprocess
 import yaml
@@ -77,18 +74,18 @@ def test_4():
     i = 1
 
     edge_1 = network_analytics_pb2.Edge(edge=edgess[i])
-    edge_2 = network_analytics_pb2.Edge(edge=['5','6'])
+    edge_2 = network_analytics_pb2.Edge(edge=['5', '6'])
 
     edges_1= [edge_1,edge_2]
     # print("edge_1:")
     # print(type(edge_1.edge))
 
 
-    graph_in = network_analytics_pb2.BipartiteNodes(bipartite_0=input_0_0["bipartite_0"],bipartite_1=input_0_0["bipartite_1"])
+    graph_in = network_analytics_pb2.BipartiteNodes(bipartite_0=input_0_0["bipartite_0"], bipartite_1=input_0_0["bipartite_1"])
     # graph_in = network_analytics_pb2.BipartiteNodes(bipartite_1=input_0_0["bipartite_1"])
 
 
-    graph_1 = network_analytics_pb2.BipartiteGraphRequest(nodes=graph_in,edges=edges_1)
+    graph_1 = network_analytics_pb2.BipartiteGraphRequest(nodes=graph_in, edges=edges_1)
     # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph=)
     # graph1 = network_analytics_pb2.BipartiteGraphRequest(graph.nodes=input_0_0,graph.edges=input_0_1)
 
@@ -124,10 +121,10 @@ def test_5():
         edges_req.append(network_analytics_pb2.Edge(edge=e))
 
 
-    graph_in = network_analytics_pb2.BipartiteGraph(bipartite_0=input_0_0["bipartite_0"],bipartite_1=input_0_0["bipartite_1"],edges=edges_req)
+    graph_in = network_analytics_pb2.BipartiteGraph(bipartite_0=input_0_0["bipartite_0"], bipartite_1=input_0_0["bipartite_1"], edges=edges_req)
 
 
-    graph_1 = network_analytics_pb2.ProjecetedGraphRequest(graph=graph_in,nodes=input_0_1["nodes"],weight=input_0_2)
+    graph_1 = network_analytics_pb2.ProjecetedGraphRequest(graph=graph_in, nodes=input_0_1["nodes"], weight=input_0_2)
 
     response = stub.ProjectedGraph(graph_1)
     print(response.status)
@@ -153,7 +150,7 @@ def test_6():
     for e in edges_list:
         edges.append(network_analytics_pb2.Edge(edge=e))
 
-    response = stub.BipartiteGraph(network_analytics_pb2.BipartiteGraphRequest(nodes=nodes, edges=edges),metadata=[("snet-job-address", job_address), ("snet-job-signature", job_signature)])
+    response = stub.BipartiteGraph(network_analytics_pb2.BipartiteGraphRequest(nodes=nodes, edges=edges), metadata=[("snet-job-address", job_address), ("snet-job-signature", job_signature)])
     print(response.status)
     print(response.message)
     print(response.output)

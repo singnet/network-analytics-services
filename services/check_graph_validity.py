@@ -1,4 +1,4 @@
-
+#Tested on python3.6
 
 class Graphs:
 
@@ -40,7 +40,7 @@ class Graphs:
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
                 #graph['nodes'].append(graph['edges'][i][0])
             if(not(graph['edges'][i][1] in graph['nodes'])):
-            	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
+                return [False, "edge value at ["+ str(i) + "][1] is not a node"]
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
         return [True] 
@@ -83,7 +83,7 @@ class Graphs:
                 if(len(graph['edges']) != len(graph['weights'])):
                     return [False, 'the length of supplied edges and weights does not match']
                 #the edge weights must be greater than zero     
-                if(0 in graph['weights']):
+                if not all(i > 0 for i in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']   
 
 

@@ -1,3 +1,5 @@
+[![SingnetLogo](docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')](https://singularitynet.io/)
+
 # Network Analytics Services
 
 This repository contains various network analytics services for SingularityNET. The services are wrapped using
@@ -15,7 +17,7 @@ Below is a list of currently available services under different categories. Also
 
 ## List of Services
 
-### Bipartite Graphs
+### Bipartite robustness
 
 Bipartite Graph: Create a bipartite graph from two given nodes and a set of edges
 

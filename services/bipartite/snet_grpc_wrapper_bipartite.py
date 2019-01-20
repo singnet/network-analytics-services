@@ -5,16 +5,14 @@ from concurrent import futures
 import time
 import logging
 
-import network_analytics_pb2
-import network_analytics_pb2_grpc
-
 import bipartite_graphs
-
+from service_spec_bipartite import network_analytics_bipartite_pb2
+from service_spec_bipartite import network_analytics_bipartite_pb2_grpc
 
 SLEEP_TIME = 86400 # One day
 
 
-class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
+class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnalyticsBipartiteServicer):
 
     def BipartiteGraph(self,request,context):
 
@@ -43,17 +41,17 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
             ret = b.bipartite_graph(nodes_in, edges_in)
 
-            resp = network_analytics_pb2.BipartiteGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=ret[0], message=ret[1])
 
             if resp.status:
                 edges_resp = []
                 for edge_ret in ret[2]["edges"]:
-                    edges_resp.append(network_analytics_pb2.Edge(edge=edge_ret))
+                    edges_resp.append(network_analytics_bipartite_pb2.Edge(edge=edge_ret))
 
-                graph_resp = network_analytics_pb2.BipartiteGraph(bipartite_0=ret[2]["bipartite_0"],bipartite_1=ret[2]["bipartite_1"],edges=edges_resp)
+                graph_resp = network_analytics_bipartite_pb2.BipartiteGraph(bipartite_0=ret[2]["bipartite_0"], bipartite_1=ret[2]["bipartite_1"], edges=edges_resp)
 
 
-                resp = network_analytics_pb2.BipartiteGraphResponse(status=ret[0],message=ret[1],output=graph_resp)
+                resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=ret[0], message=ret[1], output=graph_resp)
 
 
             print('status:',resp.status)
@@ -67,7 +65,7 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
             logging.exception("message")
 
-            resp = network_analytics_pb2.BipartiteGraphResponse(status=False,message=str(e))
+            resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)
@@ -103,17 +101,17 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
             ret = b.projected_graph(bipartite_graph_in, nodes_in, weight)
 
-            resp = network_analytics_pb2.ProjecetedGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=ret[0], message=ret[1])
 
             if resp.status:
                 edges_resp = []
                 for edge_ret in ret[2]["edges"]:
-                    edges_resp.append(network_analytics_pb2.Edge(edge=edge_ret))
+                    edges_resp.append(network_analytics_bipartite_pb2.Edge(edge=edge_ret))
 
-                graph_resp = network_analytics_pb2.Graph(nodes=ret[2]["nodes"],edges=edges_resp,weights=ret[2]["weights"])
+                graph_resp = network_analytics_bipartite_pb2.Graph(nodes=ret[2]["nodes"], edges=edges_resp, weights=ret[2]["weights"])
 
 
-                resp = network_analytics_pb2.ProjecetedGraphResponse(status=ret[0],message=ret[1],output=graph_resp)
+                resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=ret[0], message=ret[1], output=graph_resp)
 
 
             print('status:',resp.status)
@@ -127,19 +125,19 @@ class NetworkAnalytics(network_analytics_pb2_grpc.NetowrkAnalyticsServicer):
 
             logging.exception("message")
 
-            resp = network_analytics_pb2.ProjecetedGraphResponse(status=False,message=str(e))
+            resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)
             print('Waiting for next call on port 5000.')
 
-            return resp     
+            return resp
 
 
 def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_pb2_grpc.add_NetowrkAnalyticsServicer_to_server(NetworkAnalytics(), server)
+    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsBipartiteServicer_to_server(NetowrkAnalyticsBipartite(), server)
     print('Starting server. Listening on port 5000.')
     server.add_insecure_port('127.0.0.1:5000')
     server.start()
@@ -148,6 +146,15 @@ def serve():
             time.sleep(SLEEP_TIME)
     except KeyboardInterrupt:
         server.stop(0)
+
+def serve_test():
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsBipartiteServicer_to_server(NetowrkAnalyticsBipartite(), server)
+    print('Starting server. Listening on port 5000.')
+    server.add_insecure_port('127.0.0.1:5000')
+    return server
+
 
 
 

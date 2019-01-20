@@ -14,6 +14,7 @@ import plotly.graph_objs as go
 import time
 import math
 import logging
+import operator
 
 
 def list_1():
@@ -114,6 +115,44 @@ def graph_2():
     print(link_analysis.pagerank(G,dangling={5:0,7:1}))
 
 
+def bet_subset():
+
+    graph = {
+        "nodes": [1, 2, 3, 4, 5, 6, 7, 8,9,10],
+        "edges": [[1, 2], [1, 4], [2, 3], [2, 5], [3, 4], [3, 6], [2, 7], [3, 8],[7,9],[5,9],[9,10],[10,6]],
+        "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+
+    }
+
+
+
+    # G = nx.Graph()
+    G = nx.DiGraph()
+    G.add_nodes_from(graph['nodes'])
+    G.add_edges_from(graph['edges'])
+    source_nodes = [5, 7]
+    target_nodes = [6]
+
+    result = nx.betweenness_centrality_subset(G, source_nodes, target_nodes, False)
+
+    print(result)
+    # print(list(max(result.items(), key=lambda k: k[1])))
+    # print(result.items())
+    # print(max(result.items(), key=operator.itemgetter(1)))
+
+    highest = max(result.values())
+    print(highest)
+    print([k for k, v in result.items() if v == highest])
+
+    result = nx.edge_betweenness_centrality_subset(G, source_nodes, target_nodes, False)
+    print(result)
+
+    highest = max(result.values())
+    print(highest)
+    print([k for k, v in result.items() if v == highest])
+
+
+
 
 
 
@@ -126,8 +165,9 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
+    bet_subset()
     # graph_2()
-    graph_1()
+    # graph_1()
     # list_1()
     # dict_2()
     # tuple_1()

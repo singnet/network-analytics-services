@@ -1,0 +1,46 @@
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - example_bipartition
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - example_bipartition
+
+
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: edyirdaw/snet_network_analytics:v1
+    working_directory: /home/netk/dep
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          command: |
+            cd services
+            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+            python3 test_bipartite_graphs.py
+            python3 test_snet_grpc_wrapper.py
+
+
+  deploy:
+    docker:
+      - image: edyirdaw/snet_network_analytics:v1
+    steps:
+       - run:
+          name: Run deploy script
+          command: |
+            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "bash /home/eyob/src.sh"

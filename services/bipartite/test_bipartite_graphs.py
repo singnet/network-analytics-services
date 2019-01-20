@@ -4,10 +4,6 @@ import unittest
 import bipartite_graphs
 
 
-
-
-
-
 class TestBipartiteGraphs(unittest.TestCase):
 
 

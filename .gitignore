@@ -111,3 +111,11 @@ services/network_analytics_pb2.py
 services/network_analytics_pb2_grpc.py
 services/snet_wrapper.py
 services/test_snet_wrapper.py
+*~
+services/bipartite/service_spec/network_analytics_bipartite_pb2.py
+services/bipartite/service_spec/network_analytics_bipartite_pb2_grpc.py
+services/bipartite/network_analytics_pb2.py
+services/bipartite/network_analytics_pb2_grpc.py
+services/misc/Dockerfile_alternative
+services/robustness/service_spec_robustness/network_analytics_robustness_pb2.py
+services/robustness/service_spec_robustness/network_analytics_robustness_pb2_grpc.py
