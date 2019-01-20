@@ -92,6 +92,7 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         T = request.Type
 
 
+
         g = robustness.Robustness()
 
         try:
@@ -111,30 +112,29 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             print(source_nodes_in)
             print(target_nodes_in)
 
-            ret = g.most_important_nodes_edges(graph_in,source_nodes_in,target_nodes_in,T)    
+            ret = g.most_important_nodes_edges(graph_in,source_nodes_in,target_nodes_in,T,request.normalized,request.directed)
             
             resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1])
 
             if resp.status:
                 betweenness_centrality=ret[2]["betweenness_centrality"]
-                print([betweenness_centrality[1]][0])
 
                 if (T==0):
-                    node_resp=network_analytics_robustness_pb2.node_betweenness(node=[betweenness_centrality[0]][0], node_centrality_value=[betweenness_centrality[1]][0])
+                    node_resp=network_analytics_robustness_pb2.node_betweenness(node=betweenness_centrality[0], node_centrality_value=betweenness_centrality[1])
                     resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
                 
                 elif(T==1):
                     edges_resp = []
-                    for edge_ret in [betweenness_centrality[0]][0]:
+                    for edge_ret in betweenness_centrality[0]:
                         edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
-                    graph_resp=network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=[betweenness_centrality[1]][0])
+                    graph_resp=network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=betweenness_centrality[1])
                     resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
 
 
-            print('status:',resp.status)
-            print('message:',resp.message)
-            print('message:',resp.node_betweenness_centrality)
-            print('message:',resp.edge_betweenness_centrality)
+            # print('status:',resp.status)
+            # print('message:',resp.message)
+            # print('message:',resp.node_betweenness_centrality)
+            # print('message:',resp.edge_betweenness_centrality)
             print('Waiting for next call on port 5000.')
 
             return resp
