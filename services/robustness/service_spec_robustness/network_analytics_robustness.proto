@@ -19,14 +19,14 @@ message Graph{
 
 message node_betweenness{
 
-    string node = 1;
+    repeated string node = 1;
     double node_centrality_value = 2;
 
 }
 
 message edge_betweenness{
 
-    Edge edge = 1;
+    repeated Edge edge = 1;
     double edge_centrality_value = 2;
 
 }

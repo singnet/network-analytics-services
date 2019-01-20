@@ -124,10 +124,11 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                     resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
                 
                 elif(T==1):
-                    edge=list([betweenness_centrality[0]][0])
-                    proto_edge=network_analytics_robustness_pb2.Edge(edge=edge)
-                    edge_resp=network_analytics_robustness_pb2.edge_betweenness(edge=proto_edge, edge_centrality_value=[betweenness_centrality[1]][0])
-                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=edge_resp)
+                    edges_resp = []
+                    for edge_ret in [betweenness_centrality[0]][0]:
+                        edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
+                    graph_resp=network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=[betweenness_centrality[1]][0])
+                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
 
 
             print('status:',resp.status)
