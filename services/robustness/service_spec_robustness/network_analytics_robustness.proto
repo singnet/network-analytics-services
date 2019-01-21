@@ -4,12 +4,12 @@ syntax = "proto3";
 
 ///// Graph
 
-message Edge{
+message Edge {
 
     repeated string edge = 1;
 }
 
-message Graph{
+message Graph {
 
     repeated string nodes = 1;
     repeated Edge edges = 2;
@@ -17,14 +17,14 @@ message Graph{
 
 }
 
-message node_betweenness{
+message node_betweenness {
 
     repeated string node = 1;
     double node_centrality_value = 2;
 
 }
 
-message edge_betweenness{
+message edge_betweenness {
 
     repeated Edge edge = 1;
     double edge_centrality_value = 2;
@@ -35,7 +35,7 @@ message edge_betweenness{
 ///// End Graph
 
 
-message MinNodeGraphRequest{
+message MinNodesToRemoveRequest {
 
     Graph graph = 1;
     string source_node = 2;
@@ -43,7 +43,7 @@ message MinNodeGraphRequest{
 
 }
 
-message MinNodeGraphResponse{
+message MinNodesToRemoveResponse {
 
     bool status = 1;
     string message = 2;
@@ -51,9 +51,9 @@ message MinNodeGraphResponse{
     repeated Edge edges_output = 4;
 }
 
-///// End MinNodeGraph
+///// End MinNodesToRemove
 
-message MostImportantGraphRequest{
+message MostImportantNodesEdgesSubsetRequest {
 
     Graph graph = 1;
     repeated string source_nodes = 2;
@@ -62,10 +62,10 @@ message MostImportantGraphRequest{
     int32 Type=4; 
     bool normalized = 5;
     bool directed = 6;
-    
+
 }
 
-message MostImportantGraphResponse{
+message MostImportantNodesEdgesSubsetResponse {
 
     bool status = 1;
     string message = 2;
@@ -74,15 +74,15 @@ message MostImportantGraphResponse{
 }
 
 
-///// End MostImportantGraph
+///// End MostImportantNodesEdgesSubset
 
 ///// Network Analytics Robustness Services
 
 service NetowrkAnalyticsRobustness {
 
-    rpc MinNodeGraph (MinNodeGraphRequest) returns (MinNodeGraphResponse) {};
+    rpc MinNodesToRemove (MinNodesToRemoveRequest) returns (MinNodesToRemoveResponse) {};
 
-    rpc MostImportantGraph (MostImportantGraphRequest) returns (MostImportantGraphResponse) {};    
+    rpc MostImportantNodesEdgesSubset (MostImportantNodesEdgesSubsetRequest) returns (MostImportantNodesEdgesSubsetResponse) {};
 
 }
 

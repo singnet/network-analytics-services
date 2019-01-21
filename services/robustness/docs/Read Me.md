@@ -30,7 +30,7 @@ Projected Graph: Returns the projection of a bipartite graph on a given set of n
 
 robustness
 min_nodes_to_remove: gives the minimum set of nodes/edges to disconnect source node and targert node.
-most_important_nodes_edges: provides the betweness centrality of the subset
+most_important_nodes_edges_subset: provides the betweness centrality of the subset
 
 Input/Output Service Specification
 min_nodes_to_remove
@@ -89,13 +89,13 @@ Making sure that all elements in edges are contained in the graph.
 Making sure that source_node and target_node are contained in the graph.
 If any of the above is found to be true an error message will be returned.
 
-Service:most_important_nodes_edges
+Service:most_important_nodes_edges_subset
 Description: provides the betweness centrality of the subset.
 
  Detailed specs
-Service endpoint: most_important_nodes_edges
+Service endpoint: most_important_nodes_edges_subset
 
-most_important_nodes_edges(graph, source_nodes, target_nodes,)
+most_important_nodes_edges_subset(graph, source_nodes, target_nodes,)
 graph = {
     "nodes": ['1','2','3','4','5','6','7','8'],
     "edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
@@ -131,7 +131,7 @@ input name:directed - Describes weather the supplied graph shall be treated as a
 sample input: True or False (default is False)
 
 
-output: most_important_nodes_edges
+output: most_important_nodes_edges_subset
 
 sample output 1 for error free invocation where T=0 and node betweenness centrality is calculated:
 

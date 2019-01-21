@@ -17,7 +17,7 @@ Expected output
 Function call format: 
 MinNodeGraphRequest(graph=graph_in,source_node=source_node,target_node=target_node)
 
-2. most_important_nodes_edges
+2. most_important_nodes_edges_subset
 Expected input format 
 
 graph = {

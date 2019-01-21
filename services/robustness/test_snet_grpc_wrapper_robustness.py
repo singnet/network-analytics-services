@@ -26,7 +26,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         print('Server stopped')
 
     # Check MinNodesToRemove
-    def test_min_node_graph(self):
+    def test_min_nodes_to_remove(self):
 
 
         #
@@ -47,14 +47,14 @@ class TestSnetWrapperRobustness(unittest.TestCase):
 
         graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req)
 
-        graph_1 = network_analytics_robustness_pb2.MinNodeGraphRequest(graph=graph_in,source_node=source_node,target_node=target_node)
+        graph_1 = network_analytics_robustness_pb2.MinNodesToRemoveRequest(graph=graph_in,source_node=source_node,target_node=target_node)
 
-        response = stub.MinNodeGraph(graph_1)
+        response = stub.MinNodesToRemove(graph_1)
         print(response.status)
         print(response.message)
         print(response.nodes_output)
         print(response.edges_output)
-        expected = network_analytics_robustness_pb2.MinNodeGraphResponse(status=False, message='edge value at [0][1] is not a node')
+        expected = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False, message='edge value at [0][1] is not a node')
         self.assertEqual(response, expected)
 
 
@@ -77,9 +77,9 @@ class TestSnetWrapperRobustness(unittest.TestCase):
 
         graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req)
 
-        graph_1 = network_analytics_robustness_pb2.MinNodeGraphRequest(graph=graph_in,source_node=source_node,target_node=target_node)
+        graph_1 = network_analytics_robustness_pb2.MinNodesToRemoveRequest(graph=graph_in,source_node=source_node,target_node=target_node)
 
-        response = stub.MinNodeGraph(graph_1)
+        response = stub.MinNodesToRemove(graph_1)
         print(response.status)
         print(response.message)
         print(response.nodes_output)
@@ -87,14 +87,14 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         edges_resp = []
         for edge_ret in [['4', '6'], ['3', '6']]:
             edges_resp.append(network_analytics_robustness_pb2.Edge(edge=edge_ret))
-        expected = network_analytics_robustness_pb2.MinNodeGraphResponse(status=True, message='success',nodes_output=['4','3'],edges_output=edges_resp)
+        expected = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=True, message='success',nodes_output=['4','3'],edges_output=edges_resp)
         self.assertEqual(response.status,expected.status)
         self.assertEqual(response.message,expected.message)
         self.assertCountEqual(response.nodes_output,expected.nodes_output)
         self.assertCountEqual(response.edges_output,expected.edges_output)
 
     # Check MostImportantNodes
-    def test_most_import_graph(self):
+    def test_most_important_nodes_edges_subset(self):
 
 
         #
@@ -121,15 +121,15 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         else:
             graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"], edges=edges_req)
 
-        graph_1 = network_analytics_robustness_pb2.MostImportantGraphRequest(graph=graph_in, source_nodes=source_nodes,target_nodes=target_nodes)
+        graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in, source_nodes=source_nodes,target_nodes=target_nodes)
 
-        response = stub.MostImportantGraph(graph_1)
+        response = stub.MostImportantNodesEdgesSubset(graph_1)
         print(response.status)
         print(response.message)
         print(response.node_betweenness_centrality)
         print(response.edge_betweenness_centrality)
         expected = None
-        expected = network_analytics_robustness_pb2.MostImportantGraphResponse(status=False, message='source_nodes [1] doesn’t exist in graph')
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False, message='source_nodes [1] doesn’t exist in graph')
         self.assertEqual(response, expected)
 
 
@@ -157,16 +157,16 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         else:
             graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"], edges=edges_req)
 
-        graph_1 = network_analytics_robustness_pb2.MostImportantGraphRequest(graph=graph_in, source_nodes=source_nodes,target_nodes=target_nodes)
+        graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in, source_nodes=source_nodes,target_nodes=target_nodes)
 
-        response = stub.MostImportantGraph(graph_1)
+        response = stub.MostImportantNodesEdgesSubset(graph_1)
         print(response.status)
         print(response.message)
         print(response.node_betweenness_centrality)
         print(response.edge_betweenness_centrality)
         expected = None
         graph_resp = network_analytics_robustness_pb2.node_betweenness(node=['2','3'], node_centrality_value=1.0)
-        expected = network_analytics_robustness_pb2.MostImportantGraphResponse(status=True, message='success',node_betweenness_centrality=graph_resp)
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=True, message='success',node_betweenness_centrality=graph_resp)
         self.assertEqual(response, expected)
         # self.assertEqual(response.status, expected.status)
         # self.assertEqual(response.message, expected.message)
@@ -197,9 +197,9 @@ class TestSnetWrapperRobustness(unittest.TestCase):
             graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req)
 
 
-        graph_1 = network_analytics_robustness_pb2.MostImportantGraphRequest(graph=graph_in,source_nodes=source_nodes,target_nodes=target_nodes,Type=1)
+        graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in,source_nodes=source_nodes,target_nodes=target_nodes,Type=1)
 
-        response = stub.MostImportantGraph(graph_1)
+        response = stub.MostImportantNodesEdgesSubset(graph_1)
         print(response.status)
         print(response.message)
         print(response.node_betweenness_centrality)
@@ -209,7 +209,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         for edge_ret in [('2', '3'), ('3', '6')]:
             edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
         graph_resp = network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=1.0)
-        expected = network_analytics_robustness_pb2.MostImportantGraphResponse(status=True, message='success',edge_betweenness_centrality=graph_resp)
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=True, message='success',edge_betweenness_centrality=graph_resp)
         self.assertEqual(response,expected)
 
 
@@ -238,9 +238,9 @@ class TestSnetWrapperRobustness(unittest.TestCase):
             graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req)
 
 
-        graph_1 = network_analytics_robustness_pb2.MostImportantGraphRequest(graph=graph_in,source_nodes=source_nodes,target_nodes=target_nodes,Type=1,directed=True)
+        graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in,source_nodes=source_nodes,target_nodes=target_nodes,Type=1,directed=True)
 
-        response = stub.MostImportantGraph(graph_1)
+        response = stub.MostImportantNodesEdgesSubset(graph_1)
         print(response.status)
         print(response.message)
         print(response.node_betweenness_centrality)
@@ -250,7 +250,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         for edge_ret in [('9', '10'), ('10', '6')]:
             edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
         graph_resp = network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=2.0)
-        expected = network_analytics_robustness_pb2.MostImportantGraphResponse(status=True, message='success',edge_betweenness_centrality=graph_resp)
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=True, message='success',edge_betweenness_centrality=graph_resp)
         self.assertEqual(response,expected)
 
 
