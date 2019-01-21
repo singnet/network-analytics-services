@@ -88,7 +88,10 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         for edge_ret in [['4', '6'], ['3', '6']]:
             edges_resp.append(network_analytics_robustness_pb2.Edge(edge=edge_ret))
         expected = network_analytics_robustness_pb2.MinNodeGraphResponse(status=True, message='success',nodes_output=['4','3'],edges_output=edges_resp)
-        self.assertEqual(response, expected)
+        self.assertEqual(response.status,expected.status)
+        self.assertEqual(response.message,expected.message)
+        self.assertCountEqual(response.nodes_output,expected.nodes_output)
+        self.assertCountEqual(response.edges_output,expected.edges_output)
 
     # Check MostImportantNodes
     def test_most_import_graph(self):
@@ -165,6 +168,10 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         graph_resp = network_analytics_robustness_pb2.node_betweenness(node=['2','3'], node_centrality_value=1.0)
         expected = network_analytics_robustness_pb2.MostImportantGraphResponse(status=True, message='success',node_betweenness_centrality=graph_resp)
         self.assertEqual(response, expected)
+        # self.assertEqual(response.status, expected.status)
+        # self.assertEqual(response.message, expected.message)
+        # self.assertCountEqual(response.node_betweenness_centrality.node, expected.node_betweenness_centrality.node)
+        # self.assertEqual(response.node_betweenness_centrality.node_centrality_value, expected.node_betweenness_centrality.node_centrality_value)
 
         #
 
