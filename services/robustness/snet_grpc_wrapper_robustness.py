@@ -17,9 +17,9 @@ SLEEP_TIME = 86400 # One day
 
 class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessServicer):
 
-    def MinNodeGraph(self,request,context):
+    def MinNodesToRemove(self, request, context):
 
-        print('>>>>>>>>>>>>>>In endpoint MinNodeGraph')
+        print('>>>>>>>>>>>>>>In endpoint MinNodesToRemove')
         print(time.strftime("%c"))
 
         graph = request.graph
@@ -49,7 +49,7 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             print (ret[0])
             print (ret[1])
             
-            resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=ret[0],message=ret[1])
 
             if resp.status:
                 nodes_resp=ret[2]["nodes"]
@@ -58,7 +58,7 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                     edges_resp.append(network_analytics_robustness_pb2.Edge(edge=edge_ret))
 
                 print(edges_resp)
-                resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
+                resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
 
 
             print('status:',resp.status)
@@ -72,7 +72,7 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
 
             logging.exception("message")
 
-            resp = network_analytics_robustness_pb2.MinNodeGraphResponse(status=False,message=str(e))
+            resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False,message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)
@@ -81,9 +81,9 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             return resp
 
    
-    def MostImportantGraph(self,request,context):
+    def MostImportantNodesEdgesSubset(self, request, context):
 
-        print('>>>>>>>>>>>>>>In endpoint MostImportantGraph')
+        print('>>>>>>>>>>>>>>In endpoint MostImportantNodesEdgesSubset')
         print(time.strftime("%c"))
 
         graph = request.graph
@@ -112,23 +112,23 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             print(source_nodes_in)
             print(target_nodes_in)
 
-            ret = g.most_important_nodes_edges(graph_in,source_nodes_in,target_nodes_in,T,request.normalized,request.directed)
+            ret = g.most_important_nodes_edges_subset(graph_in, source_nodes_in, target_nodes_in, T, request.normalized, request.directed)
             
-            resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1])
+            resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1])
 
             if resp.status:
                 betweenness_centrality=ret[2]["betweenness_centrality"]
 
                 if (T==0):
                     node_resp=network_analytics_robustness_pb2.node_betweenness(node=betweenness_centrality[0], node_centrality_value=betweenness_centrality[1])
-                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
+                    resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1],node_betweenness_centrality=node_resp)
                 
                 elif(T==1):
                     edges_resp = []
                     for edge_ret in betweenness_centrality[0]:
                         edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
                     graph_resp=network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=betweenness_centrality[1])
-                    resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
+                    resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
 
 
             # print('status:',resp.status)
@@ -144,7 +144,7 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
 
             logging.exception("message")
 
-            resp = network_analytics_robustness_pb2.MostImportantGraphResponse(status=False,message=str(e))
+            resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False,message=str(e))
 
             print('status:', resp.status)
             print('message:', resp.message)

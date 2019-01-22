@@ -52,7 +52,7 @@ class Robustness:
 
         return [True, 'success', output]
 
-    def most_important_nodes_edges(self, graph, source_nodes, target_nodes, T=0, normalized=False, directed=False):
+    def most_important_nodes_edges_subset(self, graph, source_nodes, target_nodes, T=0, normalized=False, directed=False):
 
         cv=check_graph_validity.Graphs()
         ret = cv.is_valid_most_important_graph(graph, source_nodes, target_nodes,T)
