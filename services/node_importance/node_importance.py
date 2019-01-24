@@ -55,7 +55,7 @@ class NodeImportance:
 
         G = self.construct_graph(graph,directed)
 
-        result = nx.algorithms.distance_measures.center(G)
+        result = nx.algorithms.distance_measures.center(G,e=None,usebounds=False)
 
         output={}
         output["central_nodes"] = result
@@ -73,7 +73,7 @@ class NodeImportance:
         
         G = self.construct_graph(graph,directed)
 
-        result = nx.algorithms.distance_measures.eccentricity(G, v,sp)
+        result = nx.algorithms.distance_measures.eccentricity(G, v=None, sp=None)
 
         output={}
         output["eccentricity"] = result
