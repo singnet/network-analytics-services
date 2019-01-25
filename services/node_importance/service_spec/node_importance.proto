@@ -1,192 +1,192 @@
 syntax = "proto3";
 
 
-message Edge{
+message Edge {
     repeated string edge = 1;
 }
 
-message Graph{
+message Graph {
 
-    repeated string nodes = 2;
-    repeated Edge edges = 3;
-    repeated double weights = 4;
+    repeated string nodes = 1;
+    repeated Edge edges = 2;
+    repeated double weights = 3;
 
 }
 
 // find_central_nodes
 
-message CentralNodeInput{
-	Graph graph = 5;
-	string e = 9;
-	bool usebounds = 10;
-	bool directed = 11;
+message CentralNodeRequest {
+    Graph graph = 1;
+    string e = 2;
+    bool usebounds = 3;
+    bool directed = 4;
 
 }
 
-message CentralNodeOutput{
-	bool status = 6;
-	string message = 7;
-	string output = 8;
+message CentralNodeResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 
 }
-
 
 // find_eccentricity
 
-message EccentricityInput {
-	Graph graph = 5;
-	string v = 6;
-	string sp = 7;
-	bool directed = 8;
+message EccentricityRequest {
+    Graph graph = 1;
+    string v = 2;
+    string sp = 3;
+    bool directed = 4;
 
 
 }
 
-message EccentricityOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;
-	
+message EccentricityResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
+
 }
-
-
 
 // find_degree_centrality
 
-message DegreeCentralityInput {
-	Graph graph = 5;
-	bool directed = 6;
+message DegreeCentralityRequest {
+    Graph graph = 1;
+    bool directed = 2;
 }
 
-message DegreeCentralityOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;
-	
-}
+message DegreeCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 
+}
 
 // find_closeness_centrality
 
-message ClosenessCentralityInput {
-	Graph graph = 5;
-	string nodes = 6;
-	bool normalized = 7;
-	bool directed = 8;
+message ClosenessCentralityRequest {
+    Graph graph = 1;
+    string nodes = 2;
+    bool normalized = 3;
+    bool directed = 4;
 }
 
 
-message ClosenessCentralityOutput {
-	bool status = 9;
-	string message = 10;
-	string output = 11;
+message ClosenessCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
 
 // find_betweenness_centrality
 
-message BetweennessCentralityInput {
-	Graph graph = 5;
-	double k = 6;
-	bool normalized = 7;
-	bool weight = 8;
-	bool endpoints = 9;
-	double seed = 10;
-	bool directed = 11;
+message BetweennessCentralityRequest {
+    Graph graph = 1;
+    double k = 2;
+    bool normalized = 3;
+    bool weight = 4;
+    bool endpoints = 5;
+    double seed = 6;
+    bool directed = 7;
 
 }
 
-message BetweennessCentralityOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;
+message BetweennessCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
-
 
 // find_pagerank
 
-message PageRankInput{
-	Graph graph = 5;
-	double alpha = 6;
-	double personalization = 7;
-	double max_iter = 8;
-	double tol = 9;
-	string nstart =10 ; 
-	string weight = 11;
-	string dangling = 12;
-	bool directed = 13 ;
+message PageRankRequest {
+    Graph graph = 1;
+    double alpha = 2;
+    double personalization = 3;
+    double max_iter = 4;
+    double tol = 5;
+    string nstart = 6;
+    string weight = 7;
+    string dangling = 8;
+    bool directed = 9;
 }
 
 
-message PageRankOutput{
-	bool status = 6;
-	string message = 7;
-	string output = 8;	
+message PageRankResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
-
 
 //find_eigenvector_centrality
 
-message EigenvectorCentralityInput {
-	Graph graph = 5;
-	double max_iter = 6;
-	double tol = 7;
-	string nstart = 8;
-	string weight = 9;
-	bool directed = 10;
+message EigenvectorCentralityRequest {
+    Graph graph = 1;
+    double max_iter = 2;
+    double tol = 3;
+    string nstart = 4;
+    string weight = 5;
+    bool directed = 6;
 
 }
 
 
-message EigenvectorCentralityOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;	
+message EigenvectorCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
 
 // find_hub_matrix
-message HubMatrixInput {
-	Graph graph = 5;
-	string nodelist = 6;
-	bool directed = 7;
-	
+message HubMatrixRequest {
+    Graph graph = 1;
+    string nodelist = 2;
+    bool directed = 3;
+
 }
 
-message HubMatrixOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;
+message HubMatrixResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
-
-
 
 //find_authority_matrix
 
-message AuthorityMatrixInput {
-	Graph graph = 5;
-	string nodelist = 6;
-	bool directed = 7;
+message AuthorityMatrixRequest {
+    Graph graph = 1;
+    string nodelist = 2;
+    bool directed = 3;
 
 }
 
 
-message AuthorityMatrixOutput {
-	bool status = 6;
-	string message = 7;
-	string output = 8;
+message AuthorityMatrixResponse {
+    bool status = 1;
+    string message = 2;
+    string output = 3;
 }
 
 
-
-service NodeImportance { 
-	rpc CentralNodes (CentralNodeInput) returns (CentralNodeOutput) {};
-	rpc Eccentricity (EccentricityInput) returns (EccentricityOutput) {};
-	rpc DegreeCentrality (DegreeCentralityInput) returns (DegreeCentralityOutput) {};
-	rpc BetweennessCentrality (BetweennessCentralityInput) returns (BetweennessCentralityOutput) {};
-	rpc PageRank (PageRankInput) returns (PageRankOutput) {};
-	rpc EigenvectorCentrality (EigenvectorCentralityInput) returns (EigenvectorCentralityOutput) {};
-	rpc HubMatrix (HubMatrixInput) returns (HubMatrixOutput) {};
-	rpc AuthorityMatrix (AuthorityMatrixInput) returns (AuthorityMatrixOutput) {};
-	rpc ClosenessCentrality (ClosenessCentralityInput) returns (ClosenessCentralityOutput) {};
+service NodeImportance {
+    rpc CentralNodes (CentralNodeRequest) returns (CentralNodeResponse) {
+    };
+    rpc Eccentricity (EccentricityRequest) returns (EccentricityResponse) {
+    };
+    rpc DegreeCentrality (DegreeCentralityRequest) returns (DegreeCentralityResponse) {
+    };
+    rpc BetweennessCentrality (BetweennessCentralityRequest) returns (BetweennessCentralityResponse) {
+    };
+    rpc PageRank (PageRankRequest) returns (PageRankResponse) {
+    };
+    rpc EigenvectorCentrality (EigenvectorCentralityRequest) returns (EigenvectorCentralityResponse) {
+    };
+    rpc HubMatrix (HubMatrixRequest) returns (HubMatrixResponse) {
+    };
+    rpc AuthorityMatrix (AuthorityMatrixRequest) returns (AuthorityMatrixResponse) {
+    };
+    rpc ClosenessCentrality (ClosenessCentralityRequest) returns (ClosenessCentralityResponse) {
+    };
 }
 
 

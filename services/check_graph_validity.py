@@ -1,38 +1,45 @@
+<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
 
+=======
+# Tested on python3.6
+>>>>>>> node importance and several correcions phase 1
 
 class Graphs:
 
     def __init__(self):
 
-
         pass
 
-
-    def is_valid_graph(self,graph):
+    def is_valid_graph(self, graph):
         # make sure there are at least two nodes
-        if(not(isinstance(graph['nodes'],list))):
-            return [False, 'the supplied nodes is not type array']  
+        if not (isinstance(graph['nodes'], list)):
+            return [False, 'the supplied nodes is not type array']
 
-        # make sure the edges are in a proper format
-        if(not(isinstance(graph['edges'],list))):
-            return [False, 'the supplied edge is not type array']  
+            # make sure the edges are in a proper format
+        if not (isinstance(graph['edges'], list)):
+            return [False, 'the supplied edge is not type array']
 
-        # make sure there is at least more than one node given
-        if(len(graph['nodes']) < 1):
+            # make sure there is at least more than one node given
+        if len(graph['nodes']) < 1:
             return [False, 'graph should at least contain two nodes']
 
         # make sure there is at least one edge given
-        if(len(graph['edges']) < 1):
+        if len(graph['edges']) < 1:
             return [False, 'graph should at least contain one edge']
 
         # make sure the edges supplied are in proper format       
         for i in range(len(graph['edges'])):
-            if(not(isinstance(graph['edges'][i],list))):
+            if not (isinstance(graph['edges'][i], list)):
                 return [False, 'Element of the input array edges at zero-indexed poistion {} is not an array'.format(i)]
-            if(len(graph['edges'][i]) != 2):
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does not contain two nodes'.format(i)]
-            if graph['edges'][i][0] is '' or graph['edges'][i][0] is None or graph['edges'][i][1] is '' or graph['edges'][i][1] is None:
-                return [False, 'Element of the input array edges at zero-indexed poistion {} does contain an empty node'.format(i)]
+            if len(graph['edges'][i]) != 2:
+                return [False,
+                        'Element of the input array edges at zero-indexed poistion {} does not contain two nodes'.format(
+                            i)]
+            if graph['edges'][i][0] is '' or graph['edges'][i][0] is None or graph['edges'][i][1] is '' or \
+                    graph['edges'][i][1] is None:
+                return [False,
+                        'Element of the input array edges at zero-indexed poistion {} does contain an empty node'.format(
+                            i)]
 
             # make sure all nodes specified in the edges exist in the nodes list
             if(not(graph['edges'][i][0] in graph['nodes'])):
@@ -40,79 +47,87 @@ class Graphs:
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][0])]
                 #graph['nodes'].append(graph['edges'][i][0])
             if(not(graph['edges'][i][1] in graph['nodes'])):
-            	return [False, "edge value at ["+ str(i) + "][1] is not a node"]
+              return [False, "edge value at ["+ str(i) + "][1] is not a node"]
                 #return [False, 'node {} doesn’t exist in the graph'.format(graph['edges'][i][1])]
 
-        return [True] 
 
+                
 
-    def is_valid_min_nodes_graph(self,graph,source_node,target_node):
+        return [True]
 
-        isValid=self.is_valid_graph(graph)
+    def is_valid_min_nodes_graph(self, graph, source_node, target_node):
+
+        isValid = self.is_valid_graph(graph)
         print(isValid[0])
 
-        if(isValid[0]):  
-              #check source node and target node
-              if(not(source_node in graph['nodes'])):
+        if isValid[0]:
+            # check source node and target node
+            if not (source_node in graph['nodes']):
                 return [False, 'The source node doesn’t exist in graph']
-              if(not(target_node in graph['nodes'])):
-              	return [False, "The target node doesn’t exist in graph"]
-               
+            if not (target_node in graph['nodes']):
+                return [False, "The target node doesn’t exist in graph"]
 
-              return [True] 
+            return [True]
 
         else:
             return isValid
-        
-    
 
     def is_valid_most_important_graph(self, graph, source_nodes, target_nodes, T=0):
-        
-        #make sure graph is correct
-           
-        isValid=self.is_valid_graph(graph)
+
+        # make sure graph is correct
+
+        isValid = self.is_valid_graph(graph)
         print(isValid[0])
 
-        if(isValid[0]):  
-            if(not(isinstance(graph['edges'],list))):
+        if isValid[0]:
+            if not (isinstance(graph['edges'], list)):
                 return [False, 'the supplied edge is not type array']
 
             if 'weights' in graph:
-                if(not(isinstance(graph['weights'],list))):
+                if not (isinstance(graph['weights'], list)):
                     return [False, 'the supplied weight is not type array']
-                if(len(graph['edges']) != len(graph['weights'])):
+                if len(graph['edges']) != len(graph['weights']):
                     return [False, 'the length of supplied edges and weights does not match']
+<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
                 #the edge weights must be greater than zero     
                 if(0 in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']   
 
+=======
+                # the edge weights must be greater than zero
+                if not all(i > 0 for i in graph['weights']):
+                    return [False, 'all edge weights must be greater than zero']
+>>>>>>> node importance and several correcions phase 1
 
-            # make sure source_nodes and target_nodes are a 1D array
-            if(not(isinstance(source_nodes,list))):
+                    # make sure source_nodes and target_nodes are a 1D array
+            if not (isinstance(source_nodes, list)):
                 return [False, 'Element of the input source_nodes is not an array']
-            if(not(isinstance(target_nodes,list))):
+            if not (isinstance(target_nodes, list)):
                 return [False, 'Element of the input target_nodes is not an array']
 
-           
-           # make sure source_node and target_node exist in the graph
+            # make sure source_node and target_node exist in the graph
             for i in range(len(source_nodes)):
-            	if(not(source_nodes[i] in graph['nodes'])):
-                    return [False, "source_nodes ["+str(i)+"] doesn’t exist in graph"]
+                if not (source_nodes[i] in graph['nodes']):
+                    return [False, "source_nodes [" + str(i) + "] doesn’t exist in graph"]
 
             # make sure source_node and target_node exist in the graph
             for i in range(len(target_nodes)):
-            	if(not(target_nodes[i] in graph['nodes'])):
-                    return [False, "target_nodes ["+str(i)+"] doesn’t exist in graph"]        
+                if not (target_nodes[i] in graph['nodes']):
+                    return [False, "target_nodes [" + str(i) + "] doesn’t exist in graph"]
 
-            if(T != 0 and T != 1 ):
+            if T != 0 and T != 1:
                 return [False, 'Parameter T can only be 0 or 1']
 
-            return [True]    
+            return [True]
 
 
         else:
             return isValid
 
 
+<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
 
 __end__ = '__end__'
+=======
+__end__ = '__end__'
+>>>>>>> node importance and several correcions phase 1
