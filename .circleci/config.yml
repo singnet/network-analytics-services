@@ -40,7 +40,9 @@ jobs:
             python3 test_snet_grpc_wrapper_bipartite.py
             pwd
             echo 'unit tests for robustness'
-            cd .. &&  cd services/robustness
+            cd ..
+            pwd
+            cd services/robustness
             python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
             python3 test_robustness.py
             python3 test_snet_grpc_wrapper_robustness.py
