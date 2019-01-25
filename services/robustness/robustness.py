@@ -4,7 +4,8 @@ import sys
 import pathlib
 import os
 
-sys.path.append(str(pathlib.Path(os.path.abspath('')).parents[0])+'/network-analytics-services')
+sys.path.append(str(pathlib.Path(os.path.abspath('')).parents[1]))
+
 
 import networkx as nx
 

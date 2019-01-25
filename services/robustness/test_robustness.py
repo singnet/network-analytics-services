@@ -64,7 +64,7 @@ class TestRobustness(unittest.TestCase):
         source_node = 1
         target_node = 4
         ret = b.min_nodes_to_remove(graph, source_node, target_node)
-        self.assertEqual([False, 'The target node doesn’t exist in graph',{}], ret)
+        self.assertEqual([False, 'The target node does not exist in graph',{}], ret)
         graph = {
         "nodes": [1,2,3],
         "edges": [[1,2],[2,3]]
@@ -72,7 +72,7 @@ class TestRobustness(unittest.TestCase):
         source_node = 5
         target_node = 3
         ret = b.min_nodes_to_remove(graph, source_node, target_node)
-        self.assertEqual([False, 'The source node doesn’t exist in graph',{}],ret)
+        self.assertEqual([False, 'The source node does not exist in graph',{}],ret)
         graph = {
         "nodes": [1,2,3,4],
         "edges": [[1,2],[2,3]]
@@ -184,12 +184,12 @@ class TestRobustness(unittest.TestCase):
         source_nodes = [5,7,10]
         target_nodes = [6]
         ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes, 0)
-        self.assertEqual([False, 'source_nodes [2] doesn’t exist in graph',{}],ret) #everything in source/target nodes must be in graph
+        self.assertEqual([False, 'source_nodes [2] does not exist in graph',{}],ret) #everything in source/target nodes must be in graph
 
         source_nodes = [5,7]
         target_nodes = [6,11]
         ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes)
-        self.assertEqual([False, 'target_nodes [1] doesn’t exist in graph',{}],ret)
+        self.assertEqual([False, 'target_nodes [1] does not exist in graph',{}],ret)
 
 
         graph = {

@@ -129,7 +129,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         print(response.node_betweenness_centrality)
         print(response.edge_betweenness_centrality)
         expected = None
-        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False, message='source_nodes [1] doesn’t exist in graph')
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False, message='source_nodes [1] does not exist in graph')
         self.assertEqual(response, expected)
 
 

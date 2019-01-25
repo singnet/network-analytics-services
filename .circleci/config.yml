@@ -30,10 +30,20 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            cd services
-            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+            echo 'starting ...'
+            pwd
+            echo 'unit tests for bipartite'
+            cd services/bipartite
+            pwd
+            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
             python3 test_bipartite_graphs.py
-            python3 test_snet_grpc_wrapper.py
+            python3 test_snet_grpc_wrapper_bipartite.py
+            pwd
+            echo 'unit tests for robustness'
+            cd ../robustness
+            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
+            python3 test_robustness.py
+            python3 test_snet_grpc_wrapper_robustness.py
 
 
   deploy:
