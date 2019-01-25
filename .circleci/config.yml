@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            echo 'starting ....'
+            echo 'starting ...'
             pwd
             echo 'unit tests for bipartite'
             cd services/bipartite
