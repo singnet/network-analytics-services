@@ -30,6 +30,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
+            echo 'starting ...'
             pwd
             cd services
             python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
