@@ -32,10 +32,10 @@ jobs:
           command: |
             echo 'starting ...'
             pwd
-            cd services
-            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. network_analytics.proto
+            cd /home/netk/dep/network-analytics-services/services/bipartite
+            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
             python3 test_bipartite_graphs.py
-            python3 test_snet_grpc_wrapper.py
+            python3 test_snet_grpc_wrapper_bipartite.py
 
 
   deploy:
