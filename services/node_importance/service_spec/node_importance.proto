@@ -5,6 +5,8 @@ message Edge {
     repeated string edge = 1;
 }
 
+
+
 message Graph {
 
     repeated string nodes = 1;
@@ -13,11 +15,16 @@ message Graph {
 
 }
 
+
+message OutputNodesList {
+    repeated string output_nodes = 1;
+}
+
+
 // find_central_nodes
 
 message CentralNodeRequest {
     Graph graph = 1;
-    string e = 2;
     bool usebounds = 3;
     bool directed = 4;
 
@@ -26,13 +33,13 @@ message CentralNodeRequest {
 message CentralNodeResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    OutputNodesList output = 3;
 
 }
 
 // find_eccentricity
 
-message EccentricityRequest {
+message PeripheryRequest {
     Graph graph = 1;
     string v = 2;
     string sp = 3;
@@ -41,10 +48,10 @@ message EccentricityRequest {
 
 }
 
-message EccentricityResponse {
+message PeripheryResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    OutputNodesList output = 3;
 
 }
 
@@ -171,7 +178,7 @@ message AuthorityMatrixResponse {
 service NodeImportance {
     rpc CentralNodes (CentralNodeRequest) returns (CentralNodeResponse) {
     };
-    rpc Eccentricity (EccentricityRequest) returns (EccentricityResponse) {
+    rpc Periphery (PeripheryRequest) returns (PeripheryResponse) {
     };
     rpc DegreeCentrality (DegreeCentralityRequest) returns (DegreeCentralityResponse) {
     };

@@ -23,12 +23,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
+        temp_reponce = ni.find_central_nodes(graph_in)
+        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_reponce[2]['central_nodes'])
 
-        responce = node_importance_pb2.CentralNodeResponse()
-        responce.status, responce.message, responce.output = ni.find_central_nodes(graph_in)
+        responce = node_importance_pb2.CentralNodeResponse(status=temp_reponce[0], message=temp_reponce[1],
+                                                           output=output_nodes_list)
         return responce
 
-    def Eccentricity(self, request, context):
+    def Periphery(self, request, context):
         ni = NodeImportance()
         graph = request.graph
 
@@ -40,8 +42,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        responce = node_importance_pb2.EccentricityResponse()
-        responce.status, responce.message, responce.Response = ni.find_eccentricity(graph_in)
+        temp_reponce = ni.find_Periphery(graph_in)
+
+        print(temp_reponce)
+        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_reponce[2]['periphery'])
+
+        responce = node_importance_pb2.PeripheryResponse(status=temp_reponce[0], message=temp_reponce[1],
+                                                         output=output_nodes_list)
+        print("here",responce)
         return responce
 
     def ClosenessCentrality(self, request, context):

@@ -23,11 +23,9 @@ class ClientTest():
             return [False, str(e), {}]
 
         try:
-
             graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=graph['weights'])
             Request_graph = node_importance_pb2.CentralNodeRequest(graph=graph_in, directed=False)
             responce = stub.CentralNodes(Request_graph)
-            print(responce.status,responce.message,responce.output)
             return responce
         except Exception as e:
             return [False, str(e), {}]

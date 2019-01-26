@@ -47,7 +47,7 @@ class NodeImportance:
         output = {"central_nodes": result}
         return True, 'success', output
 
-    def find_eccentricity(self, graph, v=None, sp=None, directed=False):
+    def find_Periphery(self, graph, e=None, usebounds=False, directed=False):
 
         ret = self.cv.is_valid_graph(graph)
 
@@ -56,9 +56,9 @@ class NodeImportance:
 
         G = self.construct_graph(graph, directed)
 
-        result = nx.algorithms.distance_measures.eccentricity(G, v, sp)
+        result = nx.algorithms.distance_measures.periphery(G, e, usebounds)
 
-        output = {"eccentricity": result}
+        output = {"periphery": result}
 
         return True, 'success', output
 

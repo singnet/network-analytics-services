@@ -6,6 +6,9 @@ import numpy as np
 from client import ClientTest
 from server import *
 
+from service_spec import node_importance_pb2
+from service_spec import node_importance_pb2_grpc
+
 
 class TestNodeImportance(unittest.TestCase):
 
@@ -33,43 +36,57 @@ class TestNodeImportance(unittest.TestCase):
         }
 
     def test_find_central_nodes(self):
+        expected_result = ['2', '3']
+        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=expected_result)
+
         result = self.client.find_central(self.stub, self.graph)
-        print(result)
-        # self.assertEqual(result.status, True)
-        # self.assertEqual(result.message, 'success')
-        # self.assertEqual(result.output, {'central_nodes': ['2', '3']})
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertEqual(result.output, output_nodes_list)
 
-        # # Graph With No Nodes
-        # result = self.client.find_central(self.stub, self.graph_01)
-        # self.assertEqual(result[0], 'False')
-        # self.assertEqual(result[1], "'nodes'")
-        # self.assertEqual(result[2], {})
-        #
-        # # Graph With No edges
-        # result = self.client.find_central(self.stub, self.graph_02)
-        # self.assertEqual(result[0], 'False')
-        # self.assertEqual(result[1], "'edges'")
-        # self.assertEqual(result[2], {})
+        # Graph With No Nodes
+        result = self.client.find_central(self.stub, self.graph_01)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'nodes'")
+        self.assertEqual(result[2], {})
 
-    #
-    # def test_find_eccentricity(self):
-    # 	result = self.client.find_eccentricity(self.stub,self.graph)
-    # 	self.assertEqual(result.status,True)
-    # 	self.assertEqual(result.message,'success')
-    # 	self.assertEqual(result.output,"{'eccentricity': {'1': 3, '2': 2, '3': 2, '4': 3, '5': 3, '6': 3, '7': 3, '8': 3}}")
-    #
-    # 	# Graph With No Nodes
-    # 	result = self.client.find_eccentricity(self.stub,self.graph_01)
-    # 	self.assertEqual(result[0],'False')
-    # 	self.assertEqual(result[1],"'nodes'")
-    # 	self.assertEqual(result[2],{})
-    #
-    # 	# Graph With No edges
-    # 	result = self.client.find_eccentricity(self.stub,self.graph_02)
-    # 	self.assertEqual(result[0],'False')
-    # 	self.assertEqual(result[1],"'edges'")
-    # 	self.assertEqual(result[2],{})
-    #
+        # Graph With No edges
+        result = self.client.find_central(self.stub, self.graph_02)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'edges'")
+        self.assertEqual(result[2], {})
+
+    def test_find_Periphery(self):
+        expected_result = ['1', '4', '5', '6', '7', '8']
+        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=expected_result)
+
+        result = self.client.find_Periphery(self.stub, self.graph)
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertEqual(result.output,output_nodes_list)
+
+        # Graph With No Nodes
+        result = self.client.find_Periphery(self.stub, self.graph_01)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'nodes'")
+        self.assertEqual(result[2], {})
+
+        # Graph With No edges
+        result = self.client.find_Periphery(self.stub, self.graph_02)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'edges'")
+        self.assertEqual(result[2], {})
+
+        # output
+        # {
+        #     output_nodes: "1"
+        #     output_nodes: "4"
+        #     output_nodes: "5"
+        #     output_nodes: "6"
+        #     output_nodes: "7"
+        #     output_nodes: "8"
+        # }
+
     # def test_find_degree_centrality(self):
     # 	result = self.client.find_degree_centrality(self.stub,self.graph)
     # 	self.assertEqual(result.status,True)
