@@ -157,8 +157,8 @@ def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     network_analytics_robustness_pb2_grpc.add_NetowrkAnalyticsRobustnessServicer_to_server(NetworkAnalyticsRobustness(), server)
-    print('Starting server. Listening on port 5000.')
-    server.add_insecure_port('127.0.0.1:5000')
+    print('Starting server. Listening on port 5002.')
+    server.add_insecure_port('127.0.0.1:5002')
     server.start()
     try:
         while True:
