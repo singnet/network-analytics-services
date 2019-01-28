@@ -53,4 +53,5 @@ jobs:
        - run:
           name: Run deploy script
           command: |
-            ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "bash /home/eyob/src.sh"
+            echo 'starting deploy ...'
+            #ssh -o StrictHostKeyChecking=no  $SSH_USER_1@$SSH_HOST_1 "bash /home/eyob/src.sh"
