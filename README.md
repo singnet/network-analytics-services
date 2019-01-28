@@ -1,5 +1,7 @@
 [![SingnetLogo](docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')](https://singularitynet.io/)
 
+[![CircleCI](https://circleci.com/gh/singnet/network-analytics-services.svg?style=svg)](https://circleci.com/gh/singnet/network-analytics-services)
+
 # Network Analytics Services
 
 This repository contains various network analytics services for SingularityNET. The services are wrapped using
