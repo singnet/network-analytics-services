@@ -59,19 +59,27 @@ class NodeImportance:
         result = nx.algorithms.distance_measures.periphery(G, e, usebounds)
 
         output = {"periphery": result}
-
         return True, 'success', output
 
-    def find_degree_centrality(self, graph, directed=False):
+    def find_degree_centrality(self, graph, in_out=None, directed=False):
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
             return ret
 
-        G = self.construct_graph(graph, directed)
-        result = nx.algorithms.centrality.degree_centrality(G)
-
-        output = {"degree_centrality": result}
+        if in_out == 'in':
+            G = self.construct_graph(graph, directed=True)
+            result = nx.algorithms.centrality.in_degree_centrality(G)
+        elif in_out == 'out':
+            G = self.construct_graph(graph, directed=True)
+            result = nx.algorithms.centrality.out_degree_centrality(G)
+        else:
+            G = self.construct_graph(graph, directed)
+            result = nx.algorithms.centrality.degree_centrality(G)
+        if in_out is not None:
+            output = {str(in_out) + "degree_centrality": result}
+        else:
+            output = {"degree_centrality": result}
 
         return True, 'success', output
 
@@ -82,11 +90,8 @@ class NodeImportance:
         if not ret:
             return ret
         G = self.construct_graph(graph, directed)
-
         result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes, normalized)
-
         output = {"closeness_centrality": result}
-
         return True, 'success', output
 
     def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=None, endpoints=False, seed=None,
@@ -111,10 +116,8 @@ class NodeImportance:
         if not ret:
             return ret
         G = self.construct_graph(graph, directed)
-
         result = nx.algorithms.link_analysis.pagerank_alg.pagerank(G, alpha, personalization, max_iter,
                                                                    tol, nstart, weight, dangling)
-
         output = {"pagerank": result}
 
         return True, 'success', output
@@ -132,25 +135,17 @@ class NodeImportance:
 
         return True, 'success', output
 
-    def find_hub_matrix(self, graph, nodelist=None, directed=False):
+    def find_hits(self, graph, nodelist=None, mode='hub', directed=False):
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
             return ret
         G = self.construct_graph(graph, directed)
 
-        result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G, nodelist)
+        if mode == 'authority':
+            result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G, nodelist)
+        else:
+            result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G, nodelist)
 
-        return True, 'success', result
-
-    def find_authority_matrix(self, graph, nodelist=None, directed=False):
-        ret = self.cv.is_valid_graph(graph)
-
-        if not ret:
-            print("Input is not a Valid graph")
-            return False
-        G = self.construct_graph(graph, directed)
-
-        result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G, nodelist)
-
-        return True, 'success', result
+        print("results",result)
+        return True, 'success', result.tolist()

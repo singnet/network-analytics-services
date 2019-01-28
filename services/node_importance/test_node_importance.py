@@ -38,7 +38,7 @@ class TestNodeImportance(unittest.TestCase):
         self.graph_04 = {
             "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
-            "weights": [3, 4, 5, 6, 7, 8, 9]
+            "weights": [3, 4, 5, 6, 7]
         }
 
     def test_find_central_nodes(self):
@@ -47,11 +47,11 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2], {'central_nodes': ['2', '3']})
 
-    def test_find_eccentricity(self):
-        result = self.N.find_eccentricity(self.graph)
+    def test_find_Periphery(self):
+        result = self.N.find_Periphery(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'eccentricity': {'1': 3, '2': 2, '3': 2, '4': 3, '5': 3, '6': 3, '7': 3, '8': 3}})
+        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
 
     def test_find_degree_centrality(self):
         result = self.N.find_degree_centrality(self.graph)
@@ -61,6 +61,24 @@ class TestNodeImportance(unittest.TestCase):
             'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
                                   '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
                                   '7': 0.14285714285714285, '8': 0.14285714285714285}})
+
+        result = self.N.find_degree_centrality(self.graph, in_out='out')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2], {
+            'outdegree_centrality': {'1': 0.2857142857142857, '2': 0.42857142857142855,
+                                     '3': 0.42857142857142855, '4': 0.0,
+                                     '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}})
+
+        result = self.N.find_degree_centrality(self.graph, in_out='in')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2], {
+            'indegree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
+                                    '4': 0.2857142857142857,
+                                    '5': 0.14285714285714285, '6': 0.14285714285714285,
+                                    '7': 0.14285714285714285,
+                                    '8': 0.14285714285714285}})
 
     def test_find_closeness_centrality(self):
         result = self.N.find_closeness_centrality(self.graph, ['8', '8'])
@@ -101,25 +119,16 @@ class TestNodeImportance(unittest.TestCase):
                                                                 '5': 0.2135666184274351, '6': 0.2135666184274351,
                                                                 '7': 0.2135666184274351, '8': 0.2135666184274351}})
 
-    #
-    # def test_find_hub_matrix(self):
-    #     result = self.N.find_hub_matrix(self.graph)
-    #     self.assertEqual(result[0], True)
-    #     self.assertEqual(result[1], 'success')
-    #     print(type(result[2]))
-    #     self.assertEqual(repr(result[2]),
-    #                      '[[ 25.   0.  43.   0.  18.   0.  27.   0.]\n [  0. 151.   0.  47.   0.  40.   0.  50.]\n'
-    #                      ' [ 43.   0. 238.   0.  30.   0.  45.   0.]\n [  0.  47.   0.  65.   0.  56.   0.  70.]\n'
-    #                      ' [ 18.   0.  30.   0.  36.   0.  54.   0.]\n [  0.  40.   0.  56.   0.  64.   0.  80.]\n'
-    #                      ' [ 27.   0.  45.   0.  54.   0.  81.   0.]\n [  0.  50.   0.  70.   0.  80.   0. 100.]]')
+    def test_find_hits(self):
+        result = self.N.find_hits(self.graph, mode='hub')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2],
+                         [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0], [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
+                          [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0], [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
+                          [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0], [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
+                          [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0], [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]])
 
-    # def test_find_authority_matrix(self):
-    #     result = self.N.find_authority_matrix(self.graph)
-    #     self.assertEqual(result[0], True)
-    #     self.assertEqual(result[1], 'success')
-    #     self.assertEqual(result[2],
-    #                      '[[ 25.   0.  43.   0.  18.   0.  27.   0.]\n [  0. 151.   0.  47.   0.  40.   0.  50.]\n [ 43.   0. 238.   0.  30.   0.  45.   0.]\n [  0.  47.   0.  65.   0.  56.   0.  70.]\n [ 18.   0.  30.   0.  36.   0.  54.   0.]\n [  0.  40.   0.  56.   0.  64.   0.  80.]\n [ 27.   0.  45.   0.  54.   0.  81.   0.]\n [  0.  50.   0.  70.   0.  80.   0. 100.]]')
-    #
     def test_construct_graph(self):
         # Graph without nodes Test
         result = self.N.construct_graph(self.graph_01)
@@ -140,8 +149,7 @@ class TestNodeImportance(unittest.TestCase):
     def test_check_graph_validity(self):
         # Graph without right number of weights
         result = self.cv.is_valid_graph(self.graph_04)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], 'number of weights must match number of edges')
+        self.assertEqual(result[0], True)
 
 
 if __name__ == '__main__':

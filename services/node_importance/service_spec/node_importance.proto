@@ -20,6 +20,12 @@ message OutputNodesList {
     repeated string output_nodes = 1;
 }
 
+message DictOutput{
+    repeated string edge = 1;
+    repeated float output = 2;
+}
+
+
 
 // find_central_nodes
 
@@ -59,13 +65,14 @@ message PeripheryResponse {
 
 message DegreeCentralityRequest {
     Graph graph = 1;
-    bool directed = 2;
+    string in_out = 2;
+    bool directed = 3;
 }
 
 message DegreeCentralityResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 
 }
 
@@ -82,14 +89,14 @@ message ClosenessCentralityRequest {
 message ClosenessCentralityResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 }
 
 // find_betweenness_centrality
 
 message BetweennessCentralityRequest {
     Graph graph = 1;
-    double k = 2;
+    int32 k = 2;
     bool normalized = 3;
     bool weight = 4;
     bool endpoints = 5;
@@ -101,7 +108,7 @@ message BetweennessCentralityRequest {
 message BetweennessCentralityResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 }
 
 // find_pagerank
@@ -122,7 +129,7 @@ message PageRankRequest {
 message PageRankResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 }
 
 //find_eigenvector_centrality
@@ -141,38 +148,24 @@ message EigenvectorCentralityRequest {
 message EigenvectorCentralityResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 }
 
-// find_hub_matrix
-message HubMatrixRequest {
+// find_hits
+message HitsRequest {
     Graph graph = 1;
     string nodelist = 2;
-    bool directed = 3;
+    string mode = 3;
+    bool directed = 4;
 
 }
 
-message HubMatrixResponse {
+message HitsResponse {
     bool status = 1;
     string message = 2;
-    string output = 3;
+    DictOutput output = 3;
 }
 
-//find_authority_matrix
-
-message AuthorityMatrixRequest {
-    Graph graph = 1;
-    string nodelist = 2;
-    bool directed = 3;
-
-}
-
-
-message AuthorityMatrixResponse {
-    bool status = 1;
-    string message = 2;
-    string output = 3;
-}
 
 
 service NodeImportance {
@@ -188,9 +181,7 @@ service NodeImportance {
     };
     rpc EigenvectorCentrality (EigenvectorCentralityRequest) returns (EigenvectorCentralityResponse) {
     };
-    rpc HubMatrix (HubMatrixRequest) returns (HubMatrixResponse) {
-    };
-    rpc AuthorityMatrix (AuthorityMatrixRequest) returns (AuthorityMatrixResponse) {
+    rpc Hits (HitsRequest) returns (HitsResponse) {
     };
     rpc ClosenessCentrality (ClosenessCentralityRequest) returns (ClosenessCentralityResponse) {
     };
