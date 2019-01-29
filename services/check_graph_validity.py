@@ -53,6 +53,14 @@ class Graphs:
 
                 
 
+        # Weight related test
+        try:
+            if len(graph['weights']) != 0 and len(graph['weights']) != len(graph['edges']):
+                return [False, 'weights and edges must be equal']
+        except Exception as e:
+            # weight is empty
+            pass
+
         return [True]
 
     def is_valid_min_nodes_graph(self, graph, source_node, target_node):

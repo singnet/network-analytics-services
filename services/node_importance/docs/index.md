@@ -13,13 +13,12 @@ This service have The following functionalities
        
        - find_central_nodes
        - find_eccentricity
-       - find_degree_centrality
+       - find_Periphery
        - find_closeness_centrality
        - find_betweenness_centrality
        - find_pagerank
        - find_eigenvector_centrality
-       - find_hub_matrix
-       - find_authority_matrix
+       - find_Hits
 
 
 The user must provide a request satisfying the [proto descriptions](https://github.com/IsraelAbebe/network-analytics-services/blob/master/services/node_importance/service_spec/node_importance.proto) given.
@@ -33,40 +32,57 @@ graph = {
 	"weights": [3,4,5,6,7,8,9,10]
 }
 ```
-### Example output
-All Outputs have the following form:
-```bash
-message CentralNodeOutput{
-	bool status = 6;
-	string message = 7;
-	string output = 8;
-  
-}
-```
 
-### Sample Outputs
+### Sample  Outputs
 #### Find Central Nodes [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.distance_measures.center.html?highlight=algorithms%20distance_measures%20center#networkx.algorithms.distance_measures.center)
 An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'central_nodes\': [\'2\', \'3\']}"
+output {
+  output_nodes: "2"
+  output_nodes: "3"
+}
 ```
 
-#### Find Eccentricity [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.distance_measures.eccentricity.html?highlight=algorithms%20distance_measures%20eccentricity#networkx.algorithms.distance_measures.eccentricity)
+#### Find Periphery [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.distance_measures.periphery.html#networkx.algorithms.distance_measures.periphery)
 An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'eccentricity\': {\'1\': 3, \'2\': 2, \'3\': 2, \'4\': 3, \'5\': 3, \'6\': 3, \'7\': 3, \'8\': 3}}"
+output {
+  output_nodes: "1"
+  output_nodes: "4"
+  output_nodes: "5"
+  output_nodes: "6"
+  output_nodes: "7"
+  output_nodes: "8"
+}
 ```
  
-#### Find Degree Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.bipartite.centrality.degree_centrality.html?highlight=algorithms%20centrality%20degree_centrality#networkx.algorithms.bipartite.centrality.degree_centrality)
+#### Find Degree Centrality [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html)
 An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'degree_centrality\': {\'1\': 0.2857142857142857, \'2\': 0.5714285714285714, \'3\': 0.5714285714285714, \'4\': 0.2857142857142857, \'5\': 0.14285714285714285, \'6\': 0.14285714285714285, \'7\': 0.14285714285714285, \'8\': 0.14285714285714285}}"
+output {
+  edge: "1"
+  edge: "2"
+  edge: "3"
+  edge: "4"
+  edge: "5"
+  edge: "6"
+  edge: "7"
+  edge: "8"
+  output: 0.2857142984867096
+  output: 0.4285714328289032
+  output: 0.4285714328289032
+  output: 0.0
+  output: 0.0
+  output: 0.0
+  output: 0.0
+  output: 0.0
+}
 ```
 
 #### Find Closeness Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.bipartite.centrality.closeness_centrality.html?highlight=algorithms%20bipartite%20centrality%20closeness_centrality#networkx.algorithms.bipartite.centrality.closeness_centrality)
@@ -74,7 +90,24 @@ An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'closeness_centrality\': {\'1\': 0.5714285714285714, \'2\': 0.8, \'3\': 1.2, \'6\': 0.75, \'8\': 0.75, \'7\': 0.75, \'4\': 0.8571428571428571, \'5\': 0.75}}"
+output {
+  edge: "1"
+  edge: "2"
+  edge: "8"
+  edge: "4"
+  edge: "5"
+  edge: "7"
+  edge: "3"
+  edge: "6"
+  output: 0.5714285969734192
+  output: 0.800000011920929
+  output: 0.75
+  output: 0.8571428656578064
+  output: 0.75
+  output: 0.75
+  output: 1.2000000476837158
+  output: 0.75
+}
 ```
 
 #### Find Betweenness Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.bipartite.centrality.betweenness_centrality.html?highlight=algorithms%20centrality%20betweenness_centrality#networkx.algorithms.bipartite.centrality.betweenness_centrality)
@@ -82,7 +115,25 @@ An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'betweenness_centrality\': {\'1\': 0.07142857142857142, \'2\': 0.5952380952380952, \'3\': 0.5952380952380952, \'4\': 0.07142857142857142, \'5\': 0.0, \'6\': 0.0, \'7\': 0.0, \'8\': 0.0}}"
+output {
+  edge: "1"
+  edge: "2"
+  edge: "3"
+  edge: "4"
+  edge: "5"
+  edge: "6"
+  edge: "7"
+  edge: "8"
+  output: 0.0714285746216774
+  output: 0.5952380895614624
+  output: 0.5952380895614624
+  output: 0.0714285746216774
+  output: 0.0
+  output: 0.0
+  output: 0.0
+  output: 0.0
+}
+
 ```
 
 #### Find Page Rank [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html#networkx.algorithms.link_analysis.pagerank_alg.pagerank)
@@ -90,7 +141,24 @@ An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'pagerank\': {\'1\': 0.12113884655309373, \'2\': 0.23955113566709454, \'3\': 0.23955113566709454, \'4\': 0.12113884655309375, \'5\': 0.06965500888990583, \'6\': 0.06965500888990583, \'7\': 0.06965500888990583, \'8\': 0.06965500888990583}}"
+output {
+  edge: "1"
+  edge: "2"
+  edge: "3"
+  edge: "4"
+  edge: "5"
+  edge: "6"
+  edge: "7"
+  edge: "8"
+  output: 0.07655997574329376
+  output: 0.21930024027824402
+  output: 0.264370322227478
+  output: 0.10837001353502274
+  output: 0.06737788021564484
+  output: 0.0786743313074112
+  output: 0.09169182181358337
+  output: 0.09365541487932205
+}
 ```
 
 #### Find Eigen Vector Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.centrality.eigenvector_centrality.html?highlight=algorithms%20centrality%20eigenvector_centrality#networkx.algorithms.centrality.eigenvector_centrality)
@@ -98,23 +166,30 @@ An example result obtained after passing the Input
 ```bash
 status: true
 message: "success"
-output: "{\'eigenvector_centrality\': {\'1\': 0.35775018836999806, \'2\': 0.5298994260311778, \'3\': 0.5298994260311778, \'4\': 0.35775018836999806, \'5\': 0.2135666184274351, \'6\': 0.2135666184274351, \'7\': 0.2135666184274351, \'8\': 0.2135666184274351}}"
+output {
+  edge: "1"
+  edge: "2"
+  edge: "3"
+  edge: "4"
+  edge: "5"
+  edge: "6"
+  edge: "7"
+  edge: "8"
+  output: 0.35775017738342285
+  output: 0.5298994183540344
+  output: 0.5298994183540344
+  output: 0.35775017738342285
+  output: 0.2135666161775589
+  output: 0.2135666161775589
+  output: 0.2135666161775589
+  output: 0.2135666161775589
+}
 ```
 
-#### Find Hub Matrix [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.hub_matrix.html?highlight=algorithms%20link_analysis%20hits_alg%20hub_matrix#networkx.algorithms.link_analysis.hits_alg.hub_matrix)
+#### Find Hits [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/link_analysis.html)
 An example result obtained after passing the Input
 ```bash
-status: true
-message: "success"
-output: "[[2. 0. 2. 0. 1. 0. 1. 0.]\n [0. 4. 0. 2. 0. 1. 0. 1.]\n [2. 0. 4. 0. 1. 0. 1. 0.]\n [0. 2. 0. 2. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]]"
-```
-
-#### Find Authority Matrix [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.hits_alg.authority_matrix.html)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
-output: "[[2. 0. 2. 0. 1. 0. 1. 0.]\n [0. 4. 0. 2. 0. 1. 0. 1.]\n [2. 0. 4. 0. 1. 0. 1. 0.]\n [0. 2. 0. 2. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]]"
+{'hub_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0], [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0], [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0], [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0], [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0], [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0], [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0], [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
 ```
 
 

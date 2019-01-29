@@ -8,9 +8,6 @@ from service_spec import node_importance_pb2_grpc
 from node_importance import NodeImportance
 
 
-# import graphs
-
-
 class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
     def CentralNodes(self, request, context):
         ni = NodeImportance()
@@ -27,7 +24,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_central_nodes(graph_in)
+        temp_response = ni.find_central_nodes(graph=graph_in, usebounds=request.usebounds)
         output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_response[2]['central_nodes'])
         responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
                                                            output=output_nodes_list)
@@ -48,8 +45,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
-
-        temp_reponse = ni.find_Periphery(graph_in)
+        temp_reponse = ni.find_Periphery(graph=graph_in, usebounds=request.usebounds)
         output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_reponse[2]['periphery'])
         responce = node_importance_pb2.PeripheryResponse(status=temp_reponse[0], message=temp_reponse[1],
                                                          output=output_nodes_list)
@@ -76,8 +72,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_closeness_centrality(graph_in, nodes_list)
-
+        temp_response = ni.find_closeness_centrality(graph=graph_in, nodes=nodes_list)
         closeness_output_edges = []
         closeness_output_value = []
         if temp_response[0]:
@@ -136,8 +131,9 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
-
-        temp_response = ni.find_betweenness_centrality(graph_in)
+        temp_response = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
+                                                       weight=request.weight, endpoints=request.endpoints,
+                                                       seed=request.seed)
         betweenness_output_edges = []
         betweenness_output_value = []
         if temp_response[0]:
@@ -167,7 +163,8 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_pagerank(graph_in)
+        temp_response = ni.find_pagerank(graph_in, request.alpha, request.personalization, request.max_iter,
+                                         request.tol, request.nstart, request.weight, request.dangling)
         pagerank_output_edges = []
         pagerank_output_value = []
         if temp_response[0]:
@@ -198,7 +195,8 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_eigenvector_centrality(graph_in)
+        temp_response = ni.find_eigenvector_centrality(graph_in, request.max_iter, request.tol, request.nstart,
+                                                       request.weight)
         eigenvector_output_edges = []
         eigenvector_output_value = []
         if temp_response[0]:
