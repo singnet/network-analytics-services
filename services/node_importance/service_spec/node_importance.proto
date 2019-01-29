@@ -80,7 +80,7 @@ message DegreeCentralityResponse {
 
 message ClosenessCentralityRequest {
     Graph graph = 1;
-    string nodes = 2;
+    repeated string nodes = 2;
     bool normalized = 3;
     bool directed = 4;
 }
@@ -152,9 +152,13 @@ message EigenvectorCentralityResponse {
 }
 
 // find_hits
+
+message HitsOutput{
+    repeated float hits_out = 1;
+}
 message HitsRequest {
     Graph graph = 1;
-    string nodelist = 2;
+    repeated string nodelist = 2;
     string mode = 3;
     bool directed = 4;
 
@@ -163,7 +167,7 @@ message HitsRequest {
 message HitsResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated HitsOutput output = 3;
 }
 
 

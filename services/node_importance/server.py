@@ -17,9 +17,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         graph = request.graph
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -35,9 +39,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -53,15 +61,18 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
 
             nodes_list = []
             for nodes_ in request.nodes:
                 if nodes_ not in ['[', ',', ']']:
                     nodes_list.append(nodes_)
-        # print(nodes_list)
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -86,9 +97,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -112,9 +127,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -138,9 +157,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -165,9 +188,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
@@ -193,17 +220,26 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
+            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+            if len(graph.weights) > 0:
+                for weights_proto in graph.weights:
+                    weights_list.append(int(weights_proto))
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_hits(graph_in,request.nodelist,request.mode)
-        print("Temp",temp_response)
-        return temp_response
+        temp_response = ni.find_hits(graph_in, request.nodelist, request.mode)
+        hits_list = []
+        if temp_response[0]:
+            for i in temp_response[2][request.mode]:
+                hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
 
+        response = node_importance_pb2.HitsResponse(status=temp_response[0], message=temp_response[1],
+                                                    output=hits_list)
 
+        return response
 
 
 class Server():

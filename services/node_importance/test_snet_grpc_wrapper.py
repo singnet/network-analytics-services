@@ -44,13 +44,13 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output_nodes_list)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_central(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_central(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
@@ -65,20 +65,19 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output_nodes_list)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_Periphery(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_Periphery(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
     def test_find_degree_centrality(self):
-        # -------------------------
         # Out Degree Centrality Test
         expected_output_out = {
             'outdegree_centrality': {'1': 0.2857142857142857, '2': 0.42857142857142855, '3': 0.42857142857142855,
@@ -98,18 +97,17 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_degree_centrality(self.stub, self.graph_01, in_out='out')
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
-        # Graph With No edges
-        result = self.client.find_degree_centrality(self.stub, self.graph_02)
+        # Graph With No edges Test
+        result = self.client.find_degree_centrality(self.stub, self.graph_02, in_out='out')
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
-        # -------------------------
         # In Degree Centrality Test
         expected_output_in = {'indegree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
                                                       '4': 0.2857142857142857, '5': 0.14285714285714285,
@@ -130,19 +128,18 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_degree_centrality(self.stub, self.graph_01, in_out='in')
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_degree_centrality(self.stub, self.graph_02, in_out='in')
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
-        # -------------------------
         # Degree Centrality Test
         expected_result = {
             'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
@@ -162,20 +159,20 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_degree_centrality(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_degree_centrality(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
     def test_find_closeness_centrality(self):
-        result = self.client.find_closeness_centrality(self.stub, self.graph, [1, 2, 3])
+        result = self.client.find_closeness_centrality(self.stub, self.graph, ['1', '2'])
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertEqual(
@@ -188,14 +185,14 @@ class TestNodeImportance(unittest.TestCase):
             ("0.800000011920929" in str(result.output) and "0.75" in str(result.output) and
              "0.8571428656578064" in str(result.output) and "1.2000000476837158" in str(result.output)), True)
 
-        # Graph With No Nodes
-        result = self.client.find_closeness_centrality(self.stub, self.graph_01, [1, 2, 3])
+        # Graph With No Nodes Test
+        result = self.client.find_closeness_centrality(self.stub, self.graph_01, ['1', '2'])
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
-        result = self.client.find_closeness_centrality(self.stub, self.graph_02, [1, 2, 3])
+        # Graph With No edges Test
+        result = self.client.find_closeness_centrality(self.stub, self.graph_02, ['1', '2'])
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
@@ -218,22 +215,22 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_betweenness_centrality(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_betweenness_centrality(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
     def test_find_pagerank(self):
-        expected_output = {'pagerank': {'1': 0.12113884655309373, '2': 0.23955113566709454, '3': 0.23955113566709454,
-                                        '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583,
-                                        '7': 0.06965500888990583, '8': 0.06965500888990583}}
+        expected_output = {'pagerank': {'1': 0.07655997440979878, '2': 0.2193002394699876, '3': 0.2643703234360777,
+                                        '4': 0.10837001548777252, '5': 0.06737788086164939, '6': 0.07867433112988435,
+                                        '7': 0.09169182129247411, '8': 0.09365541391235543}}
 
         pagerank_output_edges = []
         pagerank_output_value = []
@@ -248,19 +245,18 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_pagerank(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_pagerank(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
-    #
     def test_find_eigenvector_centrality(self):
         expected_output = {
             'eigenvector_centrality': {'1': 0.35775018836999806, '2': 0.5298994260311778, '3': 0.5298994260311778,
@@ -281,37 +277,105 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
-        # Graph With No Nodes
+        # Graph With No Nodes Test
         result = self.client.find_eigenvector_centrality(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
 
-        # Graph With No edges
+        # Graph With No edges Test
         result = self.client.find_eigenvector_centrality(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'edges'")
         self.assertEqual(result[2], {})
 
     def test_find_hits(self):
-        result = self.client.find_hits(self.stub, self.graph,mode='hub')
-        print(result)
-        # self.assertEqual(result.status, True)
-        # self.assertEqual(result.message, 'success')
-        # # self.assertEqual(result.output,
-        # #                  '[[2. 0. 2. 0. 1. 0. 1. 0.]\n [0. 4. 0. 2. 0. 1. 0. 1.]\n [2. 0. 4. 0. 1. 0. 1. 0.]\n [0. 2. 0. 2. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]\n [1. 0. 1. 0. 1. 0. 1. 0.]\n [0. 1. 0. 1. 0. 1. 0. 1.]]')
-        #
-        # # Graph With No Nodes
-        # result = self.client.find_authority_matrix(self.stub, self.graph_01)
-        # self.assertEqual(result[0], False)
-        # self.assertEqual(result[1], "'nodes'")
-        # self.assertEqual(result[2], {})
-        #
-        # # Graph With No edges
-        # result = self.client.find_authority_matrix(self.stub, self.graph_02)
-        # self.assertEqual(result[0], False)
-        # self.assertEqual(result[1], "'edges'")
-        # self.assertEqual(result[2], {})
+        # Hub Matrix Hits Test with default node
+        hub_matrix_expected_out = {
+            'hub_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0], [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
+                           [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0], [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
+                           [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0], [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
+                           [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0], [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
+
+        hits_list = []
+        for i in hub_matrix_expected_out["hub_matrix"]:
+            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+
+        result = self.client.find_hits(self.stub, self.graph, nodelist=None, mode='hub_matrix')
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        for i in range(len(result.output)):
+            self.assertEqual(result.output[i], hits_list[i])
+
+        # Authority Matrix Hits Test with default node
+        authority_matrix_expected_out = {
+            'authority_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0],
+                                 [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
+                                 [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0],
+                                 [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
+                                 [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0],
+                                 [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
+                                 [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0],
+                                 [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
+        hits_list = []
+        for i in authority_matrix_expected_out["authority_matrix"]:
+            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+
+        result = self.client.find_hits(self.stub, self.graph, nodelist=None, mode='authority_matrix')
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        for i in range(len(result.output)):
+            self.assertEqual(result.output[i], hits_list[i])
+
+        # Hub Matrix Hits Test with  node
+
+        expected_with_node_hub = {'hub_matrix': [[9.0, 0.0], [0.0, 9.0]]}
+
+        result = self.client.find_hits(self.stub, self.graph, nodelist=['1', '2'], mode='hub_matrix')
+        hits_list = []
+        for i in expected_with_node_hub["hub_matrix"]:
+            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        for i in range(len(result.output)):
+            self.assertEqual(result.output[i], hits_list[i])
+
+        # Authority Matrix Hits Test with  node
+
+        expected_with_node_authority = {'authority_matrix': [[9.0, 0.0], [0.0, 9.0]]}
+
+        result = self.client.find_hits(self.stub, self.graph, nodelist=['1', '2'], mode='authority_matrix')
+        hits_list = []
+        for i in expected_with_node_authority["authority_matrix"]:
+            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        for i in range(len(result.output)):
+            self.assertEqual(result.output[i], hits_list[i])
+
+        # Graph With No Nodes Test
+        result = self.client.find_hits(self.stub, self.graph_01, mode='authority_matrix')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'nodes'")
+        self.assertEqual(result[2], {})
+
+        result = self.client.find_hits(self.stub, self.graph_01, mode='hub_matrix')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'nodes'")
+        self.assertEqual(result[2], {})
+
+        # Graph With No edges Test
+        result = self.client.find_hits(self.stub, self.graph_02, mode='authority_matrix')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'edges'")
+        self.assertEqual(result[2], {})
+
+        result = self.client.find_hits(self.stub, self.graph_02, mode='hub_matrix')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], "'edges'")
+        self.assertEqual(result[2], {})
 
     def tearDown(self):
         self.server.stop_server()

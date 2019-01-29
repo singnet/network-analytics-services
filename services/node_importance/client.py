@@ -75,7 +75,7 @@ class ClientTest():
 
         try:
             graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=graph['weights'])
-            Request_graph = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, nodes="[1,2]",
+            Request_graph = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, nodes=nodes,
                                                                            directed=False)
             response = stub.ClosenessCentrality(Request_graph)
             return response
@@ -132,7 +132,7 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_hits(self, stub, graph,nodelist=None,mode='hub'):
+    def find_hits(self, stub, graph,nodelist=None,mode='hub_matrix'):
         edges_req = []
         try:
             for e in graph["edges"]:
@@ -142,9 +142,9 @@ class ClientTest():
 
         try:
             graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=graph['weights'])
-            Request_graph = node_importance_pb2.HitsRequest(graph=graph_in,nodelist=None,mode=mode,directed=False)
+            # node_list = node_importance_pb2.
+            Request_graph = node_importance_pb2.HitsRequest(graph=graph_in,nodelist=nodelist,mode=mode,directed=False)
             response = stub.Hits(Request_graph)
-            return ("hallo",response)
             return response
         except Exception as e:
             return [False, str(e), {}]

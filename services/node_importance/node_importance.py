@@ -119,7 +119,6 @@ class NodeImportance:
         result = nx.algorithms.link_analysis.pagerank_alg.pagerank(G, alpha, personalization, max_iter,
                                                                    tol, nstart, weight, dangling)
         output = {"pagerank": result}
-
         return True, 'success', output
 
     def find_eigenvector_centrality(self, graph, max_iter=100, tol=1e-06, nstart=None, weight=None, directed=False):
@@ -135,17 +134,21 @@ class NodeImportance:
 
         return True, 'success', output
 
-    def find_hits(self, graph, nodelist=None, mode='hub', directed=False):
+    def find_hits(self, graph, nodelist=None, mode='hub_matrix', directed=False):
         ret = self.cv.is_valid_graph(graph)
 
         if not ret:
             return ret
         G = self.construct_graph(graph, directed)
 
-        if mode == 'authority':
+        if nodelist is None:
+            nodelist = None
+
+        if mode == 'authority_matrix':
             result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G, nodelist)
+            output = {"authority_matrix": result.tolist()}
+            return True, 'success', output
         else:
             result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G, nodelist)
-
-        print("results",result)
-        return True, 'success', result.tolist()
+            output = {"hub_matrix": result.tolist()}
+            return True, 'success', output
