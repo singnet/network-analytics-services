@@ -1,11 +1,8 @@
 # Tested on python3.6
 
 import networkx as nx
-import pandas as pd
-import numpy as np
 from networkx.algorithms import bipartite
 
-from networkx.algorithms.connectivity import minimum_st_node_cut, minimum_st_edge_cut
 
 class BipartiteGraphs:
 

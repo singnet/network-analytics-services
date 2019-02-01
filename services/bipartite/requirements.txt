@@ -1,0 +1,7 @@
+networkx==2.2
+aiohttp
+jsonrpcserver
+requests
+jsonrpcclient
+grpcio
+grpcio_tools
