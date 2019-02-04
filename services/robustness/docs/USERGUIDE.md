@@ -70,7 +70,7 @@ Identify the most important nodes/edges between groups of nodes.
 * Source nodes  (required)
 * Target nodes (required)
 * Type (optional): Can assume either a value of 0 or 1. Defalut is 0 which would be used to calculate node betweeness; 1 for edge betweeeness.
-* normalized (optional): Default is False. If True the betweenness values are normalized by 2/((n−1)(n−2)) for graphs, and 1/((n−1)(n−2)) for directed graphs where n is the number of nodes in G.
+* normalized (optional): Default is False. If True the betweenness values are normalized by `2/((n−1)(n−2))` for graphs, and `1/((n−1)(n−2))` for directed graphs where n is the number of nodes in G.
 * directed (optional): Default is False, that is input graph is assumed undirected graph
 
 #### Sample input
@@ -82,7 +82,7 @@ Graph
 Nodes:1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 Edges:1,2;1,4;2,3;2,5;3,4;3,6;2,7;3,8;7,9;5,9;9,10;10,6
 Source nodes:5,7
-Target node:6
+Target nodes:6
 Type:
 normalized:
 directed:true
