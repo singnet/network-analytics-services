@@ -8,6 +8,7 @@ The list of available servcies includes:
 * Bipartite graph projection
 
 
+
 ## User Guide
 
 Please look at the [user guide](docs/USERGUIDE.md) for a detailed spec of the services and how to use the services.
@@ -31,6 +32,7 @@ python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_s
 ```
 
 
+
 ### Running unit tests
 
 For testing the core functionalities
@@ -50,3 +52,6 @@ To start the gRPC server locally
 ```
 python3.6 snet_grpc_wrapper_bipartite.py
 ```
+
+
+

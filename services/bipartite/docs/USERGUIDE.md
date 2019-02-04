@@ -2,10 +2,6 @@
 
 # Bipartite Graph Services
 
-## Service endpoints
-
-* Kovan: 159.69.56.49:2222
-* Ropsten: 159.69.56.49:2232
 
 ## Methods
 
@@ -36,13 +32,16 @@ Edges:3,8;4,7
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call 341  0.00000001 159.69.56.49:2222  BipartiteGraph query.json
+snet client call 341  0.00000001 service_ip:port  BipartiteGraph query.json
 ```
 
 where the content of the file `query.json` is
 
 ```
-{
+{"status":true,
+ "message":"success",
+ "output":
+ {
     "nodes":
            {
            "bipartite_0": ["8", "7"],
@@ -50,24 +49,25 @@ where the content of the file `query.json` is
            },
 
     "edges":[{"edge": ["3","8"]},{ "edge": ["4","7"] }]
+}
 }
 ```
 
 #### Sample output
 
 ```
-{
+{"status": true
+ "message": "success"
+ "output":{
     "nodes":
-           {
+    {
            "bipartite_0": ["8", "7"],
            "bipartite_1": ["3", "4"]
            },
 
-    "edges":[{"edge": ["3","8"]},{ "edge": ["4","7"] }]
+    "edges":[{"edge": ["3","8"]},{ "edge": ["4","7"] }]}
 }
 ```
-
-
 
 ## ProjectedGraph
 
@@ -103,8 +103,8 @@ Sample inputs using the dApp are as below. For each input, you can use either a 
 
 ```
 Bipartite Graph
-First node:Pam,Goeff,Philip,Sam,Fred,Jane,Sue,Charlie
-Second node:American Diner,Sushi,Italian,Indian,Chinese,Tapas,Thai,French,Hungarian,Lebanese,Greek
+First bipartite node:Pam,Goeff,Philip,Sam,Fred,Jane,Sue,Charlie
+Second bipartite node:American Diner,Sushi,Italian,Indian,Chinese,Tapas,Thai,French,Hungarian,Lebanese,Greek
 Edges:Pam,French;Pam,Hungarian;Pam,Sushi;Goeff,American Diner;Goeff,Indian;Goeff,Chinese;Philip,Lebanese;Philip,Italian;Philip,Tapas;Sam,American Diner;Sam,Sushi;Sam,Italian;Fred,Italian;Fred,Tapas;Fred,Thai;Jane,French;Jane,Hungarian;Jane,Sushi;Sue,Greek;Sue,Tapas;Sue,hai;Charlie,American Diner;Charlie,Indian;
 Charlie,Chinese
 Nodes:Pam,Charlie,Goeff,Fred,Sam,Sue,Philip,Jane
@@ -114,18 +114,19 @@ weight:Newman
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call 360  0.00000001 159.69.56.49:2222  ProjectedGraph query_projected.json
+snet client call 360  0.00000001 service_ip:port  ProjectedGraph query_projected.json
 ```
 
 where the content of the file `query_projected.json` is
 
 ```
 {
+
     "graph":
            {
-           "bipartite_0": ["Pam", "Goeff", "Philip", "Sam", "Fred", "Jane", "Sue", "Charlie"],
-           "bipartite_1": ["American Diner", "Sushi", "Italian", "Indian", "Chinese", "Tapas", "Thai","French", "Hungarian", "Lebanese", "Greek"],
-           "edges": [{"edge": ["Pam", "French"]}, {"edge": ["Pam", "Hungarian"]}, {"edge": ["Pam", "Sushi"]}, {"edge": ["Goeff", "American Diner"]},
+            "bipartite_0": ["Pam", "Goeff", "Philip", "Sam", "Fred", "Jane", "Sue", "Charlie"],
+            "bipartite_1": ["American Diner", "Sushi", "Italian", "Indian", "Chinese", "Tapas", "Thai","French", "Hungarian", "Lebanese", "Greek"],
+            "edges": [{"edge": ["Pam", "French"]}, {"edge": ["Pam", "Hungarian"]}, {"edge": ["Pam", "Sushi"]}, {"edge": ["Goeff", "American Diner"]},
                                {"edge": ["Goeff", "Indian"]}, {"edge": ["Goeff", "Chinese"]}, {"edge": ["Philip", "Lebanese"]}, {"edge": ["Philip", "Italian"]},
                                {"edge": ["Philip", "Tapas"]}, {"edge": ["Sam", "American Diner"]}, {"edge": ["Sam", "Sushi"]}, {"edge": ["Sam", "Italian"]},
                                {"edge": ["Fred", "Italian"]}, {"edge": ["Fred", "Tapas"]}, {"edge": ["Fred", "Thai"]}, {"edge": ["Jane", "French"]},
@@ -133,23 +134,21 @@ where the content of the file `query_projected.json` is
                                {"edge": ["Sue", "Thai"]}, {"edge": ["Charlie", "American Diner"]}, {"edge": ["Charlie", "Indian"]},
                                {"edge": ["Charlie", "Chinese"]}]
            },
-
-    "nodes":["Pam","Charlie","Goeff","Fred","Sam","Sue","Philip","Jane"],
-    "weight":"Newman"
+     "nodes": ["Pam", "Charlie", "Goeff", "Fred", "Sam", "Sue", "Philip", "Jane"],
+     "weight":"Newman"
 }
 ```
 
 #### Sample output
 
 ```
-{
-    "nodes":
-           {
-           "bipartite_0": ["8", "7"],
-           "bipartite_1": ["3", "4"]
-           },
-
-    "edges":[{"edge": ["3","8"]},{ "edge": ["4","7"] }]
+{"status":true,
+"message":"success",
+"output":{
+  "nodes":["Pam","Charlie","Goeff","Fred","Sam","Sue","Philip","Jane"],
+  "edges":[{"edge":["Pam","Jane"]},{"edge":["Pam","Sam"]},{"edge":["Charlie","Goeff"]},{"edge":["Charlie","Sam"]},{"edge":["Goeff","Sam"]},
+          {"edge":["Fred","Sue"]},{"edge":["Fred","Philip"]},{"edge":["Fred","Sam"]},{"edge":["Sam","Jane"]},{"edge":["Sam","Philip"]},{"edge":["Sue","Philip"]}],
+          "weights":[2.5,0.5,2.5,0.5,0.5,1.5,1,0.5,0.5,0.5,0.5]}
 }
 ```
 
