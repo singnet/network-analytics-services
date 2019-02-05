@@ -41,39 +41,74 @@ class TestNodeImportance(unittest.TestCase):
         }
 
     def test_find_central_nodes(self):
-        expected_result = ['2', '3']
-        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=expected_result)
+        expected_result = {
+            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                              '8': 0.4375}}
+        centalnodes_output_key = []
+        centralnodes_output_value = []
+        for k, v in expected_result["central_nodes"].items():
+            centalnodes_output_key.append(k)
+            centralnodes_output_value.append(v)
+
+        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+                                                output=centralnodes_output_value)
 
         # Default Test
         result = self.client.find_central(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertEqual(result.output, output)
 
-        # Non Default Test
-        result = self.client.find_central(self.stub, self.graph, usebounds=True)
+        # # Non Default Test
+
+        expected_result = {
+            'central_nodes': {'1': 0.1}}
+
+        centalnodes_output_key = []
+        centralnodes_output_value = []
+        for k, v in expected_result["central_nodes"].items():
+            centalnodes_output_key.append(k)
+            centralnodes_output_value.append(v)
+
+        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+                                                output=centralnodes_output_value)
+
+        result = self.client.find_central(self.stub, self.graph, u='1', distance='weight', wf_improved=False,
+                                          reverse=True)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertEqual(result.output, output)
 
-        # Graph With No Nodes Test
+        # # Graph With No Nodes Test
         result = self.client.find_central(self.stub, self.graph_01)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], "'nodes'")
         self.assertEqual(result[2], {})
-
-        # Graph With No edges Test
+        #
+        # # Graph With No edges Test
         result = self.client.find_central(self.stub, self.graph_02)
         self.assertEqual(result[0], False)
         self.assertEqual(result[1],
                          "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
         self.assertEqual(result[2], {})
+        #
+        # # Non Weighted Graph
+        expected_result = {
+            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                              '8': 0.4375}}
+        centalnodes_output_key = []
+        centralnodes_output_value = []
+        for k, v in expected_result["central_nodes"].items():
+            centalnodes_output_key.append(k)
+            centralnodes_output_value.append(v)
 
-        # Non Weighted Graph
+        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+                                                output=centralnodes_output_value)
+
         result = self.client.find_central(self.stub, self.graph_03)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertEqual(result.output, output)
 
     def test_find_Periphery(self):
         expected_result = ['1', '4', '5', '6', '7', '8']
@@ -227,8 +262,9 @@ class TestNodeImportance(unittest.TestCase):
              "7" in str(result.output) and "8" in str(result.output)), True)
 
         self.assertEqual(
-            ("0.800000011920929" in str(result.output) and "0.75" in str(result.output) and
-             "0.8571428656578064" in str(result.output) and "1.2000000476837158" in str(result.output)), True)
+            ("0.5714285714285714" in str(result.output) and "0.75" in str(result.output) and
+             "0.8571428571428571" in str(result.output) and "1.2" in str(result.output)) and "0.8" in str(
+                result.output), True)
 
         # Graph With No Nodes Test
         result = self.client.find_closeness_centrality(self.stub, self.graph_01, ['1', '2'])
@@ -253,8 +289,9 @@ class TestNodeImportance(unittest.TestCase):
              "7" in str(result.output) and "8" in str(result.output)), True)
 
         self.assertEqual(
-            ("0.800000011920929" in str(result.output) and "0.75" in str(result.output) and
-             "0.8571428656578064" in str(result.output) and "1.2000000476837158" in str(result.output)), True)
+            ("0.5714285714285714" in str(result.output) and "0.75" in str(result.output) and
+             "0.8571428571428571" in str(result.output) and "1.2" in str(result.output)) and "0.8" in str(
+                result.output), True)
 
     def test_find_betweenness_centrality(self):
         # Default Test
@@ -265,11 +302,11 @@ class TestNodeImportance(unittest.TestCase):
         betweenness_output_edges = []
         betweenness_output_value = []
         for k, v in expected_result["betweenness_centrality"].items():
-            betweenness_output_edges.append(k)
+            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
             betweenness_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=betweenness_output_edges,
-                                                output=betweenness_output_value)
+        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
+                                                       output=betweenness_output_value)
         result = self.client.find_betweenness_centrality(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
@@ -280,17 +317,17 @@ class TestNodeImportance(unittest.TestCase):
             'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
                                        '8': 4.0}}
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight='3',
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
                                                          endpoints=True, seed=1)
 
         betweenness_output_edges = []
         betweenness_output_value = []
         for k, v in expected_output_arumented["betweenness_centrality"].items():
-            betweenness_output_edges.append(k)
+            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
             betweenness_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=betweenness_output_edges,
-                                                output=betweenness_output_value)
+        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
+                                                       output=betweenness_output_value)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
@@ -309,7 +346,7 @@ class TestNodeImportance(unittest.TestCase):
 
         # Directed Test
         result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
-                                                         weight='3',
+                                                         weight=True,
                                                          endpoints=True, seed=1, directed=True)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
@@ -320,26 +357,47 @@ class TestNodeImportance(unittest.TestCase):
             'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
                                        '8': 4.0}}
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight='3',
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
                                                          endpoints=True, seed=1)
 
         betweenness_output_edges = []
         betweenness_output_value = []
         for k, v in expected_out["betweenness_centrality"].items():
-            betweenness_output_edges.append(k)
+            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
             betweenness_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=betweenness_output_edges,
-                                                output=betweenness_output_value)
+        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
+                                                       output=betweenness_output_value)
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertEqual(result.output, output)
+
+        # Non Default Test 2 edge
+        expected_output_arumented = {
+            'betweenness_centrality': {('1', '2'): 0.25, ('1', '4'): 0.25, ('2', '3'): 1.75, ('2', '5'): 0.5,
+                                       ('2', '7'): 0.5, ('3', '4'): 0.75, ('3', '6'): 0.5, ('3', '8'): 0.5}}
+
+        betweenness_output_edges = []
+        betweenness_output_value = []
+
+        for k, v in expected_output_arumented["betweenness_centrality"].items():
+                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=[k[0], k[1]]))
+                    betweenness_output_value.append(v)
+
+        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
+                                                       output=betweenness_output_value)
+
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
+                                                         type='edge', seed=1)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
 
     def test_find_pagerank(self):
         # Default Test
-        expected_output = {'pagerank': {'1': 0.07655997440979878, '2': 0.2193002394699876, '3': 0.2643703234360777,
-                                        '4': 0.10837001548777252, '5': 0.06737788086164939, '6': 0.07867433112988435,
-                                        '7': 0.09169182129247411, '8': 0.09365541391235543}}
+        expected_output = {'pagerank': {'1': 0.12113884704299357, '2': 0.23955113750178236, '3': 0.23955113750178236,
+                                        '4': 0.12113884704299356, '5': 0.06965500772761204, '6': 0.06965500772761204,
+                                        '7': 0.06965500772761204, '8': 0.06965500772761204}}
 
         pagerank_output_edges = []
         pagerank_output_value = []
@@ -354,10 +412,10 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.output, output)
 
         # Non Default Test
-        expected_output_arg = {'pagerank': {'1': 0.12353302891578935, '2': 0.24675733134387767, '3': 0.2467573313438777,
-                                            '4': 0.12353302891578932, '5': 0.06485481987016649,
-                                            '6': 0.06485481987016647,
-                                            '7': 0.06485481987016649, '8': 0.06485481987016647}}
+        expected_output_arg = {'pagerank': {'1': 0.1235330285883424, '2': 0.24675733054250018, '3': 0.24675733054250013,
+                                            '4': 0.12353302858834242, '5': 0.06485482043457871,
+                                            '6': 0.06485482043457873, '7': 0.06485482043457871,
+                                            '8': 0.06485482043457873}}
 
         pagerank_output_edges = []
         pagerank_output_value = []
@@ -371,7 +429,7 @@ class TestNodeImportance(unittest.TestCase):
                                                             '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                            tol=1e-07,
                                            nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                           weight='3',
+                                           weight=True,
                                            dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                      '6': 0.125, '7': 0.125, '8': 0.125})
         self.assertEqual(result.status, True)
@@ -396,7 +454,7 @@ class TestNodeImportance(unittest.TestCase):
                                                             '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                            tol=1e-07,
                                            nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                           weight='3',
+                                           weight=True,
                                            dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                      '6': 0.125, '7': 0.125, '8': 0.125}, directed=True)
         self.assertEqual(result.status, True)
@@ -458,7 +516,7 @@ class TestNodeImportance(unittest.TestCase):
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
                                                          nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                                 '8': 1}, weight='3', directed=False)
+                                                                 '8': 1}, weight=True, directed=False)
         # print(result)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
@@ -479,7 +537,7 @@ class TestNodeImportance(unittest.TestCase):
         # directed Test
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
                                                          nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                                 '8': 1}, weight='3', directed=True)
+                                                                 '8': 1}, weight=True, directed=True)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertEqual(result.output, output)
@@ -621,7 +679,8 @@ class TestNodeImportance(unittest.TestCase):
     def test_additional(self):
         # wrong Number of wrights test taking one functionality as example
         result = self.client.find_central(self.stub, self.graph_04)
-        self.assertEqual(result[0], False)
+        self.assertEqual(result.status, False)
+        self.assertEqual(result.message, 'weights and edges must be equal')
 
     def tearDown(self):
         self.server.stop_server()

@@ -40,13 +40,17 @@ class NodeImportance:
 
         return G
 
-    def find_central_nodes(self, graph, usebounds=False):
+    def find_central_nodes(self, graph, u=None, distance=None, wf_improved=True, reverse=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
+        u = None if u == '' else u
+        distance = None if distance == '' else distance
+
         G = self.construct_graph(graph)
-        result = nx.algorithms.distance_measures.center(G, usebounds=usebounds)
+        result = nx.algorithms.centrality.closeness_centrality(G, u=u, distance=distance, wf_improved=wf_improved,
+                                                               reverse=reverse)
         output = {"central_nodes": result}
         return True, 'success', output
 
@@ -91,21 +95,28 @@ class NodeImportance:
         output = {"closeness_centrality": result}
         return True, 'success', output
 
-    def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=None, endpoints=False, seed=None,
-                                    directed=False):
+    def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=False, endpoints=False, seed=None,
+                                    type='node', directed=False):
         ret = self.cv.is_valid_graph(graph)
+        weight = None if weight == False else 'weights'
+        type = 'node' if type == '' else type
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
         k = None if k == 0 else k
-        result = nx.algorithms.centrality.betweenness_centrality(G, k=k, normalized=normalized, weight=weight,
-                                                                 endpoints=endpoints, seed=seed)
+
+        if type == 'edge':
+            result = nx.algorithms.centrality.edge_betweenness_centrality(G, k=k, normalized=normalized, weight=weight,
+                                                                          seed=seed)
+        else:
+            result = nx.algorithms.centrality.betweenness_centrality(G, k=k, normalized=normalized, weight=weight,
+                                                                     endpoints=endpoints, seed=seed)
         output = {'betweenness_centrality': result}
         return True, 'success', output
 
     def find_pagerank(self, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
-                      weight='weight', dangling=None, directed=False):
+                      weight=False, dangling=None, directed=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
@@ -117,7 +128,7 @@ class NodeImportance:
         max_iter = 100 if max_iter == 0 else max_iter
         tol = 1e-06 if tol == 0.0 else tol
         dangling = None if dangling == '' else dangling
-        weight = None if weight == '' else weight
+        weight = None if weight == False else 'weights'
         nstart_dict = None
         personalization_dict = None
         dangling_list = None
@@ -156,14 +167,14 @@ class NodeImportance:
         output = {"pagerank": result}
         return True, 'success', output
 
-    def find_eigenvector_centrality(self, graph, max_iter=100, tol=1e-06, nstart=None, weight=None, directed=False):
+    def find_eigenvector_centrality(self, graph, max_iter=100, tol=1e-06, nstart=None, weight=False, directed=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
 
-        weight = None if weight == '' else weight
+        weight = None if weight == False else "weights"
         nstart_dict = {}
         try:
             if len(nstart.keys) > 0:

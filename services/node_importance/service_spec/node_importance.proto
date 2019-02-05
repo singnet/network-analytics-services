@@ -17,19 +17,22 @@ message OutputNodesList {
 
 message DictOutput{
     repeated string edge = 1;
-    repeated float output = 2;
+    repeated double output = 2;
 }
 
 // find_central_nodes
 message CentralNodeRequest {
     Graph graph = 1;
-    bool usebounds = 2;
+    string u = 2;
+    string distance = 3;
+    bool wf_improved = 4;
+    bool reverse = 5;
 }
 
 message CentralNodeResponse {
     bool status = 1;
     string message = 2;
-    OutputNodesList output = 3;
+    DictOutput output = 3;
 }
 
 // find_eccentricity
@@ -73,21 +76,29 @@ message ClosenessCentralityResponse {
 }
 
 // find_betweenness_centrality
+message BetweennessOutput{
+    repeated Edge edge = 1;
+    repeated double output = 2;
+}
+
 message BetweennessCentralityRequest {
     Graph graph = 1;
     int32 k = 2;
     bool normalized = 3;
-    string weight = 4;
+    bool weight = 4;
     bool endpoints = 5;
     int32 seed = 6;
-    bool directed = 7;
+    string type = 7;
+    bool directed = 8;
 }
 
 message BetweennessCentralityResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    BetweennessOutput output = 3;
 }
+
+
 
 // used for page range and eigen vector centrality
 message Nstart {
@@ -112,7 +123,7 @@ message PageRankRequest {
     int32 max_iter = 4;
     float tol = 5;
     Nstart nstart = 6;
-    string weight = 7;
+    bool weight = 7;
     Dangling dangling = 8;
     bool directed = 9;
 }
@@ -130,7 +141,7 @@ message EigenvectorCentralityRequest {
     int32 max_iter = 2;
     float tol = 3;
     Nstart nstart = 4;
-    string weight = 5;
+    bool weight = 5;
     bool directed = 6;
 }
 

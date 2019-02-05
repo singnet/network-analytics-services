@@ -43,19 +43,23 @@ class TestNodeImportance(unittest.TestCase):
         result = self.N.find_central_nodes(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'central_nodes': ['2', '3']})
+        self.assertEqual(result[2], {
+            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                              '8': 0.4375}})
 
         # Non Default Test
-        result = self.N.find_central_nodes(self.graph, usebounds=True)
+        result = self.N.find_central_nodes(self.graph, u='1', distance='weight', wf_improved=False, reverse=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'central_nodes': ['2', '3']})
+        self.assertEqual(result[2], {'central_nodes': 0.1})
 
-        # Non weighted Test
+        # # Non weighted Test
         result = self.N.find_central_nodes(self.graph_03)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'central_nodes': ['2', '3']})
+        self.assertEqual(result[2], {
+            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                              '8': 0.4375}})
 
     def test_find_Periphery(self):
         # Default Test
@@ -171,8 +175,16 @@ class TestNodeImportance(unittest.TestCase):
                                                                 '3': 0.5952380952380952, '4': 0.07142857142857142,
                                                                 '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}})
 
+        # Non Default test
+        result = self.N.find_betweenness_centrality(self.graph, type='edge')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2], {
+            'betweenness_centrality': {('1', '2'): 0.21428571428571427, ('1', '4'): 0.14285714285714285,
+                                       ('2', '3'): 0.42857142857142855, ('2', '5'): 0.25, ('2', '7'): 0.25,
+                                       ('3', '4'): 0.21428571428571427, ('3', '6'): 0.25, ('3', '8'): 0.25}})
         # Non Default Test 1
-        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight='3', endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight=True, endpoints=True,
                                                     seed=1)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
@@ -181,7 +193,7 @@ class TestNodeImportance(unittest.TestCase):
                                        '8': 4.0}})
 
         # Non weighted Test 1
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight='3', endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=True, endpoints=True,
                                                     seed=1)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
@@ -190,7 +202,7 @@ class TestNodeImportance(unittest.TestCase):
                                        '8': 4.0}})
 
         # Non Default Test 2
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight='3', endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=True, endpoints=True,
                                                     seed=1, directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
@@ -203,10 +215,10 @@ class TestNodeImportance(unittest.TestCase):
         result = self.N.find_pagerank(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'pagerank': {'1': 0.07655997440979878, '2': 0.2193002394699876,
-                                                  '3': 0.2643703234360777, '4': 0.10837001548777252,
-                                                  '5': 0.06737788086164939, '6': 0.07867433112988435,
-                                                  '7': 0.09169182129247411, '8': 0.09365541391235543}})
+        self.assertEqual(result[2], {
+            'pagerank': {'1': 0.12113884655309373, '2': 0.23955113566709454, '3': 0.23955113566709454,
+                         '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583,
+                         '7': 0.06965500888990583, '8': 0.06965500888990583}})
 
         # Non Default Test
         result = self.N.find_pagerank(self.graph, alpha=0.95,
@@ -214,7 +226,7 @@ class TestNodeImportance(unittest.TestCase):
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                       tol=1e-07,
                                       nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight='3',
+                                      weight=True,
                                       dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                 '6': 0.125, '7': 0.125, '8': 0.125})
         self.assertEqual(result[0], True)
@@ -230,7 +242,7 @@ class TestNodeImportance(unittest.TestCase):
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                       tol=1e-07,
                                       nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight='3',
+                                      weight=True,
                                       dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                 '6': 0.125, '7': 0.125, '8': 0.125})
         self.assertEqual(result[0], True)
@@ -246,7 +258,7 @@ class TestNodeImportance(unittest.TestCase):
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                       tol=1e-07,
                                       nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight='3',
+                                      weight=True,
                                       dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                 '6': 0.125, '7': 0.125, '8': 0.125}, directed=True)
         self.assertEqual(result[0], True)
@@ -269,7 +281,7 @@ class TestNodeImportance(unittest.TestCase):
         # Non Default Test
         result = self.N.find_eigenvector_centrality(self.graph, max_iter=110, tol=1e-05,
                                                     nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                            '8': 1}, weight='3', directed=False)
+                                                            '8': 1}, weight=True, directed=False)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2], {
@@ -280,7 +292,7 @@ class TestNodeImportance(unittest.TestCase):
         # Non weighted Test
         result = self.N.find_eigenvector_centrality(self.graph, max_iter=500, tol=1e-05,
                                                     nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                            '8': 1}, weight='3', directed=True)
+                                                            '8': 1}, weight=True, directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2], {'eigenvector_centrality': {'1': 1.9935012399077745e-07, '2': 5.183103223760218e-05,

@@ -24,10 +24,23 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         except Exception as e:
             return [False, str(e), {}]
 
-        temp_response = ni.find_central_nodes(graph=graph_in, usebounds=request.usebounds)
-        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_response[2]['central_nodes'])
+        temp_response = ni.find_central_nodes(graph=graph_in, u=request.u, distance=request.distance,
+                                              wf_improved=request.wf_improved, reverse=request.reverse)
+        centalnodes_output_key = []
+        centralnodes_output_value = []
+        if temp_response[0]:
+            if isinstance(temp_response[2]["central_nodes"], dict):
+                for k, v in temp_response[2]["central_nodes"].items():
+                    centalnodes_output_key.append(k)
+                    centralnodes_output_value.append(v)
+            else:
+                centalnodes_output_key.append(request.u)
+                centralnodes_output_value.append(temp_response[2]["central_nodes"])
+
+        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+                                                output=centralnodes_output_value)
         responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
-                                                           output=output_nodes_list)
+                                                           output=output)
         return responce
 
     def Periphery(self, request, context):
@@ -133,16 +146,22 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             return [False, str(e), {}]
         temp_response = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
                                                        weight=request.weight, endpoints=request.endpoints,
-                                                       seed=request.seed)
+                                                       type=request.type, seed=request.seed)
+
         betweenness_output_edges = []
         betweenness_output_value = []
         if temp_response[0]:
-            for k, v in temp_response[2]["betweenness_centrality"].items():
-                betweenness_output_edges.append(k)
-                betweenness_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(edge=betweenness_output_edges,
-                                                output=betweenness_output_value)
+            if request.type == 'edge':
+                for k, v in temp_response[2]["betweenness_centrality"].items():
+                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=[k[0], k[1]]))
+                    betweenness_output_value.append(v)
+            else:
+                for k, v in temp_response[2]["betweenness_centrality"].items():
+                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
+                    betweenness_output_value.append(v)
+                
+        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
+                                                       output=betweenness_output_value)
         response = node_importance_pb2.BetweennessCentralityResponse(status=temp_response[0], message=temp_response[1],
                                                                      output=output)
         return response
@@ -174,7 +193,6 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         output = node_importance_pb2.DictOutput(edge=pagerank_output_edges,
                                                 output=pagerank_output_value)
-
         response = node_importance_pb2.PageRankResponse(status=temp_response[0], message=temp_response[1],
                                                         output=output)
         return response

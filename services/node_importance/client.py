@@ -32,10 +32,11 @@ class ClientTest():
         graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
         return graph_in
 
-    def find_central(self, stub, graph, usebounds=False):
+    def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):
         try:
             graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, usebounds=usebounds)
+            Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, u=u, distance=distance,
+                                                                  wf_improved=wf_improved, reverse=reverse)
             response = stub.CentralNodes(Request_data)
             return response
         except Exception as e:
@@ -71,12 +72,12 @@ class ClientTest():
             return [False, str(e), {}]
 
     def find_betweenness_centrality(self, stub, graph, k=None, normalized=True, weight=None, endpoints=False,
-                                    seed=None, directed=False):
+                                    seed=None, type='node', directed=False):
         try:
             graph_in = self.get_graph(graph=graph)
             Request_data = node_importance_pb2.BetweennessCentralityRequest(graph=graph_in, k=k, normalized=normalized,
                                                                             weight=weight, endpoints=endpoints,
-                                                                            seed=seed,
+                                                                            seed=seed, type=type,
                                                                             directed=directed)
             response = stub.BetweennessCentrality(Request_data)
             return response
@@ -84,7 +85,7 @@ class ClientTest():
             return [False, str(e), {}]
 
     def find_pagerank(self, stub, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
-                      weight='weight', dangling=None, directed=False):
+                      weight=False, dangling=None, directed=False):
         nstart_key_list = []
         nstart_value_list = []
         nstart_new = None
