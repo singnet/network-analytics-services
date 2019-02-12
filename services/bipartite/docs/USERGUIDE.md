@@ -38,10 +38,7 @@ snet client call 341  0.00000001 service_ip:port  BipartiteGraph query.json
 where the content of the file `query.json` is
 
 ```
-{"status":true,
- "message":"success",
- "output":
- {
+{
     "nodes":
            {
            "bipartite_0": ["8", "7"],
@@ -49,7 +46,6 @@ where the content of the file `query.json` is
            },
 
     "edges":[{"edge": ["3","8"]},{ "edge": ["4","7"] }]
-}
 }
 ```
 
