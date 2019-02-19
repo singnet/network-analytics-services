@@ -26,6 +26,18 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         source_nodes = request.source_node
         target_nodes = request.target_node
 
+        if graph is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("graph parameter is required")
+
+        if source_nodes is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("source_nodes parameter is required")
+
+        if target_nodes is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("target_nodes parameter is required")
+
         g = robustness.Robustness()
 
         try:
@@ -60,6 +72,11 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                 print(edges_resp)
                 resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
 
+            else:
+                context.set_code(grpc.StatusCode.UNKNOWN)
+                context.set_details(ret[1])
+
+
 
             print('status:',resp.status)
             print('message:',resp.message)
@@ -71,6 +88,11 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         except Exception as e:
 
             logging.exception("message")
+
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            context.set_details(str(e))
+
+
 
             resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False,message=str(e))
 
@@ -90,6 +112,19 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         source_nodes = request.source_nodes
         target_nodes = request.target_nodes
         T = request.Type
+
+
+        if graph is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("graph parameter is required")
+
+        if source_nodes is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("source_nodes parameter is required")
+
+        if target_nodes is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("target_nodes parameter is required")
 
 
 
@@ -130,6 +165,12 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                     graph_resp=network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=betweenness_centrality[1])
                     resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
 
+            else:
+                context.set_code(grpc.StatusCode.UNKNOWN)
+                context.set_details(ret[1])
+
+
+
 
             # print('status:',resp.status)
             # print('message:',resp.message)
@@ -143,6 +184,9 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         except Exception as e:
 
             logging.exception("message")
+
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            context.set_details(str(e))
 
             resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False,message=str(e))
 

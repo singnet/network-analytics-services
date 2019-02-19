@@ -36,18 +36,35 @@ class TestSnetWrapperBipartite(unittest.TestCase):
         for e in edges_list:
             edges.append(network_analytics_bipartite_pb2.Edge(edge=e))
         bgr = network_analytics_bipartite_pb2.BipartiteGraphRequest(edges=edges)
-        resp =stub.BipartiteGraph(bgr)
-        expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
 
-        self.assertEqual(resp,expected)
+
+        try:
+            response = stub.BipartiteGraph(bgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Parameter bipartite_0 does not contain at least one element', response)
+
+        # resp =stub.BipartiteGraph(bgr)
+        # expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
+        #
+        # self.assertEqual(resp,expected)
 
         nodes_list = {"bipartite_0": ['8', '7'], "bipartite_1": ['3', '4']}
         nodes = network_analytics_bipartite_pb2.BipartiteNodes(bipartite_0=nodes_list["bipartite_0"], bipartite_1=nodes_list["bipartite_1"])
         bgr = network_analytics_bipartite_pb2.BipartiteGraphRequest(nodes=nodes)
-        resp =stub.BipartiteGraph(bgr)
-        expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter edges does not contain at least one element')
 
-        self.assertEqual(resp,expected)
+        try:
+            response = stub.BipartiteGraph(bgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Parameter edges does not contain at least one element', response)
+
+        # resp =stub.BipartiteGraph(bgr)
+        # expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter edges does not contain at least one element')
+        #
+        # self.assertEqual(resp,expected)
 
         nodes_list = {"bipartite_1": ['3', '4']}
         edges_list = [['3', '8'], ['4', '7']]
@@ -56,10 +73,18 @@ class TestSnetWrapperBipartite(unittest.TestCase):
         for e in edges_list:
             edges.append(network_analytics_bipartite_pb2.Edge(edge=e))
         bgr = network_analytics_bipartite_pb2.BipartiteGraphRequest(nodes=nodes, edges=edges)
-        resp =stub.BipartiteGraph(bgr)
-        expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
 
-        self.assertEqual(resp,expected)
+        try:
+            response = stub.BipartiteGraph(bgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Parameter bipartite_0 does not contain at least one element', response)
+
+        # resp =stub.BipartiteGraph(bgr)
+        # expected = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
+        #
+        # self.assertEqual(resp,expected)
 
 
         nodes_list = {"bipartite_0": ['8', '7'], "bipartite_1": ['3', '4']}
@@ -89,10 +114,19 @@ class TestSnetWrapperBipartite(unittest.TestCase):
         weight = "Newman"
 
         pgr = network_analytics_bipartite_pb2.ProjecetedGraphRequest(nodes=nodes, weight=weight)
-        resp = stub.ProjectedGraph(pgr)
-        expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
 
-        self.assertEqual(resp, expected)
+
+        try:
+            response = stub.ProjectedGraph(pgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Parameter bipartite_0 does not contain at least one element', response)
+
+        # resp = stub.ProjectedGraph(pgr)
+        # expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Parameter bipartite_0 does not contain at least one element')
+        #
+        # self.assertEqual(resp, expected)
 
         nodes_list = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                       "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
@@ -115,10 +149,19 @@ class TestSnetWrapperBipartite(unittest.TestCase):
 
 
         pgr = network_analytics_bipartite_pb2.ProjecetedGraphRequest(graph=graph, weight=weight)
-        resp = stub.ProjectedGraph(pgr)
-        expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Parameter nodes does not contain at least one element')
 
-        self.assertEqual(resp, expected)
+
+        try:
+            response = stub.ProjectedGraph(pgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Parameter nodes does not contain at least one element', response)
+
+        # resp = stub.ProjectedGraph(pgr)
+        # expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Parameter nodes does not contain at least one element')
+        #
+        # self.assertEqual(resp, expected)
 
         nodes_list = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                       "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',
@@ -141,10 +184,19 @@ class TestSnetWrapperBipartite(unittest.TestCase):
         nodes = ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']
 
         pgr = network_analytics_bipartite_pb2.ProjecetedGraphRequest(graph=graph, nodes=nodes)
-        resp = stub.ProjectedGraph(pgr)
-        expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Unkown weighting logic specified')
 
-        self.assertEqual(resp, expected)
+
+        try:
+            response = stub.ProjectedGraph(pgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Unkown weighting logic specified', response)
+
+        # resp = stub.ProjectedGraph(pgr)
+        # expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Unkown weighting logic specified')
+        #
+        # self.assertEqual(resp, expected)
 
         nodes_list = {"bipartite_0": ['8', '7', '6'],
                       "bipartite_1": ['5', '3', '4']}
@@ -162,10 +214,19 @@ class TestSnetWrapperBipartite(unittest.TestCase):
 
 
         pgr = network_analytics_bipartite_pb2.ProjecetedGraphRequest(graph=graph, nodes=nodes, weight=weight)
-        resp = stub.ProjectedGraph(pgr)
-        expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Node element at zero-indexed position 2 is not contained in bipartite_1')
 
-        self.assertEqual(resp, expected)
+        try:
+            response = stub.ProjectedGraph(pgr)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('Node element at zero-indexed position 2 is not contained in bipartite_1', response)
+
+
+        # resp = stub.ProjectedGraph(pgr)
+        # expected = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message='Node element at zero-indexed position 2 is not contained in bipartite_1')
+        #
+        # self.assertEqual(resp, expected)
 
         nodes_list = {"bipartite_0": ['Pam', 'Goeff', 'Philip', 'Sam', 'Fred', 'Jane', 'Sue', 'Charlie'],
                       "bipartite_1": ['American Diner', 'Sushi', 'Italian', 'Indian', 'Chinese', 'Tapas', 'Thai',

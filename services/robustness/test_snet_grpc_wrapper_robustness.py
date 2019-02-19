@@ -49,13 +49,20 @@ class TestSnetWrapperRobustness(unittest.TestCase):
 
         graph_1 = network_analytics_robustness_pb2.MinNodesToRemoveRequest(graph=graph_in,source_node=source_node,target_node=target_node)
 
-        response = stub.MinNodesToRemove(graph_1)
-        print(response.status)
-        print(response.message)
-        print(response.nodes_output)
-        print(response.edges_output)
-        expected = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False, message='edge value at [0][1] is not a node')
-        self.assertEqual(response, expected)
+
+
+        try:
+            response = stub.MinNodesToRemove(graph_1)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('edge value at [0][1] is not a node',response)
+        # print(response.status)
+        # print(response.message)
+        # print(response.nodes_output)
+        # print(response.edges_output)
+        # expected = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False, message='edge value at [0][1] is not a node')
+        # self.assertEqual(response, expected)
 
 
 
@@ -123,14 +130,23 @@ class TestSnetWrapperRobustness(unittest.TestCase):
 
         graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in, source_nodes=source_nodes,target_nodes=target_nodes)
 
-        response = stub.MostImportantNodesEdgesSubset(graph_1)
-        print(response.status)
-        print(response.message)
-        print(response.node_betweenness_centrality)
-        print(response.edge_betweenness_centrality)
-        expected = None
-        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False, message='source_nodes [1] does not exist in graph')
-        self.assertEqual(response, expected)
+
+        try:
+            response = stub.MostImportantNodesEdgesSubset(graph_1)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('source_nodes [1] does not exist in graph', response)
+
+
+        # response = stub.MostImportantNodesEdgesSubset(graph_1)
+        # print(response.status)
+        # print(response.message)
+        # print(response.node_betweenness_centrality)
+        # print(response.edge_betweenness_centrality)
+        # expected = None
+        # expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False, message='source_nodes [1] does not exist in graph')
+        # self.assertEqual(response, expected)
 
 
         #
