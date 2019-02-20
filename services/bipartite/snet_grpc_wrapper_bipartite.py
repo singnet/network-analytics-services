@@ -22,22 +22,6 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
         nodes = request.nodes
         edges = request.edges
 
-        if nodes is None:
-            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            # context.set_details("node parameter is required")
-            #
-            # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
-
-            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT,"node parameter is required")
-
-        if edges is None:
-            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            # context.set_details("edges parameter is required")
-            #
-            # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
-
-            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'edges parameter is required')
-
 
         b = bipartite_graphs.BipartiteGraphs()
 
@@ -70,15 +54,15 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
                 resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=ret[0], message=ret[1], output=graph_resp)
 
             else:
-                # context.set_code(grpc.StatusCode.UNKNOWN)
-                # context.set_details(ret[1])
-                #
-                # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5000.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
+            print(time.strftime("%c"))
             print('Waiting for next call on port 5000.')
 
             return resp
@@ -88,20 +72,11 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 
             logging.exception("message")
 
-            # context.set_code(grpc.StatusCode.UNKNOWN)
-            # context.set_details(str(e))
-            #
-            # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
-            resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message=str(e))
-
-            print('status:', resp.status)
-            print('message:', resp.message)
-            print('Waiting for next call on port 5000.')
-
-            return resp
 
 
 
@@ -114,31 +89,6 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
         nodes = request.nodes
         weight = request.weight
 
-        if bipartite_graph is None:
-            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            # context.set_details("bipartite_graph parameter is required")
-            #
-            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
-
-            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'bipartite_graph parameter is required')
-
-        if nodes is None:
-            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            # context.set_details("nodes parameter is required")
-            #
-            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
-            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'nodes parameter is required')
-
-
-        if weight is None:
-            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            # context.set_details("weight parameter is required")
-            #
-            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
-            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'weight parameter is required')
-
-
-        print (bipartite_graph)
 
         b = bipartite_graphs.BipartiteGraphs()
 
@@ -168,15 +118,15 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
                 resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=ret[0], message=ret[1], output=graph_resp)
 
             else:
-                # context.set_code(grpc.StatusCode.UNKNOWN)
-                # context.set_details(ret[1])
-                #
-                # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5000.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
+            print(time.strftime("%c"))
             print('Waiting for next call on port 5000.')
 
             return resp
@@ -186,20 +136,11 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 
             logging.exception("message")
 
-            # context.set_code(grpc.StatusCode.UNKNOWN)
-            # context.set_details(str(e))
-            #
-            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
-            resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message=str(e))
-
-            print('status:', resp.status)
-            print('message:', resp.message)
-            print('Waiting for next call on port 5000.')
-
-            return resp
 
 
 def serve():

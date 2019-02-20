@@ -26,17 +26,6 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         source_nodes = request.source_node
         target_nodes = request.target_node
 
-        if graph is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("graph parameter is required")
-
-        if source_nodes is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("source_nodes parameter is required")
-
-        if target_nodes is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("target_nodes parameter is required")
 
         g = robustness.Robustness()
 
@@ -53,13 +42,9 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             source_nodes_in = str(source_nodes)
             target_nodes_in = str(target_nodes)
 
-            print(graph_in)
-            print(source_nodes_in)
-            print(target_nodes_in)
 
             ret = g.min_nodes_to_remove(graph_in,source_nodes_in,target_nodes_in)    
-            print (ret[0])
-            print (ret[1])
+
             
             resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=ret[0],message=ret[1])
 
@@ -69,18 +54,21 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                 for edge_ret in ret[2]["edges"]:
                     edges_resp.append(network_analytics_robustness_pb2.Edge(edge=edge_ret))
 
-                print(edges_resp)
                 resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=ret[0],message=ret[1],nodes_output=nodes_resp,edges_output=edges_resp)
 
             else:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(ret[1])
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
 
 
             print('status:',resp.status)
             print('message:',resp.message)
-            print('Waiting for next call on port 5000.')
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
 
             return resp
 
@@ -89,18 +77,12 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
 
             logging.exception("message")
 
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            context.set_details(str(e))
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
 
-
-            resp = network_analytics_robustness_pb2.MinNodesToRemoveResponse(status=False,message=str(e))
-
-            print('status:', resp.status)
-            print('message:', resp.message)
-            print('Waiting for next call on port 5000.')
-
-            return resp
 
    
     def MostImportantNodesEdgesSubset(self, request, context):
@@ -112,19 +94,6 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
         source_nodes = request.source_nodes
         target_nodes = request.target_nodes
         T = request.Type
-
-
-        if graph is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("graph parameter is required")
-
-        if source_nodes is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("source_nodes parameter is required")
-
-        if target_nodes is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("target_nodes parameter is required")
 
 
 
@@ -143,9 +112,6 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
             source_nodes_in = list(source_nodes)
             target_nodes_in = list(target_nodes)
 
-            print(graph_in)
-            print(source_nodes_in)
-            print(target_nodes_in)
 
             ret = g.most_important_nodes_edges_subset(graph_in, source_nodes_in, target_nodes_in, T, request.normalized, request.directed)
             
@@ -166,17 +132,19 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
                     resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1],edge_betweenness_centrality=graph_resp)
 
             else:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(ret[1])
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
 
 
 
-            # print('status:',resp.status)
-            # print('message:',resp.message)
-            # print('message:',resp.node_betweenness_centrality)
-            # print('message:',resp.edge_betweenness_centrality)
-            print('Waiting for next call on port 5000.')
+            print('status:',resp.status)
+            print('message:',resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
 
             return resp
 
@@ -185,16 +153,10 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetowrkAn
 
             logging.exception("message")
 
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            context.set_details(str(e))
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
 
-            resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=False,message=str(e))
-
-            print('status:', resp.status)
-            print('message:', resp.message)
-            print('Waiting for next call on port 5000.')
-
-            return resp            
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
 
 def serve():
