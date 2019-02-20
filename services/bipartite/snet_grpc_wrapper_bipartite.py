@@ -26,9 +26,13 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details("node parameter is required")
 
+            return network_analytics_bipartite_pb2.BipartiteGraphResponse()
+
         if edges is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details("edges parameter is required")
+
+            return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
 
         b = bipartite_graphs.BipartiteGraphs()
@@ -65,6 +69,8 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 context.set_details(ret[1])
 
+                return network_analytics_bipartite_pb2.BipartiteGraphResponse()
+
             print('status:',resp.status)
             print('message:',resp.message)
             print('Waiting for next call on port 5000.')
@@ -78,6 +84,8 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 
             context.set_code(grpc.StatusCode.UNKNOWN)
             context.set_details(str(e))
+
+            return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
             resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message=str(e))
 
