@@ -28,7 +28,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
             #
             # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
-            context.abort(grpc.StatusCode.INVALID_ARGUMENT, 'node parameter is required')
+            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT,"node parameter is required")
 
         if edges is None:
             # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
@@ -36,7 +36,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
             #
             # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
-            context.abort(grpc.StatusCode.INVALID_ARGUMENT, 'edges parameter is required')
+            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'edges parameter is required')
 
 
         b = bipartite_graphs.BipartiteGraphs()
@@ -75,7 +75,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
                 #
                 # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
-                context.abort(grpc.StatusCode.UNKNOWN, ret[1])
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
@@ -93,7 +93,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
             #
             # return network_analytics_bipartite_pb2.BipartiteGraphResponse()
 
-            context.abort(grpc.StatusCode.UNKNOWN, str(e))
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
             resp = network_analytics_bipartite_pb2.BipartiteGraphResponse(status=False, message=str(e))
 
@@ -115,22 +115,28 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
         weight = request.weight
 
         if bipartite_graph is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("bipartite_graph parameter is required")
+            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            # context.set_details("bipartite_graph parameter is required")
+            #
+            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
 
-            return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'bipartite_graph parameter is required')
 
         if nodes is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("nodes parameter is required")
+            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            # context.set_details("nodes parameter is required")
+            #
+            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'nodes parameter is required')
 
-            return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
 
         if weight is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details("weight parameter is required")
+            # context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            # context.set_details("weight parameter is required")
+            #
+            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+            raise grpc.RpcError(grpc.StatusCode.INVALID_ARGUMENT, 'weight parameter is required')
 
-            return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
 
         print (bipartite_graph)
 
@@ -162,10 +168,12 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
                 resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=ret[0], message=ret[1], output=graph_resp)
 
             else:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(ret[1])
+                # context.set_code(grpc.StatusCode.UNKNOWN)
+                # context.set_details(ret[1])
+                #
+                # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
 
-                return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
@@ -178,10 +186,12 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 
             logging.exception("message")
 
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            context.set_details(str(e))
+            # context.set_code(grpc.StatusCode.UNKNOWN)
+            # context.set_details(str(e))
+            #
+            # return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
 
-            return network_analytics_bipartite_pb2.ProjecetedGraphResponse()
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
             resp = network_analytics_bipartite_pb2.ProjecetedGraphResponse(status=False, message=str(e))
 
