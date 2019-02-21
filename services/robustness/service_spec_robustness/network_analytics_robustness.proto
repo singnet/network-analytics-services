@@ -78,7 +78,7 @@ message MostImportantNodesEdgesSubsetResponse {
 
 ///// Network Analytics Robustness Services
 
-service NetowrkAnalyticsRobustness {
+service NetworkAnalyticsRobustness {
 
     rpc MinNodesToRemove (MinNodesToRemoveRequest) returns (MinNodesToRemoveResponse) {};
 

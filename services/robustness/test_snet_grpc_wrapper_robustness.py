@@ -32,7 +32,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4','5', '6'],
@@ -69,7 +69,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4','5', '6'],
@@ -107,7 +107,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
@@ -152,7 +152,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
@@ -192,7 +192,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
@@ -232,7 +232,7 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         #
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_robustness_pb2_grpc.NetowrkAnalyticsRobustnessStub(channel)
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
 
         graph = {
             "nodes": ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],

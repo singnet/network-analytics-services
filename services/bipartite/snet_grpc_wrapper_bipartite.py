@@ -12,7 +12,7 @@ from service_spec_bipartite import network_analytics_bipartite_pb2_grpc
 SLEEP_TIME = 86400 # One day
 
 
-class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnalyticsBipartiteServicer):
+class NetworkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetworkAnalyticsBipartiteServicer):
 
     def BipartiteGraph(self,request,context):
 
@@ -146,7 +146,7 @@ class NetowrkAnalyticsBipartite(network_analytics_bipartite_pb2_grpc.NetowrkAnal
 def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsBipartiteServicer_to_server(NetowrkAnalyticsBipartite(), server)
+    network_analytics_bipartite_pb2_grpc.add_NetworkAnalyticsBipartiteServicer_to_server(NetworkAnalyticsBipartite(), server)
     print('Starting server. Listening on port 5000.')
     server.add_insecure_port('127.0.0.1:5000')
     server.start()
@@ -159,7 +159,7 @@ def serve():
 def serve_test():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_bipartite_pb2_grpc.add_NetowrkAnalyticsBipartiteServicer_to_server(NetowrkAnalyticsBipartite(), server)
+    network_analytics_bipartite_pb2_grpc.add_NetworkAnalyticsBipartiteServicer_to_server(NetworkAnalyticsBipartite(), server)
     print('Starting server. Listening on port 5000.')
     server.add_insecure_port('127.0.0.1:5000')
     return server

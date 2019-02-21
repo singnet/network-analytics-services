@@ -28,7 +28,7 @@ class TestSnetWrapperBipartite(unittest.TestCase):
     def test_BipartiteGraph(self):
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_bipartite_pb2_grpc.NetowrkAnalyticsBipartiteStub(channel)
+        stub = network_analytics_bipartite_pb2_grpc.NetworkAnalyticsBipartiteStub(channel)
 
 
         edges_list = [['3', '8'], ['4', '7']]
@@ -106,7 +106,7 @@ class TestSnetWrapperBipartite(unittest.TestCase):
     def test_ProjectedGraph(self):
 
         channel = grpc.insecure_channel('localhost:5000')
-        stub = network_analytics_bipartite_pb2_grpc.NetowrkAnalyticsBipartiteStub(channel)
+        stub = network_analytics_bipartite_pb2_grpc.NetworkAnalyticsBipartiteStub(channel)
 
 
         nodes = ['Pam', 'Charlie', 'Goeff', 'Fred', 'Sam', 'Sue', 'Philip', 'Jane']
