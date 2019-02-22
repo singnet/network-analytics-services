@@ -90,16 +90,20 @@ WORKDIR /home/netk/dep
 #RUN git clone https://github.com/singnet/network-analytics-services.git && \
 #	cd network-analytics-services
 
-RUN whoami
-RUN pwd
 
-RUN echo 8 && \
-	git clone https://github.com/edyirdaw/network-analytics-services.git && \
-	cd network-analytics-services && \
-	git checkout --track origin/example_bipartition
+# Can be uncommented for local docker building
 
-RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
-RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
+#RUN whoami
+#RUN pwd
+#
+#RUN echo 8 && \
+#	git clone https://github.com/edyirdaw/network-analytics-services.git && \
+#	cd network-analytics-services && \
+#	git checkout --track origin/example_bipartition
+#
+#RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
+#RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
+#
+#WORKDIR /home/netk/network-analytics-services/services
 
-WORKDIR /home/netk/network-analytics-services/services
-
+# End of Can be uncommented for local docker building
