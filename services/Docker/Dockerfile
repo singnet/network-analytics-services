@@ -47,7 +47,7 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_kovan/ \
 #    /var/log/robustness_ropsten/
 
-RUN echo 3
+RUN echo 4
 
 RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/ \
