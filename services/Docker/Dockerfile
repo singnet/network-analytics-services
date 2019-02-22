@@ -47,6 +47,7 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_kovan/ \
 #    /var/log/robustness_ropsten/
 
+RUN echo 3
 
 RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/ \
@@ -69,8 +70,6 @@ RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/d
     cp snetd /home/netk/daemons/bipartite_ropsten/ && \
     cp snetd /home/netk/daemons/robustness_ropsten/
 
-
-RUN echo 1
 
 COPY daemons/snetd_bipartite_kovan.json /home/netk/daemons/bipartite_kovan/
 COPY daemons/snetd_robustness_kovan.json /home/netk/daemons/robustness_kovan/
