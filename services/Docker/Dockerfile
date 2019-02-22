@@ -48,33 +48,34 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_ropsten/
 
 
-RUN mkdir /home/top/pay/ \
-    /home/top/daemons/ \
-    /home/top/pay/bipartite_kovan/ \
-    /home/top/pay/robustness_kovan/ \
-    /home/top/pay/bipartite_ropsten/ \
-    /home/top/pay/robustness_ropsten/ \
-    /home/top/daemons/bipartite_kovan/ \
-    /home/top/daemons/robustness_kovan/ \
-    /home/top/daemons/bipartite_ropsten/ \
-    /home/top/daemons/robustness_ropsten/
+RUN mkdir /home/netk/pay/ \
+    /home/netk/daemons/ \
+    /home/netk/pay/bipartite_kovan/ \
+    /home/netk/pay/robustness_kovan/ \
+    /home/netk/pay/bipartite_ropsten/ \
+    /home/netk/pay/robustness_ropsten/ \
+    /home/netk/daemons/bipartite_kovan/ \
+    /home/netk/daemons/robustness_kovan/ \
+    /home/netk/daemons/bipartite_ropsten/ \
+    /home/netk/daemons/robustness_ropsten/ \
+    /home/netk/dep
 
 ENV DAEMON_VERSION 0.1.6
 
 RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/download/v$DAEMON_VERSION/snet-daemon-v$DAEMON_VERSION-linux-amd64.tar.gz && \
     tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
-    cp snetd /home/top/daemons/bipartite_kovan/ && \
-    cp snetd /home/top/daemons/robustness_kovan/ && \
-    cp snetd /home/top/daemons/bipartite_ropsten/ && \
-    cp snetd /home/top/daemons/robustness_ropsten/
+    cp snetd /home/netk/daemons/bipartite_kovan/ && \
+    cp snetd /home/netk/daemons/robustness_kovan/ && \
+    cp snetd /home/netk/daemons/bipartite_ropsten/ && \
+    cp snetd /home/netk/daemons/robustness_ropsten/
 
 
 RUN echo 1
 
-COPY daemons/snetd_bipartite_kovan.json /home/top/daemons/bipartite_kovan/
-COPY daemons/snetd_robustness_kovan.json /home/top/daemons/robustness_kovan/
-COPY daemons/snetd_bipartite_ropsten.json /home/top/daemons/bipartite_ropsten/
-COPY daemons/snetd_robustness_ropsten.json /home/top/daemons/robustness_ropsten/
+COPY daemons/snetd_bipartite_kovan.json /home/netk/daemons/bipartite_kovan/
+COPY daemons/snetd_robustness_kovan.json /home/netk/daemons/robustness_kovan/
+COPY daemons/snetd_bipartite_ropsten.json /home/netk/daemons/bipartite_ropsten/
+COPY daemons/snetd_robustness_ropsten.json /home/netk/daemons/robustness_ropsten/
 COPY supervisor/bipartite_grpc.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_ropsten.conf /etc/supervisor/conf.d/
@@ -89,15 +90,16 @@ WORKDIR /home/netk/dep
 #RUN git clone https://github.com/singnet/network-analytics-services.git && \
 #	cd network-analytics-services
 
-#RUN echo 8 && \
-#	git clone https://github.com/edyirdaw/network-analytics-services.git && \
-#	cd network-analytics-services && \
-#	git checkout --track origin/example_bipartition
+RUN whoami
+RUN pwd
 
-#RUN pwd
+RUN echo 8 && \
+	git clone https://github.com/edyirdaw/network-analytics-services.git && \
+	cd network-analytics-services && \
+	git checkout --track origin/example_bipartition
 
-#RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
-#RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_robustness.proto
+RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
+RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
 
-#WORKDIR /home/netk/network-analytics-services/services
+WORKDIR /home/netk/network-analytics-services/services
 
