@@ -47,7 +47,7 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_kovan/ \
 #    /var/log/robustness_ropsten/
 
-RUN echo 8
+RUN echo 9
 
 RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/ \
@@ -86,11 +86,11 @@ COPY daemons/snetd_robustness_mainnet.json /home/netk/daemons/robustness_mainnet
 COPY supervisor/bipartite_grpc.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_ropstend.conf /etc/supervisor/conf.d/
-COPY supervisor/bipartite_mainnet.conf /etc/supervisor/conf.d/
+COPY supervisor/bipartite_mainnetd.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_grpc.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_ropstend.conf /etc/supervisor/conf.d/
-COPY supervisor/robustness_mainnet.conf /etc/supervisor/conf.d/
+COPY supervisor/robustness_mainnetd.conf /etc/supervisor/conf.d/
 COPY supervisor/supervisord.conf /etc/supervisor/
 
 
