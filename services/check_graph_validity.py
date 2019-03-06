@@ -1,8 +1,4 @@
-<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
-
-=======
 # Tested on python3.6
->>>>>>> node importance and several correcions phase 1
 
 class Graphs:
 
@@ -96,16 +92,15 @@ class Graphs:
                     return [False, 'the supplied weight is not type array']
                 if len(graph['edges']) != len(graph['weights']):
                     return [False, 'the length of supplied edges and weights does not match']
-<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
                 #the edge weights must be greater than zero     
                 if(0 in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']   
 
-=======
+
                 # the edge weights must be greater than zero
                 if not all(i > 0 for i in graph['weights']):
                     return [False, 'all edge weights must be greater than zero']
->>>>>>> node importance and several correcions phase 1
+
 
                     # make sure source_nodes and target_nodes are a 1D array
             if not (isinstance(source_nodes, list)):
@@ -133,9 +128,5 @@ class Graphs:
             return isValid
 
 
-<<<<<<< 8c1628e716bb362cb4795bb82df1bd3c154a3e02
+__end__ = '__end__'
 
-__end__ = '__end__'
-=======
-__end__ = '__end__'
->>>>>>> node importance and several correcions phase 1
