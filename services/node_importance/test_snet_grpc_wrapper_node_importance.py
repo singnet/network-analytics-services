@@ -4,10 +4,10 @@ from node_importance import NodeImportance
 import networkx as nx
 import numpy as np
 from client import ClientTest
-from server import *
+from snet_grpc_wrapper_node_importance import *
 
-from service_spec import node_importance_pb2
-from service_spec import node_importance_pb2_grpc
+from service_spec_node_importance import node_importance_pb2
+from service_spec_node_importance import node_importance_pb2_grpc
 
 
 class TestNodeImportance(unittest.TestCase):
@@ -680,7 +680,7 @@ class TestNodeImportance(unittest.TestCase):
         # wrong Number of wrights test taking one functionality as example
         result = self.client.find_central(self.stub, self.graph_04)
         self.assertEqual(result.status, False)
-        self.assertEqual(result.message, 'weights and edges must be equal')
+        self.assertEqual(result.message, 'the length of supplied edges and weights does not match')
 
     def tearDown(self):
         self.server.stop_server()

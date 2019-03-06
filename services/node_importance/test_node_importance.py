@@ -377,7 +377,7 @@ class TestNodeImportance(unittest.TestCase):
         # Graph without wrong number of weights
         result = self.cv.is_valid_graph(self.graph_04)
         self.assertEqual(result[0], False)
-        self.assertEqual(result[1], 'weights and edges must be equal')
+        self.assertEqual(result[1], 'the length of supplied edges and weights does not match')
 
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 import os
 import grpc
-from service_spec import node_importance_pb2
-from service_spec import node_importance_pb2_grpc
+from service_spec_node_importance import node_importance_pb2
+from service_spec_node_importance import node_importance_pb2_grpc
 
-from server import *
+from snet_grpc_wrapper_node_importance import *
 
 
 class ClientTest():
