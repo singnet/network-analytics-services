@@ -52,7 +52,7 @@ class Graphs:
         # Weight related test
         try:
             if len(graph['weights']) != 0 and len(graph['weights']) != len(graph['edges']):
-                return [False, 'weights and edges must be equal']
+                return [False, 'the length of supplied edges and weights does not match']
         except Exception as e:
             # weight is empty
             pass
@@ -67,9 +67,9 @@ class Graphs:
         if isValid[0]:
             # check source node and target node
             if not (source_node in graph['nodes']):
-                return [False, 'The source node doesn’t exist in graph']
+                return [False, 'The source node does not exist in graph']
             if not (target_node in graph['nodes']):
-                return [False, "The target node doesn’t exist in graph"]
+                return [False, "The target node does not exist in graph"]
 
             return [True]
 
@@ -111,12 +111,12 @@ class Graphs:
             # make sure source_node and target_node exist in the graph
             for i in range(len(source_nodes)):
                 if not (source_nodes[i] in graph['nodes']):
-                    return [False, "source_nodes [" + str(i) + "] doesn’t exist in graph"]
+                    return [False, "source_nodes [" + str(i) + "] does not exist in graph"]
 
             # make sure source_node and target_node exist in the graph
             for i in range(len(target_nodes)):
                 if not (target_nodes[i] in graph['nodes']):
-                    return [False, "target_nodes [" + str(i) + "] doesn’t exist in graph"]
+                    return [False, "target_nodes [" + str(i) + "] does not exist in graph"]
 
             if T != 0 and T != 1:
                 return [False, 'Parameter T can only be 0 or 1']
