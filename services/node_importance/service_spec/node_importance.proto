@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+message Edge {
+    repeated string edge = 1;
+}
+
+message Graph {
+
+    repeated string nodes = 1;
+    repeated Edge edges = 2;
+    repeated double weights = 3;
+}
+
+message OutputNodesList {
+    repeated string output_nodes = 1;
+}
+
+message DictOutput{
+    repeated string edge = 1;
+    repeated double output = 2;
+}
+
+// find_central_nodes
+message CentralNodeRequest {
+    Graph graph = 1;
+    string u = 2;
+    string distance = 3;
+    bool wf_improved = 4;
+    bool reverse = 5;
+}
+
+message CentralNodeResponse {
+    bool status = 1;
+    string message = 2;
+    DictOutput output = 3;
+}
+
+// find_eccentricity
+message PeripheryRequest {
+    Graph graph = 1;
+    bool usebounds = 2;
+}
+
+message PeripheryResponse {
+    bool status = 1;
+    string message = 2;
+    OutputNodesList output = 3;
+}
+
+// find_degree_centrality
+message DegreeCentralityRequest {
+    Graph graph = 1;
+    string in_out = 2;
+    bool directed = 3;
+}
+
+message DegreeCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    DictOutput output = 3;
+}
+
+// find_closeness_centrality
+message ClosenessCentralityRequest {
+    Graph graph = 1;
+    repeated string nodes = 2;
+    bool normalized = 3;
+    bool directed = 4;
+}
+
+
+message ClosenessCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    DictOutput output = 3;
+}
+
+// find_betweenness_centrality
+message BetweennessOutput{
+    repeated Edge edge = 1;
+    repeated double output = 2;
+}
+
+message BetweennessCentralityRequest {
+    Graph graph = 1;
+    int32 k = 2;
+    bool normalized = 3;
+    bool weight = 4;
+    bool endpoints = 5;
+    int32 seed = 6;
+    string type = 7;
+    bool directed = 8;
+}
+
+message BetweennessCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    BetweennessOutput output = 3;
+}
+
+
+
+// used for page range and eigen vector centrality
+message Nstart {
+    repeated string key = 1;
+    repeated int32 value = 2;
+}
+
+message Personalization {
+    repeated string key = 1;
+    repeated float value = 2;
+}
+message Dangling {
+    repeated string key = 1;
+    repeated float value = 2;
+}
+
+// find_pagerank
+message PageRankRequest {
+    Graph graph = 1;
+    float alpha = 2;
+    Personalization personalization = 3;
+    int32 max_iter = 4;
+    float tol = 5;
+    Nstart nstart = 6;
+    bool weight = 7;
+    Dangling dangling = 8;
+    bool directed = 9;
+}
+
+
+message PageRankResponse {
+    bool status = 1;
+    string message = 2;
+    DictOutput output = 3;
+}
+
+//find_eigenvector_centrality
+message EigenvectorCentralityRequest {
+    Graph graph = 1;
+    int32 max_iter = 2;
+    float tol = 3;
+    Nstart nstart = 4;
+    bool weight = 5;
+    bool directed = 6;
+}
+
+
+message EigenvectorCentralityResponse {
+    bool status = 1;
+    string message = 2;
+    DictOutput output = 3;
+}
+
+// find_hits
+message HitsOutput{
+    repeated float hits_out = 1;
+}
+message HitsRequest {
+    Graph graph = 1;
+    repeated string nodelist = 2;
+    string mode = 3;
+    bool directed = 4;
+}
+
+message HitsResponse {
+    bool status = 1;
+    string message = 2;
+    repeated HitsOutput output = 3;
+}
+
+
+
+service NodeImportance {
+    rpc CentralNodes (CentralNodeRequest) returns (CentralNodeResponse) {};
+    rpc Periphery (PeripheryRequest) returns (PeripheryResponse) {};
+    rpc DegreeCentrality (DegreeCentralityRequest) returns (DegreeCentralityResponse) {};
+    rpc BetweennessCentrality (BetweennessCentralityRequest) returns (BetweennessCentralityResponse) {};
+    rpc PageRank (PageRankRequest) returns (PageRankResponse) {};
+    rpc EigenvectorCentrality (EigenvectorCentralityRequest) returns (EigenvectorCentralityResponse) {};
+    rpc Hits (HitsRequest) returns (HitsResponse) {};
+    rpc ClosenessCentrality (ClosenessCentralityRequest) returns (ClosenessCentralityResponse) {};
+}
+
+
