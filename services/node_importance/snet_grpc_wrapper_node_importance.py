@@ -1,6 +1,7 @@
 import grpc
 from concurrent import futures
 import time
+import logging
 
 from service_spec_node_importance import node_importance_pb2
 from service_spec_node_importance import node_importance_pb2_grpc
@@ -12,36 +13,76 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
     def CentralNodes(self, request, context):
         ni = NodeImportance()
         graph = request.graph
+        usebounds = request.usebounds
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
-        except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_central_nodes(graph=graph_in, u=request.u, distance=request.distance,
-                                              wf_improved=request.wf_improved, reverse=request.reverse)
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        if temp_response[0]:
-            if isinstance(temp_response[2]["central_nodes"], dict):
-                for k, v in temp_response[2]["central_nodes"].items():
-                    centalnodes_output_key.append(k)
-                    centralnodes_output_value.append(v)
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+
+            temp_response = ni.find_central_nodes(graph=graph_in, usebounds=usebounds)
+
+            if temp_response[0]:
+
+
+                response = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1], output=temp_response[2])
+                return response
+
             else:
-                centalnodes_output_key.append(request.u)
-                centralnodes_output_value.append(temp_response[2]["central_nodes"])
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
 
-        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
-                                                output=centralnodes_output_value)
-        responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
-                                                           output=output)
-        return responce
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, temp_response[1])
+
+
+        except Exception as e:
+
+            logging.exception("message")
+
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
+
+
+
+
+    # def CentralNodes(self, request, context):
+    #     ni = NodeImportance()
+    #     graph = request.graph
+    #     try:
+    #         edges_list = []
+    #         weights_list = []
+    #         for edges_proto in graph.edges:
+    #             edges_list.append(list(edges_proto.edge))
+    #         if len(graph.weights) > 0:
+    #             for weights_proto in graph.weights:
+    #                 weights_list.append(int(weights_proto))
+    #         graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+    #     except Exception as e:
+    #         return [False, str(e), {}]
+    #
+    #     temp_response = ni.find_central_nodes(graph=graph_in, u=request.u, distance=request.distance,
+    #                                           wf_improved=request.wf_improved, reverse=request.reverse)
+    #     centalnodes_output_key = []
+    #     centralnodes_output_value = []
+    #     if temp_response[0]:
+    #         if isinstance(temp_response[2]["central_nodes"], dict):
+    #             for k, v in temp_response[2]["central_nodes"].items():
+    #                 centalnodes_output_key.append(k)
+    #                 centralnodes_output_value.append(v)
+    #         else:
+    #             centalnodes_output_key.append(request.u)
+    #             centralnodes_output_value.append(temp_response[2]["central_nodes"])
+    #
+    #     output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
+    #                                             output=centralnodes_output_value)
+    #     responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
+    #                                                        output=output)
+    #     return responce
+
+
 
     def Periphery(self, request, context):
         ni = NodeImportance()

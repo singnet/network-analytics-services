@@ -23,16 +23,13 @@ message DictOutput{
 // find_central_nodes
 message CentralNodeRequest {
     Graph graph = 1;
-    string u = 2;
-    string distance = 3;
-    bool wf_improved = 4;
-    bool reverse = 5;
+    bool usebounds = 2;
 }
 
 message CentralNodeResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated string output = 3;
 }
 
 // find_eccentricity
