@@ -16,7 +16,7 @@ message OutputNodesList {
 }
 
 message DictOutput{
-    repeated string edge = 1;
+    repeated string node = 1;
     repeated double output = 2;
 }
 

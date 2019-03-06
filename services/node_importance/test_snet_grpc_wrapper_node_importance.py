@@ -50,7 +50,7 @@ class TestNodeImportance(unittest.TestCase):
             centalnodes_output_key.append(k)
             centralnodes_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
                                                 output=centralnodes_output_value)
 
         # Default Test
@@ -70,7 +70,7 @@ class TestNodeImportance(unittest.TestCase):
             centalnodes_output_key.append(k)
             centralnodes_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
                                                 output=centralnodes_output_value)
 
         result = self.client.find_central(self.stub, self.graph, u='1', distance='weight', wf_improved=False,
@@ -102,7 +102,7 @@ class TestNodeImportance(unittest.TestCase):
             centalnodes_output_key.append(k)
             centralnodes_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
                                                 output=centralnodes_output_value)
 
         result = self.client.find_central(self.stub, self.graph_03)
@@ -156,7 +156,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph, in_out='out')
@@ -187,7 +187,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph, in_out='in')
@@ -218,7 +218,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph)
@@ -405,7 +405,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
         result = self.client.find_pagerank(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
@@ -423,7 +423,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
         result = self.client.find_pagerank(self.stub, self.graph, alpha=0.95,
                                            personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                             '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
@@ -471,7 +471,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
 
         result = self.client.find_pagerank(self.stub, self.graph_03)
         self.assertEqual(result.status, True)
@@ -491,7 +491,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, )
@@ -511,7 +511,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
@@ -553,7 +553,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph_03)

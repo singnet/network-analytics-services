@@ -37,7 +37,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 centalnodes_output_key.append(request.u)
                 centralnodes_output_value.append(temp_response[2]["central_nodes"])
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
+        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
                                                 output=centralnodes_output_value)
         responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
                                                            output=output)
@@ -93,7 +93,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 closeness_output_edges.append(k)
                 closeness_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=closeness_output_edges,
+        output = node_importance_pb2.DictOutput(node=closeness_output_edges,
                                                 output=closeness_output_value)
         response = node_importance_pb2.ClosenessCentralityResponse(status=temp_response[0], message=temp_response[1],
                                                                    output=output)
@@ -123,7 +123,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 centrality_output_edges.append(k)
                 centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
         response = node_importance_pb2.DegreeCentralityResponse(status=temp_response[0], message=temp_response[1],
                                                                 output=output)
@@ -191,7 +191,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 pagerank_output_edges.append(k)
                 pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges,
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges,
                                                 output=pagerank_output_value)
         response = node_importance_pb2.PageRankResponse(status=temp_response[0], message=temp_response[1],
                                                         output=output)
@@ -222,7 +222,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 eigenvector_output_edges.append(k)
                 eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         response = node_importance_pb2.EigenvectorCentralityResponse(status=temp_response[0], message=temp_response[1],
