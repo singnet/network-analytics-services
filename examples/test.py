@@ -152,6 +152,21 @@ def bet_subset():
     print([k for k, v in result.items() if v == highest])
 
 
+def graph_center():
+    graph = {
+        "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+        "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+        "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+    }
+
+    G = nx.Graph()
+    G.add_nodes_from(graph['nodes'])
+    G.add_edges_from(graph['edges'])
+
+    res = nx.algorithms.distance_measures.center(G,usebounds=True)
+
+    print(res)
+
 
 
 
@@ -165,7 +180,8 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-    bet_subset()
+    graph_center()
+    # bet_subset()
     # graph_2()
     # graph_1()
     # list_1()

@@ -41,7 +41,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             logging.exception("message")
 
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5000.')
+            print('Waiting for next call on port 5002.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -301,13 +301,13 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
 class Server():
     def __init__(self):
-        self.port = '[::]:50051'
+        self.port = '[::]:5002'
         self.server = None
 
     def start_server(self):
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
-        print('Starting server. Listening on port 50051.')
+        print('Starting server. Listening on port 5002.')
         self.server.add_insecure_port(self.port)
         self.server.start()
 

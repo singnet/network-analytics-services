@@ -38,28 +38,54 @@ class TestNodeImportance(unittest.TestCase):
             "weights": [3, 4, 5, 6, 7]
         }
 
+        self.graph_05 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '25'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+        }
+
     def test_find_central_nodes(self):
         # Default Test
         result = self.N.find_central_nodes(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}})
+        self.assertCountEqual(result[2], ['2','3'])
 
-        # Non Default Test
-        result = self.N.find_central_nodes(self.graph, u='1', distance='weight', wf_improved=False, reverse=True)
+        # Nondefault Test
+        result = self.N.find_central_nodes(self.graph,usebounds=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'central_nodes': 0.1})
+        self.assertCountEqual(result[2], ['2', '3'])
 
-        # # Non weighted Test
-        result = self.N.find_central_nodes(self.graph_03)
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}})
+        # Incorrect input data
+        result = self.N.find_central_nodes(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
+
+        # def test_find_central_nodes(self):
+        #     # Default Test
+        #     result = self.N.find_central_nodes(self.graph)
+        #     self.assertEqual(result[0], True)
+        #     self.assertEqual(result[1], 'success')
+        #     self.assertEqual(result[2], {
+        #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+        #                           '8': 0.4375}})
+        #
+        #     # Non Default Test
+        #     result = self.N.find_central_nodes(self.graph, u='1', distance='weight', wf_improved=False, reverse=True)
+        #     self.assertEqual(result[0], True)
+        #     self.assertEqual(result[1], 'success')
+        #     self.assertEqual(result[2], {'central_nodes': 0.1})
+        #
+        #     # # Non weighted Test
+        #     result = self.N.find_central_nodes(self.graph_03)
+        #     self.assertEqual(result[0], True)
+        #     self.assertEqual(result[1], 'success')
+        #     self.assertEqual(result[2], {
+        #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+        #                           '8': 0.4375}})
+
+
 
     def test_find_Periphery(self):
         # Default Test

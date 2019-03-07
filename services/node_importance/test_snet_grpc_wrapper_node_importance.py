@@ -39,76 +39,103 @@ class TestNodeImportance(unittest.TestCase):
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7]
         }
+        self.graph_05 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '25'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+        }
 
     def test_find_central_nodes(self):
-        expected_result = {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}}
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
-                                                output=centralnodes_output_value)
+        center_req = node_importance_pb2.CentralNodeRequest(graph=self.client.get_graph(self.graph))
+        resp = self.stub.CentralNodes(center_req)
 
-        # Default Test
-        result = self.client.find_central(self.stub, self.graph)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertEqual(resp.status, True)
+        self.assertEqual(resp.message, 'success')
+        self.assertCountEqual(list(resp.output), ['2', '3'])
 
-        # # Non Default Test
+        center_req = node_importance_pb2.CentralNodeRequest(graph=self.client.get_graph(self.graph_05))
 
-        expected_result = {
-            'central_nodes': {'1': 0.1}}
+        try:
+            response = self.stub.CentralNodes(center_req)
+        except Exception as e:
+            response = str(e)
 
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
+        self.assertIn('edge value at [3][1] is not a node', response)
 
-        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
-                                                output=centralnodes_output_value)
 
-        result = self.client.find_central(self.stub, self.graph, u='1', distance='weight', wf_improved=False,
-                                          reverse=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
-        # # Graph With No Nodes Test
-        result = self.client.find_central(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-        #
-        # # Graph With No edges Test
-        result = self.client.find_central(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1],
-                         "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-        #
-        # # Non Weighted Graph
-        expected_result = {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}}
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
+    # def test_find_central_nodes(self):
+    #     expected_result = {
+    #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+    #                           '8': 0.4375}}
+    #     centalnodes_output_key = []
+    #     centralnodes_output_value = []
+    #     for k, v in expected_result["central_nodes"].items():
+    #         centalnodes_output_key.append(k)
+    #         centralnodes_output_value.append(v)
+    #
+    #     output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
+    #                                             output=centralnodes_output_value)
+    #
+    #     # Default Test
+    #     result = self.client.find_central(self.stub, self.graph)
+    #     self.assertEqual(result.status, True)
+    #     self.assertEqual(result.message, 'success')
+    #     self.assertEqual(result.output, output)
+    #
+    #     # # Non Default Test
+    #
+    #     expected_result = {
+    #         'central_nodes': {'1': 0.1}}
+    #
+    #     centalnodes_output_key = []
+    #     centralnodes_output_value = []
+    #     for k, v in expected_result["central_nodes"].items():
+    #         centalnodes_output_key.append(k)
+    #         centralnodes_output_value.append(v)
+    #
+    #     output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
+    #                                             output=centralnodes_output_value)
+    #
+    #     result = self.client.find_central(self.stub, self.graph, u='1', distance='weight', wf_improved=False,
+    #                                       reverse=True)
+    #     self.assertEqual(result.status, True)
+    #     self.assertEqual(result.message, 'success')
+    #     self.assertEqual(result.output, output)
+    #
+    #     # # Graph With No Nodes Test
+    #     result = self.client.find_central(self.stub, self.graph_01)
+    #     self.assertEqual(result[0], False)
+    #     self.assertEqual(result[1], "'nodes'")
+    #     self.assertEqual(result[2], {})
+    #     #
+    #     # # Graph With No edges Test
+    #     result = self.client.find_central(self.stub, self.graph_02)
+    #     self.assertEqual(result[0], False)
+    #     self.assertEqual(result[1],
+    #                      "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
+    #     self.assertEqual(result[2], {})
+    #     #
+    #     # # Non Weighted Graph
+    #     expected_result = {
+    #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+    #                           '8': 0.4375}}
+    #     centalnodes_output_key = []
+    #     centralnodes_output_value = []
+    #     for k, v in expected_result["central_nodes"].items():
+    #         centalnodes_output_key.append(k)
+    #         centralnodes_output_value.append(v)
+    #
+    #     output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
+    #                                             output=centralnodes_output_value)
+    #
+    #     result = self.client.find_central(self.stub, self.graph_03)
+    #     self.assertEqual(result.status, True)
+    #     self.assertEqual(result.message, 'success')
+    #     self.assertEqual(result.output, output)
 
-        output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
-                                                output=centralnodes_output_value)
 
-        result = self.client.find_central(self.stub, self.graph_03)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
     def test_find_Periphery(self):
         expected_result = ['1', '4', '5', '6', '7', '8']

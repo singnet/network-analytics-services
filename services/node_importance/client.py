@@ -7,7 +7,7 @@ from snet_grpc_wrapper_node_importance import *
 
 
 class ClientTest():
-    def __init__(self, port='localhost:50051', image_output='client_out'):
+    def __init__(self, port='localhost:5002'):
         self.port = port
 
     def open_grpc_channel(self):
