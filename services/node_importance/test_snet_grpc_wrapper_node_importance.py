@@ -139,19 +139,18 @@ class TestNodeImportance(unittest.TestCase):
 
     def test_find_Periphery(self):
         expected_result = ['1', '4', '5', '6', '7', '8']
-        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=expected_result)
 
         # Default Test
         result = self.client.find_Periphery(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
 
         # Non Deafault test
         result = self.client.find_Periphery(self.stub, self.graph, usebounds=True)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
 
         # Graph With No Nodes Test
         result = self.client.find_Periphery(self.stub, self.graph_01)
@@ -169,7 +168,16 @@ class TestNodeImportance(unittest.TestCase):
         result = self.client.find_Periphery(self.stub, self.graph_03)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
+
+        periphery_req = node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph_05))
+
+        try:
+            response = self.stub.Periphery(periphery_req)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('edge value at [3][1] is not a node', response)
 
     def test_find_degree_centrality(self):
         # Out Degree Centrality Test

@@ -92,19 +92,24 @@ class TestNodeImportance(unittest.TestCase):
         result = self.N.find_Periphery(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
 
         # Non Default Test
         result = self.N.find_Periphery(self.graph, usebounds=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
 
         # Non weighted Test
         result = self.N.find_Periphery(self.graph_03)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
+
+        # Incorrect input data
+        result = self.N.find_central_nodes(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
     def test_find_degree_centrality(self):
         # Default Test

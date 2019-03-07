@@ -41,7 +41,7 @@ message PeripheryRequest {
 message PeripheryResponse {
     bool status = 1;
     string message = 2;
-    OutputNodesList output = 3;
+    repeated string output = 3;
 }
 
 // find_degree_centrality

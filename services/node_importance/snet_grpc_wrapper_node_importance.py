@@ -14,6 +14,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
         ni = NodeImportance()
         graph = request.graph
         usebounds = request.usebounds
+
         try:
             edges_list = []
             for edges_proto in graph.edges:
@@ -87,23 +88,38 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
     def Periphery(self, request, context):
         ni = NodeImportance()
         graph = request.graph
+        usebounds = request.usebounds
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+
+            graph_in = {"nodes": list(graph.nodes), "edges": edges_list}
+
+            temp_response = ni.find_Periphery(graph=graph_in, usebounds=usebounds)
+
+            if temp_response[0]:
+
+                response = node_importance_pb2.PeripheryResponse(status=temp_response[0], message=temp_response[1],
+                                                                   output=temp_response[2])
+                return response
+
+            else:
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, temp_response[1])
+
+
         except Exception as e:
-            return [False, str(e), {}]
-        temp_reponse = ni.find_Periphery(graph=graph_in, usebounds=request.usebounds)
-        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=temp_reponse[2]['periphery'])
-        responce = node_importance_pb2.PeripheryResponse(status=temp_reponse[0], message=temp_reponse[1],
-                                                         output=output_nodes_list)
-        return responce
+
+            logging.exception("message")
+
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
     def ClosenessCentrality(self, request, context):
         ni = NodeImportance()

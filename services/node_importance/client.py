@@ -32,15 +32,15 @@ class ClientTest():
         graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
         return graph_in
 
-    def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):
-        try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, u=u, distance=distance,
-                                                                  wf_improved=wf_improved, reverse=reverse)
-            response = stub.CentralNodes(Request_data)
-            return response
-        except Exception as e:
-            return [False, str(e), {}]
+    # def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):
+    #     try:
+    #         graph_in = self.get_graph(graph=graph)
+    #         Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, u=u, distance=distance,
+    #                                                               wf_improved=wf_improved, reverse=reverse)
+    #         response = stub.CentralNodes(Request_data)
+    #         return response
+    #     except Exception as e:
+    #         return [False, str(e), {}]
 
     def find_Periphery(self, stub, graph, usebounds=False):
         try:

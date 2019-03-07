@@ -73,8 +73,7 @@ class NodeImportance:
         G = self.construct_graph(graph)
         result = nx.algorithms.distance_measures.periphery(G, usebounds=usebounds)
 
-        output = {"periphery": result}
-        return True, 'success', output
+        return True, 'success', result
 
     def find_degree_centrality(self, graph, in_out=None, directed=False):
         ret = self.cv.is_valid_graph(graph)
