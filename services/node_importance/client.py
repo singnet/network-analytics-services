@@ -17,19 +17,45 @@ class ClientTest():
 
     def get_graph(self, graph):
 
+        try_weight = False
+        try_edge = False
+
         edges_req = []
         try:
             for e in graph["edges"]:
                 edges_req.append(node_importance_pb2.Edge(edge=e))
+            try_edge = True
         except Exception as e:
-            return [False, str(e), {}]
+            pass
 
         try:
             weights_req = graph['weights']
+            try_weight = True
         except Exception as e:
-            weights_req = None
+            pass
 
-        graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
+        try:
+
+            if not try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"])
+            elif not try_weight and try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req)
+            elif try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], weights=weights_req)
+            else:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
+
+        except:
+
+            if not try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph()
+            elif not try_weight and try_edge:
+                graph_in = node_importance_pb2.Graph(edges=edges_req)
+            elif try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(weights=weights_req)
+            else:
+                graph_in = node_importance_pb2.Graph(edges=edges_req, weights=weights_req)
+
         return graph_in
 
     # def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):

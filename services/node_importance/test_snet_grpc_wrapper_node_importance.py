@@ -154,15 +154,12 @@ class TestNodeImportance(unittest.TestCase):
 
         # Graph With No Nodes Test
         result = self.client.find_Periphery(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        self.assertIn('graph should at least contain two nodes',result[1])
+
 
         # Graph With No edges Test
         result = self.client.find_Periphery(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
+        self.assertIn('graph should at least contain one edge',result[1])
 
         # weight less graph test
         result = self.client.find_Periphery(self.stub, self.graph_03)
