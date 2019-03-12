@@ -60,9 +60,10 @@ message DegreeCentralityResponse {
 // find_closeness_centrality
 message ClosenessCentralityRequest {
     Graph graph = 1;
-    repeated string nodes = 2;
-    bool normalized = 3;
-    bool directed = 4;
+    string distance = 2;
+    bool wf_improved = 3;
+    bool reverse = 4;
+    bool directed = 5;
 }
 
 

@@ -163,7 +163,16 @@ def graph_center():
     G.add_nodes_from(graph['nodes'])
     G.add_edges_from(graph['edges'])
 
-    res = nx.algorithms.distance_measures.center(G,usebounds=True)
+    Gd = nx.DiGraph()
+    Gd.add_nodes_from(graph['nodes'])
+    Gd.add_edges_from(graph['edges'])
+
+    # res = nx.algorithms.distance_measures.center(G,usebounds=True)
+
+    # res = nx.algorithms.centrality.closeness_centrality(G)
+    res = nx.algorithms.centrality.closeness_centrality(Gd,distance='weights',wf_improved=False,reverse=True)
+
+
 
     print(res)
 

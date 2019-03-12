@@ -95,13 +95,21 @@ class NodeImportance:
             output = {"degree_centrality": result}
         return True, 'success', output
 
-    def find_closeness_centrality(self, graph, nodes, normalized=True, directed=False):
+    def find_closeness_centrality(self, graph, distance=False, wf_improved=True, reverse=False, directed=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
-        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes=nodes, normalized=normalized)
+
+        if 'weights' not in graph and distance:
+            return False, 'distance parameter specified but weights are not given in input graph', {}
+
+        if not distance:
+            result = nx.algorithms.centrality.closeness_centrality(G, distance='weights', wf_improved=wf_improved, reverse=reverse)
+        else:
+            result = nx.algorithms.centrality.closeness_centrality(G, wf_improved=wf_improved, reverse=reverse)
+
         output = {"closeness_centrality": result}
         return True, 'success', output
 
