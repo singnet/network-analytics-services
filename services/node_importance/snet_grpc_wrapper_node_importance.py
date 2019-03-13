@@ -47,44 +47,6 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
 
-
-
-    # def CentralNodes(self, request, context):
-    #     ni = NodeImportance()
-    #     graph = request.graph
-    #     try:
-    #         edges_list = []
-    #         weights_list = []
-    #         for edges_proto in graph.edges:
-    #             edges_list.append(list(edges_proto.edge))
-    #         if len(graph.weights) > 0:
-    #             for weights_proto in graph.weights:
-    #                 weights_list.append(int(weights_proto))
-    #         graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
-    #     except Exception as e:
-    #         return [False, str(e), {}]
-    #
-    #     temp_response = ni.find_central_nodes(graph=graph_in, u=request.u, distance=request.distance,
-    #                                           wf_improved=request.wf_improved, reverse=request.reverse)
-    #     centalnodes_output_key = []
-    #     centralnodes_output_value = []
-    #     if temp_response[0]:
-    #         if isinstance(temp_response[2]["central_nodes"], dict):
-    #             for k, v in temp_response[2]["central_nodes"].items():
-    #                 centalnodes_output_key.append(k)
-    #                 centralnodes_output_value.append(v)
-    #         else:
-    #             centalnodes_output_key.append(request.u)
-    #             centralnodes_output_value.append(temp_response[2]["central_nodes"])
-    #
-    #     output = node_importance_pb2.DictOutput(node=centalnodes_output_key,
-    #                                             output=centralnodes_output_value)
-    #     responce = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1],
-    #                                                        output=output)
-    #     return responce
-
-
-
     def Periphery(self, request, context):
         ni = NodeImportance()
         graph = request.graph
@@ -124,37 +86,64 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
     def ClosenessCentrality(self, request, context):
         ni = NodeImportance()
         graph = request.graph
+        distance = request.distance
+        wf_improved = request.wf_improved
+        reverse = request.reverse
+        directed = request.directed
+
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
 
-            nodes_list = []
-            for nodes_ in request.nodes:
-                if nodes_ not in ['[', ',', ']']:
-                    nodes_list.append(nodes_)
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+            weights_list = list(graph.weights)
+
+            nodes_list = list(graph.nodes)
+
+
+            if len(weights_list) > 0:
+                graph_in = {"nodes": nodes_list, "edges": edges_list, "weights": weights_list}
+            else:
+                graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+            ret = ni.find_closeness_centrality(graph_in, distance = distance, wf_improved = wf_improved, reverse = reverse, directed = directed)
+
+            resp = node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1])
+
+
+            if resp.status:
+                dict_resp = []
+                for node_ele,val_ele in (ret[2]["closeness_centrality"]).items():
+                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+
+                resp = node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
+
+            else:
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5000.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:',resp.status)
+            print('message:',resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
+
+            return resp
+
+
         except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_closeness_centrality(graph=graph_in, nodes=nodes_list)
-        closeness_output_edges = []
-        closeness_output_value = []
-        if temp_response[0]:
-            for k, v in temp_response[2]["closeness_centrality"].items():
-                closeness_output_edges.append(k)
-                closeness_output_value.append(v)
+            logging.exception("message")
 
-        output = node_importance_pb2.DictOutput(node=closeness_output_edges,
-                                                output=closeness_output_value)
-        response = node_importance_pb2.ClosenessCentralityResponse(status=temp_response[0], message=temp_response[1],
-                                                                   output=output)
-        return response
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
+
+
 
     def DegreeCentrality(self, request, context):
         ni = NodeImportance()

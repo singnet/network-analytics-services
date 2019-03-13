@@ -58,15 +58,14 @@ class ClientTest():
 
         return graph_in
 
-    # def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):
-    #     try:
-    #         graph_in = self.get_graph(graph=graph)
-    #         Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, u=u, distance=distance,
-    #                                                               wf_improved=wf_improved, reverse=reverse)
-    #         response = stub.CentralNodes(Request_data)
-    #         return response
-    #     except Exception as e:
-    #         return [False, str(e), {}]
+    def find_closeness_centrality(self, stub, graph, distance=False, wf_improved=True, reverse=False, directed=False):
+        try:
+            graph_in = self.get_graph(graph=graph)
+            Request_data = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, distance=distance, wf_improved=wf_improved, reverse=reverse, directed=directed)
+            response = stub.ClosenessCentrality(Request_data)
+            return response
+        except Exception as e:
+            return [False, str(e), {}]
 
     def find_Periphery(self, stub, graph, usebounds=False):
         try:
@@ -87,15 +86,6 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_closeness_centrality(self, stub, graph, nodes, directed=False):
-        try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, nodes=nodes,
-                                                                          directed=directed)
-            response = stub.ClosenessCentrality(Request_data)
-            return response
-        except Exception as e:
-            return [False, str(e), {}]
 
     def find_betweenness_centrality(self, stub, graph, k=None, normalized=True, weight=None, endpoints=False,
                                     seed=None, type='node', directed=False):

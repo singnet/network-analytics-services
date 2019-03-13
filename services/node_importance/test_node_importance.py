@@ -67,30 +67,6 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result[0], False)
         self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
-        # def test_find_central_nodes(self):
-        #     # Default Test
-        #     result = self.N.find_central_nodes(self.graph)
-        #     self.assertEqual(result[0], True)
-        #     self.assertEqual(result[1], 'success')
-        #     self.assertEqual(result[2], {
-        #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-        #                           '8': 0.4375}})
-        #
-        #     # Non Default Test
-        #     result = self.N.find_central_nodes(self.graph, u='1', distance='weight', wf_improved=False, reverse=True)
-        #     self.assertEqual(result[0], True)
-        #     self.assertEqual(result[1], 'success')
-        #     self.assertEqual(result[2], {'central_nodes': 0.1})
-        #
-        #     # # Non weighted Test
-        #     result = self.N.find_central_nodes(self.graph_03)
-        #     self.assertEqual(result[0], True)
-        #     self.assertEqual(result[1], 'success')
-        #     self.assertEqual(result[2], {
-        #         'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-        #                           '8': 0.4375}})
-
-
 
     def test_find_Periphery(self):
         # Default Test
