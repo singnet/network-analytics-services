@@ -1,13 +1,13 @@
 import os
 import grpc
-from service_spec import node_importance_pb2
-from service_spec import node_importance_pb2_grpc
+from service_spec_node_importance import node_importance_pb2
+from service_spec_node_importance import node_importance_pb2_grpc
 
-from server import *
+from snet_grpc_wrapper_node_importance import *
 
 
 class ClientTest():
-    def __init__(self, port='localhost:50051', image_output='client_out'):
+    def __init__(self, port='localhost:5002'):
         self.port = port
 
     def open_grpc_channel(self):
@@ -17,27 +17,52 @@ class ClientTest():
 
     def get_graph(self, graph):
 
+        try_weight = False
+        try_edge = False
+
         edges_req = []
         try:
             for e in graph["edges"]:
                 edges_req.append(node_importance_pb2.Edge(edge=e))
+            try_edge = True
         except Exception as e:
-            return [False, str(e), {}]
+            pass
 
         try:
             weights_req = graph['weights']
+            try_weight = True
         except Exception as e:
-            weights_req = None
+            pass
 
-        graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
+        try:
+
+            if not try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"])
+            elif not try_weight and try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req)
+            elif try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], weights=weights_req)
+            else:
+                graph_in = node_importance_pb2.Graph(nodes=graph["nodes"], edges=edges_req, weights=weights_req)
+
+        except:
+
+            if not try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph()
+            elif not try_weight and try_edge:
+                graph_in = node_importance_pb2.Graph(edges=edges_req)
+            elif try_weight and not try_edge:
+                graph_in = node_importance_pb2.Graph(weights=weights_req)
+            else:
+                graph_in = node_importance_pb2.Graph(edges=edges_req, weights=weights_req)
+
         return graph_in
 
-    def find_central(self, stub, graph, u=None, distance=None, wf_improved=True, reverse=False):
+    def find_closeness_centrality(self, stub, graph, distance=False, wf_improved=True, reverse=False, directed=False):
         try:
             graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.CentralNodeRequest(graph=graph_in, u=u, distance=distance,
-                                                                  wf_improved=wf_improved, reverse=reverse)
-            response = stub.CentralNodes(Request_data)
+            Request_data = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, distance=distance, wf_improved=wf_improved, reverse=reverse, directed=directed)
+            response = stub.ClosenessCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
@@ -61,15 +86,6 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_closeness_centrality(self, stub, graph, nodes, directed=False):
-        try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, nodes=nodes,
-                                                                          directed=directed)
-            response = stub.ClosenessCentrality(Request_data)
-            return response
-        except Exception as e:
-            return [False, str(e), {}]
 
     def find_betweenness_centrality(self, stub, graph, k=None, normalized=True, weight=None, endpoints=False,
                                     seed=None, type='node', directed=False):

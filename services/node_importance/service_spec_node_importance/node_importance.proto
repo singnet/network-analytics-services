@@ -16,23 +16,20 @@ message OutputNodesList {
 }
 
 message DictOutput{
-    repeated string edge = 1;
-    repeated double output = 2;
+    string node = 1;
+    double output = 2;
 }
 
 // find_central_nodes
 message CentralNodeRequest {
     Graph graph = 1;
-    string u = 2;
-    string distance = 3;
-    bool wf_improved = 4;
-    bool reverse = 5;
+    bool usebounds = 2;
 }
 
 message CentralNodeResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated string output = 3;
 }
 
 // find_eccentricity
@@ -44,7 +41,7 @@ message PeripheryRequest {
 message PeripheryResponse {
     bool status = 1;
     string message = 2;
-    OutputNodesList output = 3;
+    repeated string output = 3;
 }
 
 // find_degree_centrality
@@ -63,16 +60,17 @@ message DegreeCentralityResponse {
 // find_closeness_centrality
 message ClosenessCentralityRequest {
     Graph graph = 1;
-    repeated string nodes = 2;
-    bool normalized = 3;
-    bool directed = 4;
+    bool distance = 2;
+    bool wf_improved = 3;
+    bool reverse = 4;
+    bool directed = 5;
 }
 
 
 message ClosenessCentralityResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated DictOutput output = 3;
 }
 
 // find_betweenness_centrality
@@ -149,7 +147,7 @@ message EigenvectorCentralityRequest {
 message EigenvectorCentralityResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated DictOutput output = 3;
 }
 
 // find_hits

@@ -4,10 +4,10 @@ from node_importance import NodeImportance
 import networkx as nx
 import numpy as np
 from client import ClientTest
-from server import *
+from snet_grpc_wrapper_node_importance import *
 
-from service_spec import node_importance_pb2
-from service_spec import node_importance_pb2_grpc
+from service_spec_node_importance import node_importance_pb2
+from service_spec_node_importance import node_importance_pb2_grpc
 
 
 class TestNodeImportance(unittest.TestCase):
@@ -39,110 +39,70 @@ class TestNodeImportance(unittest.TestCase):
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7]
         }
+        self.graph_05 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '25'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+        }
 
     def test_find_central_nodes(self):
-        expected_result = {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}}
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
-                                                output=centralnodes_output_value)
+        center_req = node_importance_pb2.CentralNodeRequest(graph=self.client.get_graph(self.graph))
+        resp = self.stub.CentralNodes(center_req)
 
-        # Default Test
-        result = self.client.find_central(self.stub, self.graph)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertEqual(resp.status, True)
+        self.assertEqual(resp.message, 'success')
+        self.assertCountEqual(list(resp.output), ['2', '3'])
 
-        # # Non Default Test
+        center_req = node_importance_pb2.CentralNodeRequest(graph=self.client.get_graph(self.graph_05), usebounds=True)
 
-        expected_result = {
-            'central_nodes': {'1': 0.1}}
+        try:
+            response = self.stub.CentralNodes(center_req)
+        except Exception as e:
+            response = str(e)
 
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
+        self.assertIn('edge value at [3][1] is not a node', response)
 
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
-                                                output=centralnodes_output_value)
 
-        result = self.client.find_central(self.stub, self.graph, u='1', distance='weight', wf_improved=False,
-                                          reverse=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # # Graph With No Nodes Test
-        result = self.client.find_central(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-        #
-        # # Graph With No edges Test
-        result = self.client.find_central(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1],
-                         "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-        #
-        # # Non Weighted Graph
-        expected_result = {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}}
-        centalnodes_output_key = []
-        centralnodes_output_value = []
-        for k, v in expected_result["central_nodes"].items():
-            centalnodes_output_key.append(k)
-            centralnodes_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(edge=centalnodes_output_key,
-                                                output=centralnodes_output_value)
-
-        result = self.client.find_central(self.stub, self.graph_03)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
     def test_find_Periphery(self):
         expected_result = ['1', '4', '5', '6', '7', '8']
-        output_nodes_list = node_importance_pb2.OutputNodesList(output_nodes=expected_result)
 
         # Default Test
         result = self.client.find_Periphery(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
 
         # Non Deafault test
         result = self.client.find_Periphery(self.stub, self.graph, usebounds=True)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
 
         # Graph With No Nodes Test
         result = self.client.find_Periphery(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        self.assertIn('graph should at least contain two nodes',result[1])
+
 
         # Graph With No edges Test
         result = self.client.find_Periphery(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
+        self.assertIn('graph should at least contain one edge',result[1])
 
         # weight less graph test
         result = self.client.find_Periphery(self.stub, self.graph_03)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output_nodes_list)
+        self.assertCountEqual(list(result.output), expected_result)
+
+        periphery_req = node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph_05))
+
+        try:
+            response = self.stub.Periphery(periphery_req)
+        except Exception as e:
+            response = str(e)
+
+        self.assertIn('edge value at [3][1] is not a node', response)
 
     def test_find_degree_centrality(self):
         # Out Degree Centrality Test
@@ -156,7 +116,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph, in_out='out')
@@ -187,7 +147,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph, in_out='in')
@@ -218,7 +178,7 @@ class TestNodeImportance(unittest.TestCase):
             centrality_output_edges.append(k)
             centrality_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=centrality_output_edges,
+        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
                                                 output=centrality_output_value)
 
         result = self.client.find_degree_centrality(self.stub, self.graph)
@@ -251,47 +211,35 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.output, output)
 
     def test_find_closeness_centrality(self):
-        # Default Test
-        result = self.client.find_closeness_centrality(self.stub, self.graph, ['1', '2'])
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(
-            ("2" in str(result.output) and "1" in str(result.output) and
-             "3" in str(result.output) and "4" in str(result.output) and
-             "5" in str(result.output) and "6" in str(result.output) and
-             "7" in str(result.output) and "8" in str(result.output)), True)
 
-        self.assertEqual(
-            ("0.5714285714285714" in str(result.output) and "0.75" in str(result.output) and
-             "0.8571428571428571" in str(result.output) and "1.2" in str(result.output)) and "0.8" in str(
-                result.output), True)
+        # Deafault test
+        result = self.client.find_closeness_centrality(self.stub, self.graph)
 
-        # Graph With No Nodes Test
-        result = self.client.find_closeness_centrality(self.stub, self.graph_01, ['1', '2'])
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        dict_resp = []
+        for n, v in {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375, '8': 0.4375}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        # Graph With No edges Test
-        result = self.client.find_closeness_centrality(self.stub, self.graph_02, ['1', '2'])
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
+        expected = node_importance_pb2.ClosenessCentralityResponse(status=True, message='success', output=dict_resp)
 
-        # Directed test
-        result = self.client.find_closeness_centrality(self.stub, self.graph, ['1', '2'], directed=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(
-            ("2" in str(result.output) and "1" in str(result.output) and
-             "3" in str(result.output) and "4" in str(result.output) and
-             "5" in str(result.output) and "6" in str(result.output) and
-             "7" in str(result.output) and "8" in str(result.output)), True)
+        self.assertEqual([result.status, result.message], [expected.status, expected.message])
+        self.assertCountEqual(result.output, expected.output)
 
-        self.assertEqual(
-            ("0.5714285714285714" in str(result.output) and "0.75" in str(result.output) and
-             "0.8571428571428571" in str(result.output) and "1.2" in str(result.output)) and "0.8" in str(
-                result.output), True)
+        # Non Deafault test
+        result = self.client.find_closeness_centrality(self.stub, self.graph, distance=True, wf_improved=False, reverse=True, directed=True)
+
+        dict_resp = []
+        for n,v in {'1': 0.5, '2': 0.6666666666666666, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n,output=v))
+
+
+        expected = node_importance_pb2.ClosenessCentralityResponse(status=True,message='success', output=dict_resp)
+
+        self.assertEqual([result.status,result.message],[expected.status,expected.message])
+        self.assertCountEqual(result.output, expected.output)
+
+        # # Graph With No Nodes Test
+        result = self.client.find_closeness_centrality(self.stub, self.graph_01)
+        self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_betweenness_centrality(self):
         # Default Test
@@ -405,7 +353,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
         result = self.client.find_pagerank(self.stub, self.graph)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
@@ -423,7 +371,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
         result = self.client.find_pagerank(self.stub, self.graph, alpha=0.95,
                                            personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                             '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
@@ -471,7 +419,7 @@ class TestNodeImportance(unittest.TestCase):
             pagerank_output_edges.append(k)
             pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=pagerank_output_edges, output=pagerank_output_value)
+        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
 
         result = self.client.find_pagerank(self.stub, self.graph_03)
         self.assertEqual(result.status, True)
@@ -491,7 +439,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, )
@@ -511,7 +459,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
@@ -553,7 +501,7 @@ class TestNodeImportance(unittest.TestCase):
             eigenvector_output_edges.append(k)
             eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(edge=eigenvector_output_edges,
+        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
                                                 output=eigenvector_output_value)
 
         result = self.client.find_eigenvector_centrality(self.stub, self.graph_03)
@@ -680,7 +628,7 @@ class TestNodeImportance(unittest.TestCase):
         # wrong Number of wrights test taking one functionality as example
         result = self.client.find_central(self.stub, self.graph_04)
         self.assertEqual(result.status, False)
-        self.assertEqual(result.message, 'weights and edges must be equal')
+        self.assertEqual(result.message, 'the length of supplied edges and weights does not match')
 
     def tearDown(self):
         self.server.stop_server()

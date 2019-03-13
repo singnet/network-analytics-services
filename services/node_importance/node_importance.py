@@ -40,19 +40,30 @@ class NodeImportance:
 
         return G
 
-    def find_central_nodes(self, graph, u=None, distance=None, wf_improved=True, reverse=False):
+
+    def find_central_nodes(self, graph, usebounds=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
-        u = None if u == '' else u
-        distance = None if distance == '' else distance
-
         G = self.construct_graph(graph)
-        result = nx.algorithms.centrality.closeness_centrality(G, u=u, distance=distance, wf_improved=wf_improved,
-                                                               reverse=reverse)
-        output = {"central_nodes": result}
-        return True, 'success', output
+        result = nx.algorithms.distance_measures.center(G, usebounds=usebounds)
+
+        return True, 'success', result
+
+    # def find_central_nodes(self, graph, u=None, distance=None, wf_improved=True, reverse=False):
+    #     ret = self.cv.is_valid_graph(graph)
+    #     if not ret[0]:
+    #         return ret
+    #
+    #     u = None if u == '' else u
+    #     distance = None if distance == '' else distance
+    #
+    #     G = self.construct_graph(graph)
+    #     result = nx.algorithms.centrality.closeness_centrality(G, u=u, distance=distance, wf_improved=wf_improved,
+    #                                                            reverse=reverse)
+    #     output = {"central_nodes": result}
+    #     return True, 'success', output
 
     def find_Periphery(self, graph, usebounds=False):
         ret = self.cv.is_valid_graph(graph)
@@ -62,8 +73,7 @@ class NodeImportance:
         G = self.construct_graph(graph)
         result = nx.algorithms.distance_measures.periphery(G, usebounds=usebounds)
 
-        output = {"periphery": result}
-        return True, 'success', output
+        return True, 'success', result
 
     def find_degree_centrality(self, graph, in_out=None, directed=False):
         ret = self.cv.is_valid_graph(graph)
@@ -85,13 +95,21 @@ class NodeImportance:
             output = {"degree_centrality": result}
         return True, 'success', output
 
-    def find_closeness_centrality(self, graph, nodes, normalized=True, directed=False):
+    def find_closeness_centrality(self, graph, distance=False, wf_improved=True, reverse=False, directed=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
-        result = nx.algorithms.bipartite.centrality.closeness_centrality(G, nodes=nodes, normalized=normalized)
+
+        if 'weights' not in graph and distance:
+            return False, 'distance parameter specified but weights are not given in input graph', {}
+
+        if not distance:
+            result = nx.algorithms.centrality.closeness_centrality(G, distance='weights', wf_improved=wf_improved, reverse=reverse)
+        else:
+            result = nx.algorithms.centrality.closeness_centrality(G, wf_improved=wf_improved, reverse=reverse)
+
         output = {"closeness_centrality": result}
         return True, 'success', output
 

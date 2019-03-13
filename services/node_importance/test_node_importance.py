@@ -38,47 +38,59 @@ class TestNodeImportance(unittest.TestCase):
             "weights": [3, 4, 5, 6, 7]
         }
 
+        self.graph_05 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '25'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+        }
+
+        self.graph_06 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+        }
+
     def test_find_central_nodes(self):
         # Default Test
         result = self.N.find_central_nodes(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}})
+        self.assertCountEqual(result[2], ['2','3'])
 
-        # Non Default Test
-        result = self.N.find_central_nodes(self.graph, u='1', distance='weight', wf_improved=False, reverse=True)
+        # Nondefault Test
+        result = self.N.find_central_nodes(self.graph,usebounds=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'central_nodes': 0.1})
+        self.assertCountEqual(result[2], ['2', '3'])
 
-        # # Non weighted Test
-        result = self.N.find_central_nodes(self.graph_03)
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'central_nodes': {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
-                              '8': 0.4375}})
+        # Incorrect input data
+        result = self.N.find_central_nodes(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
+
 
     def test_find_Periphery(self):
         # Default Test
         result = self.N.find_Periphery(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
 
         # Non Default Test
         result = self.N.find_Periphery(self.graph, usebounds=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
 
         # Non weighted Test
         result = self.N.find_Periphery(self.graph_03)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'periphery': ['1', '4', '5', '6', '7', '8']})
+        self.assertCountEqual(result[2], ['1', '4', '5', '6', '7', '8'])
+
+        # Incorrect input data
+        result = self.N.find_central_nodes(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
     def test_find_degree_centrality(self):
         # Default Test
@@ -133,38 +145,29 @@ class TestNodeImportance(unittest.TestCase):
 
     def test_find_closeness_centrality(self):
         # Default Test
-        result = self.N.find_closeness_centrality(self.graph, ['8', '8'])
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2].get('closeness_centrality').get('8'), 0.4375)
-        self.assertEqual(result[2].get('closeness_centrality').get('7'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('6'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('5'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('4'), 0.9285714285714286)
-        self.assertEqual(result[2].get('closeness_centrality').get('3'), 1.3)
-        self.assertEqual(result[2].get('closeness_centrality').get('2'), 1.3)
-        self.assertEqual(result[2].get('closeness_centrality').get('1'), 0.9285714285714286)
+        result = self.N.find_closeness_centrality(self.graph)
 
-        # Non Default Test
-        result = self.N.find_closeness_centrality(self.graph, nodes=['8', '8'], normalized=False)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2].get('closeness_centrality').get('8'), 0.4375)
-        self.assertEqual(result[2].get('closeness_centrality').get('7'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('6'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('5'), 0.8125)
-        self.assertEqual(result[2].get('closeness_centrality').get('4'), 0.9285714285714286)
-        self.assertEqual(result[2].get('closeness_centrality').get('3'), 1.3)
-        self.assertEqual(result[2].get('closeness_centrality').get('2'), 1.3)
-        self.assertEqual(result[2].get('closeness_centrality').get('1'), 0.9285714285714286)
+        self.assertDictEqual(result[2]['closeness_centrality'],{'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375, '8': 0.4375})
 
-        # Non Default Test 2
-        result = self.N.find_closeness_centrality(self.graph, nodes=['8', '8'], normalized=False, directed=True)
+
+        # # Non Default Test
+        result = self.N.find_closeness_centrality(self.graph, distance=True, wf_improved=False, reverse=True, directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2].get('closeness_centrality').get('3'), 4.333333333333333)
-        self.assertEqual(result[2].get('closeness_centrality').get('2'), 1.4444444444444444)
-        self.assertEqual(result[2].get('closeness_centrality').get('1'), 0.9285714285714286)
+        self.assertDictEqual(result[2]['closeness_centrality'],{'1': 0.5, '2': 0.6666666666666666, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0})
+
+        # # Non Default Test
+        result = self.N.find_closeness_centrality(self.graph_06, distance=True, wf_improved=False, reverse=True,
+                                                  directed=True)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'distance parameter specified but weights are not given in input graph')
+
+        # Incorrect input data
+        result = self.N.find_closeness_centrality(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
     def test_find_betweenness_centrality(self):
         # Default Test
@@ -377,7 +380,7 @@ class TestNodeImportance(unittest.TestCase):
         # Graph without wrong number of weights
         result = self.cv.is_valid_graph(self.graph_04)
         self.assertEqual(result[0], False)
-        self.assertEqual(result[1], 'weights and edges must be equal')
+        self.assertEqual(result[1], 'the length of supplied edges and weights does not match')
 
 
 if __name__ == '__main__':
