@@ -115,6 +115,12 @@ class NodeImportance:
 
     def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=False, endpoints=False, seed=None,
                                     type='node', directed=False):
+
+        ret = self.cv.is_valid_graph(graph)
+        if not ret[0]:
+            return ret
+
+
         weight = None if weight == False else 'weights'
         seed = None if seed == 0 else seed
         k = None if k == 0 else k
@@ -123,15 +129,13 @@ class NodeImportance:
         if 'weights' not in graph and weight:
             return False, 'weight parameter specified but weights are not given in input graph', {}
 
-        ret = self.cv.is_valid_graph(graph)
-        if not ret[0]:
-            return ret
+        if k is not None:
+            if k > len(graph['nodes']):
+                return False, 'parameter k is larger than the number of nodes in the graph', {}
 
-        if k > len(graph['nodes']):
-            return False, 'parameter k is larger than the number of nodes in the graph', {}
-
-        if not all(i > 0 for i in graph['weights']) and weight is not None:
-            return False, 'one or more weights in the graph are less than zero'
+        if 'weights' in graph:
+            if not all(i > 0 for i in graph['weights']) and weight is not None:
+                return False, 'one or more weights in the graph are less than zero'
 
         G = self.construct_graph(graph, directed)
 

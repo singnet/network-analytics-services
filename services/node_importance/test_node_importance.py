@@ -49,6 +49,12 @@ class TestNodeImportance(unittest.TestCase):
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
         }
 
+        self.graph_07 = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, -5, 6, 7, 8, 9, 10]
+        }
+
     def test_find_central_nodes(self):
         # Default Test
         result = self.N.find_central_nodes(self.graph)
@@ -170,48 +176,72 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
     def test_find_betweenness_centrality(self):
+
+        # Error 1
+        result = self.N.find_betweenness_centrality(self.graph, type='xxx')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'type parameter can only be node or edge')
+
+        # Error 2
+        result = self.N.find_betweenness_centrality(self.graph_06, type='node',weight=True)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'weight parameter specified but weights are not given in input graph')
+
+        # Error 3
+        result = self.N.find_betweenness_centrality(self.graph_06, type='node', k=9)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'parameter k is larger than the number of nodes in the graph')
+
+        # Error 4
+        result = self.N.find_betweenness_centrality(self.graph_07, weight=True)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'one or more weights in the graph are less than zero')
+
         # Default Test
         result = self.N.find_betweenness_centrality(self.graph)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'betweenness_centrality': {'1': 0.07142857142857142, '2': 0.5952380952380952,
-                                                                '3': 0.5952380952380952, '4': 0.07142857142857142,
-                                                                '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}})
+        self.assertDictEqual(result[2]['betweenness_centrality'], {'1': 0.07142857142857142, '2': 0.5952380952380952,'3': 0.5952380952380952, '4': 0.07142857142857142,'5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0})
 
-        # Non Default test
+        # Default test edge
         result = self.N.find_betweenness_centrality(self.graph, type='edge')
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'betweenness_centrality': {('1', '2'): 0.21428571428571427, ('1', '4'): 0.14285714285714285,
+        self.assertDictEqual(result[2]['betweenness_centrality'],
+            {('1', '2'): 0.21428571428571427, ('1', '4'): 0.14285714285714285,
                                        ('2', '3'): 0.42857142857142855, ('2', '5'): 0.25, ('2', '7'): 0.25,
-                                       ('3', '4'): 0.21428571428571427, ('3', '6'): 0.25, ('3', '8'): 0.25}})
+                                       ('3', '4'): 0.21428571428571427, ('3', '6'): 0.25, ('3', '8'): 0.25})
         # Non Default Test 1
         result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight=True, endpoints=True,
                                                     seed=1)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
-                                       '8': 4.0}})
+        self.assertDictEqual(result[2]['betweenness_centrality'], {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,'8': 4.0})
 
         # Non weighted Test 1
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=True, endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=False, endpoints=True,
                                                     seed=1)
+
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
-                                       '8': 4.0}})
+        self.assertDictEqual(result[2]['betweenness_centrality'],
+            {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
+                                       '8': 4.0})
 
         # Non Default Test 2
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=True, endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=False, endpoints=True,
                                                     seed=1, directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'betweenness_centrality': {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}}
-                         )
+        self.assertEqual(result[2]['betweenness_centrality'], {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0})
+
+        # Non Default Test 1
+        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight=True, seed=1,directed=True,type='edge')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertDictEqual(result[2]['betweenness_centrality'],
+                             {('1', '2'): 0.0, ('1', '4'): 0.0, ('2', '3'): 0.0, ('2', '5'): 0.0, ('2', '7'): 0.0,
+                              ('3', '4'): 1.0, ('3', '6'): 1.0, ('3', '8'): 1.0})
 
     def test_find_pagerank(self):
         # Default Test

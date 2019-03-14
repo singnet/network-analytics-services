@@ -172,6 +172,8 @@ def graph_center():
     # res = nx.algorithms.centrality.closeness_centrality(G)
     res = nx.algorithms.centrality.closeness_centrality(Gd,distance='weights',wf_improved=False,reverse=True)
 
+    res = nx.algorithms.edge_betweenness_centrality(Gd, k=1, normalized=False, weight=True, seed=1)
+
 
 
     print(res)
