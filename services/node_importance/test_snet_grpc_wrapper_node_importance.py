@@ -242,104 +242,84 @@ class TestNodeImportance(unittest.TestCase):
         self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_betweenness_centrality(self):
-        # Default Test
-        expected_result = {
-            'betweenness_centrality': {'1': 0.07142857142857142, '2': 0.5952380952380952, '3': 0.5952380952380952,
-                                       '4': 0.07142857142857142, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}}
-
-        betweenness_output_edges = []
-        betweenness_output_value = []
-        for k, v in expected_result["betweenness_centrality"].items():
-            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
-            betweenness_output_value.append(v)
-
-        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
-                                                       output=betweenness_output_value)
-        result = self.client.find_betweenness_centrality(self.stub, self.graph)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # Non Default Test
-        expected_output_arumented = {
-            'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
-                                       '8': 4.0}}
+        # non Default Test with weight for node betweeness
 
         result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
-                                                         endpoints=True, seed=1)
-
-        betweenness_output_edges = []
-        betweenness_output_value = []
-        for k, v in expected_output_arumented["betweenness_centrality"].items():
-            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
-            betweenness_output_value.append(v)
-
-        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
-                                                       output=betweenness_output_value)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # Graph With No Nodes Test
-        result = self.client.find_betweenness_centrality(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-
-        # Graph With No edges Test
-        result = self.client.find_betweenness_centrality(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-
-        # Directed Test
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
-                                                         weight=True,
                                                          endpoints=True, seed=1, directed=True)
+
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.BetweennessCentralityResponse(status=True, message='success', output=dict_resp)
+
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
 
-        # weight less test
-        expected_out = {
-            'betweenness_centrality': {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,
-                                       '8': 4.0}}
+        # non Default Test with weight for node betweeness and with type parameter specified
 
         result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
-                                                         endpoints=True, seed=1)
+                                                         endpoints=True, seed=1, directed=True, type='node')
 
-        betweenness_output_edges = []
-        betweenness_output_value = []
-        for k, v in expected_out["betweenness_centrality"].items():
-            betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
-            betweenness_output_value.append(v)
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
-                                                       output=betweenness_output_value)
+        expected = node_importance_pb2.BetweennessCentralityResponse(status=True, message='success', output=dict_resp)
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
 
-        # Non Default Test 2 edge
-        expected_output_arumented = {
-            'betweenness_centrality': {('1', '2'): 0.25, ('1', '4'): 0.25, ('2', '3'): 1.75, ('2', '5'): 0.5,
-                                       ('2', '7'): 0.5, ('3', '4'): 0.75, ('3', '6'): 0.5, ('3', '8'): 0.5}}
+        # non Default Test without weight for node betweeness
 
-        betweenness_output_edges = []
-        betweenness_output_value = []
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
+                                                         endpoints=True, seed=1, directed=True)
 
-        for k, v in expected_output_arumented["betweenness_centrality"].items():
-                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=[k[0], k[1]]))
-                    betweenness_output_value.append(v)
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
-                                                       output=betweenness_output_value)
+        expected = node_importance_pb2.BetweennessCentralityResponse(status=True, message='success', output=dict_resp)
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
-                                                         type='edge', seed=1)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
+
+
+
+        # non Default Test with weight for edge betweeness
+
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
+                                                         seed=1, directed=True, type='edge', weight=True)
+
+        dict_resp = []
+        for e, v in {('1', '2'): 0.0, ('1', '4'): 0.0, ('2', '3'): 0.0, ('2', '5'): 0.0, ('2', '7'): 0.0, ('3', '4'): 1.0,
+                                   ('3', '6'): 1.0, ('3', '8'): 1.0}.items():
+
+            edges_resp = node_importance_pb2.Edge(edge=list(e))
+            dict_resp.append(node_importance_pb2.DictOutput(edge=edges_resp, output=v))
+
+        expected = node_importance_pb2.BetweennessCentralityResponse(status=True, message='success', output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
+        # error raising test
+
+        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=15, normalized=False, weight=True,
+                                                         endpoints=True, seed=1, directed=True)
+
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+
+        self.assertIn('parameter k is larger than the number of nodes in the graph',result[1])
+
 
     def test_find_pagerank(self):
         # Default Test

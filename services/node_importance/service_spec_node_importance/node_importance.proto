@@ -17,7 +17,8 @@ message OutputNodesList {
 
 message DictOutput{
     string node = 1;
-    double output = 2;
+    Edge edge = 2;
+    double output = 3;
 }
 
 // find_central_nodes
@@ -73,19 +74,13 @@ message ClosenessCentralityResponse {
     repeated DictOutput output = 3;
 }
 
-// find_betweenness_centrality
-message BetweennessOutput{
-    repeated Edge edge = 1;
-    repeated double output = 2;
-}
-
 message BetweennessCentralityRequest {
     Graph graph = 1;
-    int32 k = 2;
+    int64 k = 2;
     bool normalized = 3;
     bool weight = 4;
     bool endpoints = 5;
-    int32 seed = 6;
+    int64 seed = 6;
     string type = 7;
     bool directed = 8;
 }
@@ -93,33 +88,32 @@ message BetweennessCentralityRequest {
 message BetweennessCentralityResponse {
     bool status = 1;
     string message = 2;
-    BetweennessOutput output = 3;
+    repeated DictOutput output = 3;
 }
-
 
 
 // used for page range and eigen vector centrality
 message Nstart {
     repeated string key = 1;
-    repeated int32 value = 2;
+    repeated int64 value = 2;
 }
 
 message Personalization {
     repeated string key = 1;
-    repeated float value = 2;
+    repeated double value = 2;
 }
 message Dangling {
     repeated string key = 1;
-    repeated float value = 2;
+    repeated double value = 2;
 }
 
 // find_pagerank
 message PageRankRequest {
     Graph graph = 1;
-    float alpha = 2;
+    double alpha = 2;
     Personalization personalization = 3;
-    int32 max_iter = 4;
-    float tol = 5;
+    int64 max_iter = 4;
+    double tol = 5;
     Nstart nstart = 6;
     bool weight = 7;
     Dangling dangling = 8;
@@ -136,8 +130,8 @@ message PageRankResponse {
 //find_eigenvector_centrality
 message EigenvectorCentralityRequest {
     Graph graph = 1;
-    int32 max_iter = 2;
-    float tol = 3;
+    int64 max_iter = 2;
+    double tol = 3;
     Nstart nstart = 4;
     bool weight = 5;
     bool directed = 6;
@@ -152,7 +146,7 @@ message EigenvectorCentralityResponse {
 
 // find_hits
 message HitsOutput{
-    repeated float hits_out = 1;
+    repeated double hits_out = 1;
 }
 message HitsRequest {
     Graph graph = 1;

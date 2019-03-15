@@ -181,36 +181,59 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
-        except Exception as e:
-            return [False, str(e), {}]
-        temp_response = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
-                                                       weight=request.weight, endpoints=request.endpoints,
-                                                       type=request.type, seed=request.seed)
 
-        betweenness_output_edges = []
-        betweenness_output_value = []
-        if temp_response[0]:
-            if request.type == 'edge':
-                for k, v in temp_response[2]["betweenness_centrality"].items():
-                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=[k[0], k[1]]))
-                    betweenness_output_value.append(v)
+            weights_list = list(graph.weights)
+
+            nodes_list = list(graph.nodes)
+
+            if len(weights_list) > 0:
+                graph_in = {"nodes": nodes_list, "edges": edges_list, "weights": weights_list}
             else:
-                for k, v in temp_response[2]["betweenness_centrality"].items():
-                    betweenness_output_edges.append(node_importance_pb2.Edge(edge=k))
-                    betweenness_output_value.append(v)
-                
-        output = node_importance_pb2.BetweennessOutput(edge=betweenness_output_edges,
-                                                       output=betweenness_output_value)
-        response = node_importance_pb2.BetweennessCentralityResponse(status=temp_response[0], message=temp_response[1],
-                                                                     output=output)
-        return response
+                graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+            ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
+                                           weight=request.weight, endpoints=request.endpoints,
+                                           type=request.type, seed=request.seed, directed=request.directed)
+
+            if ret[0]:
+                dict_resp = []
+                if ret[2]['type'] == 'node':
+                    for node_ele, val_ele in (ret[2]["betweenness_centrality"]).items():
+                        dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                else:
+                    for edge_ele, val_ele in (ret[2]["betweenness_centrality"]).items():
+                        edges_resp = node_importance_pb2.Edge(edge=list(edge_ele))
+                        dict_resp.append(node_importance_pb2.DictOutput(edge=edges_resp, output=val_ele))
+
+
+                resp = node_importance_pb2.BetweennessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
+
+            else:
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5000.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:', resp.status)
+            print('message:', resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5000.')
+
+            return resp
+
+
+        except Exception as e:
+
+            logging.exception("message")
+
+            print(time.strftime("%c"))
+
+            print('Waiting for next call on port 5000.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
     def PageRank(self, request, context):
         ni = NodeImportance()

@@ -115,22 +115,39 @@ class NodeImportance:
 
     def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=False, endpoints=False, seed=None,
                                     type='node', directed=False):
+
         ret = self.cv.is_valid_graph(graph)
-        weight = None if weight == False else 'weights'
-        type = 'node' if type == '' else type
         if not ret[0]:
             return ret
 
-        G = self.construct_graph(graph, directed)
+
+        weight = None if weight == False else 'weights'
+        seed = None if seed == 0 else seed
         k = None if k == 0 else k
+        if type != 'node' and type != 'edge':
+            return False,'type parameter can only be node or edge',{}
+        if 'weights' not in graph and weight:
+            return False, 'weight parameter specified but weights are not given in input graph', {}
+
+        if k is not None:
+            if k > len(graph['nodes']):
+                return False, 'parameter k is larger than the number of nodes in the graph', {}
+
+        if 'weights' in graph:
+            if not all(i > 0 for i in graph['weights']) and weight is not None:
+                return False, 'one or more weights in the graph are less than zero'
+
+        G = self.construct_graph(graph, directed)
 
         if type == 'edge':
             result = nx.algorithms.centrality.edge_betweenness_centrality(G, k=k, normalized=normalized, weight=weight,
                                                                           seed=seed)
+            output = {'betweenness_centrality': result,'type':'edge'}
         else:
             result = nx.algorithms.centrality.betweenness_centrality(G, k=k, normalized=normalized, weight=weight,
                                                                      endpoints=endpoints, seed=seed)
-        output = {'betweenness_centrality': result}
+            output = {'betweenness_centrality': result, 'type': 'node'}
+
         return True, 'success', output
 
     def find_pagerank(self, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
