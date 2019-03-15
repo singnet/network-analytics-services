@@ -154,10 +154,10 @@ def bet_subset():
 
 def graph_center():
     graph = {
-        "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
-        "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
-        "weights": [3, 4, 5, 6, 7, 8, 9, 10]
-    }
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
+            "weights": [3, 4, 5, 6, 7, 8, 9, 10]
+        }
 
     G = nx.Graph()
     G.add_nodes_from(graph['nodes'])
@@ -170,10 +170,13 @@ def graph_center():
     # res = nx.algorithms.distance_measures.center(G,usebounds=True)
 
     # res = nx.algorithms.centrality.closeness_centrality(G)
-    res = nx.algorithms.centrality.closeness_centrality(Gd,distance='weights',wf_improved=False,reverse=True)
+    # res = nx.algorithms.centrality.closeness_centrality(Gd,distance='weights',wf_improved=False,reverse=True)
+    #
+    # res = nx.algorithms.edge_betweenness_centrality(Gd, k=1, normalized=False, weight=True, seed=1)
 
-    res = nx.algorithms.edge_betweenness_centrality(Gd, k=1, normalized=False, weight=True, seed=1)
-
+    res = nx.algorithms.betweenness_centrality(Gd,k=1,normalized=False,weight='weights',endpoints=True,seed=1)
+    res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,weight='weights',seed=1)
+    res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,seed=1)
 
 
     print(res)

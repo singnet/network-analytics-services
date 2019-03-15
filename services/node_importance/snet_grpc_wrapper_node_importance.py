@@ -204,9 +204,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                         dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
                 else:
                     for edge_ele, val_ele in (ret[2]["betweenness_centrality"]).items():
-                        edges_resp = []
-                        for edge_ret in edge_ele:
-                            edges_resp.append(node_importance_pb2.Edge(edge=edge_ret))
+                        edges_resp = node_importance_pb2.Edge(edge=list(edge_ele))
                         dict_resp.append(node_importance_pb2.DictOutput(edge=edges_resp, output=val_ele))
 
 
