@@ -108,12 +108,21 @@ class TestNodeImportance(unittest.TestCase):
                                   '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
                                   '7': 0.14285714285714285, '8': 0.14285714285714285}})
 
+        # Default Test 2
+        result = self.N.find_degree_centrality(self.graph, in_out='')
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2], {
+            'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
+                                  '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
+                                  '7': 0.14285714285714285, '8': 0.14285714285714285}})
+
         # Non Default Test 1
         result = self.N.find_degree_centrality(self.graph, in_out='out')
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2], {
-            'outdegree_centrality': {'1': 0.2857142857142857, '2': 0.42857142857142855,
+            'degree_centrality': {'1': 0.2857142857142857, '2': 0.42857142857142855,
                                      '3': 0.42857142857142855, '4': 0.0,
                                      '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}})
 
@@ -122,32 +131,21 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2], {
-            'indegree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
+            'degree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
                                     '4': 0.2857142857142857,
                                     '5': 0.14285714285714285, '6': 0.14285714285714285,
                                     '7': 0.14285714285714285,
                                     '8': 0.14285714285714285}})
 
-        # Non Default Test 3
-        result = self.N.find_degree_centrality(self.graph, in_out='in', directed=True)
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'indegree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
-                                    '4': 0.2857142857142857,
-                                    '5': 0.14285714285714285, '6': 0.14285714285714285,
-                                    '7': 0.14285714285714285,
-                                    '8': 0.14285714285714285}})
+        # INvalid input
+        result = self.N.find_degree_centrality(self.graph, in_out='inn')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'Wrong in_out parameter specified')
 
-        # Non Weighted Test
-        result = self.N.find_degree_centrality(self.graph)
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
-                                  '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
-                                  '7': 0.14285714285714285, '8': 0.14285714285714285}}
-                         )
+        # INvalid input 2
+        result = self.N.find_degree_centrality(self.graph_05,in_out='')
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
 
     def test_find_closeness_centrality(self):
         # Default Test

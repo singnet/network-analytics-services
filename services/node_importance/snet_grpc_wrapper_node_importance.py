@@ -122,14 +122,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5000.')
+                print('Waiting for next call on port 5002.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5000.')
+            print('Waiting for next call on port 5002.')
 
             return resp
 
@@ -139,7 +139,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             logging.exception("message")
 
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5000.')
+            print('Waiting for next call on port 5002.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -151,29 +151,52 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+
+            nodes_list = list(graph.nodes)
+
+
+            graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+            ret = ni.find_degree_centrality(graph_in, request.in_out)
+
+            if ret[0]:
+                dict_resp = []
+                for node_ele, val_ele in (ret[2]["degree_centrality"]).items():
+                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+
+                resp = node_importance_pb2.DegreeCentralityResponse(status=ret[0], message=ret[1],
+                                                                         output=dict_resp)
+
+            else:
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:', resp.status)
+            print('message:', resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
+
+            return resp
+
+
+
+
         except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_degree_centrality(graph_in, request.in_out)
-        centrality_output_edges = []
-        centrality_output_value = []
-        if temp_response[0]:
-            for k, v in temp_response[2][str(request.in_out) + "degree_centrality"].items():
-                centrality_output_edges.append(k)
-                centrality_output_value.append(v)
+            logging.exception("message")
 
-        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
-                                                output=centrality_output_value)
-        response = node_importance_pb2.DegreeCentralityResponse(status=temp_response[0], message=temp_response[1],
-                                                                output=output)
-        return response
+            print(time.strftime("%c"))
+
+            print('Waiting for next call on port 5002.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
+
+
 
     def BetweennessCentrality(self, request, context):
         ni = NodeImportance()
@@ -213,14 +236,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5000.')
+                print('Waiting for next call on port 5002.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:', resp.status)
             print('message:', resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5000.')
+            print('Waiting for next call on port 5002.')
 
             return resp
 
@@ -231,7 +254,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5000.')
+            print('Waiting for next call on port 5002.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 

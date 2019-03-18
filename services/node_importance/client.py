@@ -79,8 +79,7 @@ class ClientTest():
     def find_degree_centrality(self, stub, graph, in_out=None, directed=False):
         try:
             graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.DegreeCentralityRequest(graph=graph_in, in_out=in_out,
-                                                                       directed=directed)
+            Request_data = node_importance_pb2.DegreeCentralityRequest(graph=graph_in, in_out=in_out)
             response = stub.DegreeCentrality(Request_data)
             return response
         except Exception as e:

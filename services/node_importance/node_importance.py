@@ -75,10 +75,13 @@ class NodeImportance:
 
         return True, 'success', result
 
-    def find_degree_centrality(self, graph, in_out=None, directed=False):
+    def find_degree_centrality(self, graph, in_out=''):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
+
+        if in_out not in ['','in','out']:
+            return False,'Wrong in_out parameter specified',{}
 
         if in_out == 'in':
             G = self.construct_graph(graph, directed=True)
@@ -87,12 +90,10 @@ class NodeImportance:
             G = self.construct_graph(graph, directed=True)
             result = nx.algorithms.centrality.out_degree_centrality(G)
         else:
-            G = self.construct_graph(graph, directed)
+            G = self.construct_graph(graph)
             result = nx.algorithms.centrality.degree_centrality(G)
-        if in_out is not None:
-            output = {str(in_out) + "degree_centrality": result}
-        else:
-            output = {"degree_centrality": result}
+
+        output = {"degree_centrality": result}
         return True, 'success', output
 
     def find_closeness_centrality(self, graph, distance=False, wf_improved=True, reverse=False, directed=False):
