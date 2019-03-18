@@ -105,110 +105,40 @@ class TestNodeImportance(unittest.TestCase):
         self.assertIn('edge value at [3][1] is not a node', response)
 
     def test_find_degree_centrality(self):
-        # Out Degree Centrality Test
-        expected_output_out = {
-            'outdegree_centrality': {'1': 0.2857142857142857, '2': 0.42857142857142855, '3': 0.42857142857142855,
-                                     '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}}
 
-        centrality_output_edges = []
-        centrality_output_value = []
-        for k, v in expected_output_out["outdegree_centrality"].items():
-            centrality_output_edges.append(k)
-            centrality_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
-                                                output=centrality_output_value)
-
-        result = self.client.find_degree_centrality(self.stub, self.graph, in_out='out')
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # Graph With No Nodes Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_01, in_out='out')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-        # Graph With No edges Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_02, in_out='out')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-
-        # In Degree Centrality Test
-        expected_output_in = {'indegree_centrality': {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
-                                                      '4': 0.2857142857142857, '5': 0.14285714285714285,
-                                                      '6': 0.14285714285714285,
-                                                      '7': 0.14285714285714285, '8': 0.14285714285714285}}
-
-        centrality_output_edges = []
-        centrality_output_value = []
-        for k, v in expected_output_in["indegree_centrality"].items():
-            centrality_output_edges.append(k)
-            centrality_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
-                                                output=centrality_output_value)
-
-        result = self.client.find_degree_centrality(self.stub, self.graph, in_out='in')
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # Graph With No Nodes Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_01, in_out='in')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-
-        # Graph With No edges Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_02, in_out='in')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-
-        # Default Degree Centrality Test
-        expected_result = {
-            'degree_centrality': {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
-                                  '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
-                                  '7': 0.14285714285714285, '8': 0.14285714285714285}}
-        centrality_output_edges = []
-        centrality_output_value = []
-        for k, v in expected_result["degree_centrality"].items():
-            centrality_output_edges.append(k)
-            centrality_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(node=centrality_output_edges,
-                                                output=centrality_output_value)
-
+        # Default test
         result = self.client.find_degree_centrality(self.stub, self.graph)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
-        # Graph With No Nodes Test
+        dict_resp = []
+        for n, v in {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
+                                  '4': 0.2857142857142857, '5': 0.14285714285714285, '6': 0.14285714285714285,
+                                  '7': 0.14285714285714285, '8': 0.14285714285714285}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.DegreeCentralityResponse(status=True, message='success', output=dict_resp)
+
+        self.assertEqual([result.status, result.message], [expected.status, expected.message])
+        self.assertCountEqual(result.output, expected.output)
+
+        # Non Default test
+        result = self.client.find_degree_centrality(self.stub, self.graph,'in')
+
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
+                                    '4': 0.2857142857142857,
+                                    '5': 0.14285714285714285, '6': 0.14285714285714285,
+                                    '7': 0.14285714285714285,
+                                    '8': 0.14285714285714285}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.DegreeCentralityResponse(status=True, message='success', output=dict_resp)
+
+        self.assertEqual([result.status, result.message], [expected.status, expected.message])
+        self.assertCountEqual(result.output, expected.output)
+
+        # # Graph With No Nodes Test
         result = self.client.find_degree_centrality(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
-
-        # Graph With No edges Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-
-        # Directed Test
-        result = self.client.find_degree_centrality(self.stub, self.graph, directed=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # Weight Less Graph
-        result = self.client.find_degree_centrality(self.stub, self.graph_03)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_closeness_centrality(self):
 

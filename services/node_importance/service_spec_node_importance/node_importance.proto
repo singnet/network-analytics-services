@@ -49,13 +49,12 @@ message PeripheryResponse {
 message DegreeCentralityRequest {
     Graph graph = 1;
     string in_out = 2;
-    bool directed = 3;
 }
 
 message DegreeCentralityResponse {
     bool status = 1;
     string message = 2;
-    DictOutput output = 3;
+    repeated DictOutput output = 3;
 }
 
 // find_closeness_centrality
