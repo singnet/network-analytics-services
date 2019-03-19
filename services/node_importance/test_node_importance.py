@@ -251,7 +251,7 @@ class TestNodeImportance(unittest.TestCase):
                          '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583,
                          '7': 0.06965500888990583, '8': 0.06965500888990583}})
 
-        # Non Default Test, all default values used
+        # Non Default Test, all default values used expect directed
         result = self.N.find_pagerank(self.graph, alpha=0.95,
                                       personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,

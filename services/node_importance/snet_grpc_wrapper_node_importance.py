@@ -264,30 +264,81 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+
+            weights_list = list(graph.weights)
+
+            nodes_list = list(graph.nodes)
+
+            if len(weights_list) > 0:
+                graph_in = {"nodes": nodes_list, "edges": edges_list, "weights": weights_list}
+            else:
+                graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+
+            personalization_dict = {}
+            nstart_dict = {}
+            dangling_dict = {}
+
+            for p in request.personalization:
+                personalization_dict[p.node] = p.value
+
+            if len(personalization_dict) == 0:
+                personalization_dict = None
+
+            for p in request.nstart:
+                nstart_dict[p.node] = p.value
+
+            if len(nstart_dict) == 0:
+                nstart_dict = None
+
+            for p in request.dangling:
+                dangling_dict[p.node] = p.value
+
+            if len(dangling_dict) == 0:
+                dangling_dict = None
+
+
+            ret = ni.find_pagerank(graph_in, alpha=request.alpha, personalization=personalization_dict, max_iter=request.max_iter,
+                                         tol=request.tol, nstart=nstart_dict, weight=weights_list, dangling=dangling_dict, directed=request.directed)
+
+
+            if ret[0]:
+                dict_resp = []
+                for node_ele, val_ele in (ret[2]["pagerank"]).items():
+                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+
+                resp = node_importance_pb2.PageRankResponse(status=ret[0], message=ret[1],
+                                                                    output=dict_resp)
+
+            else:
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:', resp.status)
+            print('message:', resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
+
+            return resp
+
+
+
         except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_pagerank(graph_in, request.alpha, request.personalization, request.max_iter,
-                                         request.tol, request.nstart, request.weight, request.dangling)
-        pagerank_output_edges = []
-        pagerank_output_value = []
-        if temp_response[0]:
-            for k, v in temp_response[2]["pagerank"].items():
-                pagerank_output_edges.append(k)
-                pagerank_output_value.append(v)
+            logging.exception("message")
 
-        output = node_importance_pb2.DictOutput(node=pagerank_output_edges,
-                                                output=pagerank_output_value)
-        response = node_importance_pb2.PageRankResponse(status=temp_response[0], message=temp_response[1],
-                                                        output=output)
-        return response
+            print(time.strftime("%c"))
+
+            print('Waiting for next call on port 5002.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
+
+
 
     def EigenvectorCentrality(self, request, context):
         ni = NodeImportance()

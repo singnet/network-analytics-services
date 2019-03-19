@@ -242,99 +242,72 @@ class TestNodeImportance(unittest.TestCase):
 
         result = self.client.find_betweenness_centrality(self.stub, self.graph, k=15, normalized=False, weight=True,
                                                          endpoints=True, seed=1, directed=True)
-
-        dict_resp = []
-        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
-            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
-
-
         self.assertIn('parameter k is larger than the number of nodes in the graph',result[1])
 
 
     def test_find_pagerank(self):
         # Default Test
-        expected_output = {'pagerank': {'1': 0.12113884704299357, '2': 0.23955113750178236, '3': 0.23955113750178236,
-                                        '4': 0.12113884704299356, '5': 0.06965500772761204, '6': 0.06965500772761204,
-                                        '7': 0.06965500772761204, '8': 0.06965500772761204}}
-
-        pagerank_output_edges = []
-        pagerank_output_value = []
-        for k, v in expected_output["pagerank"].items():
-            pagerank_output_edges.append(k)
-            pagerank_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
         result = self.client.find_pagerank(self.stub, self.graph)
+        print(result)
+
+        dict_resp = []
+        for n, v in {'1': 0.12113884655309373, '2': 0.23955113566709454, '3': 0.23955113566709454,
+                         '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583,
+                         '7': 0.06965500888990583, '8': 0.06965500888990583}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.PageRankResponse(status=True, message='success', output=dict_resp)
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
 
         # Non Default Test
-        expected_output_arg = {'pagerank': {'1': 0.1235330285883424, '2': 0.24675733054250018, '3': 0.24675733054250013,
-                                            '4': 0.12353302858834242, '5': 0.06485482043457871,
-                                            '6': 0.06485482043457873, '7': 0.06485482043457871,
-                                            '8': 0.06485482043457873}}
 
-        pagerank_output_edges = []
-        pagerank_output_value = []
-        for k, v in expected_output_arg["pagerank"].items():
-            pagerank_output_edges.append(k)
-            pagerank_output_value.append(v)
+        personalizatoin = []
+        for k,vv in {'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                       '6': 0.125, '7': 0.125, '8': 0.125}.items():
+            personalizatoin.append(node_importance_pb2.DictIn(node=k,value=vv))
 
-        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
-        result = self.client.find_pagerank(self.stub, self.graph, alpha=0.95,
-                                           personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                            '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
-                                           tol=1e-07,
-                                           nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                           weight=True,
-                                           dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                     '6': 0.125, '7': 0.125, '8': 0.125})
+        nstart = []
+        for k, vv in {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1}.items():
+            nstart.append(node_importance_pb2.DictIn(node=k, value=vv))
+
+        dangling = []
+        for k, vv in {'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                '6': 0.125, '7': 0.125, '8': 0.125}.items():
+            dangling.append(node_importance_pb2.DictIn(node=k, value=vv))
+
+        result = self.client.find_pagerank(self.stub, self.graph,alpha=0.95,
+                                      personalization=personalizatoin, max_iter=100,
+                                      tol=1e-07,
+                                      nstart=nstart,
+                                      weight=True,
+                                      dangling=dangling,directed=True)
+        print(result)
+
+        dict_resp = []
+        for n, v in {'1': 0.08514279383409741, '2': 0.1255854995423924, '3': 0.12491155064890427, '4': 0.16514082203112918, '5': 0.12491155064890427, '6': 0.12469811632283417, '7': 0.12491155064890427, '8': 0.12469811632283417}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.PageRankResponse(status=True, message='success', output=dict_resp)
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
 
-        # Graph With No Nodes Test
-        result = self.client.find_pagerank(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        # Error raising test
 
-        # Graph With No edges Test
-        result = self.client.find_pagerank(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
+        personalizatoin = []
+        for k, vv in {'1': 0.125, '2': 0.125, '31': 0.125, '4': 0.125, '5': 0.125,
+                      '6': 0.125, '7': 0.125, '8': 0.125}.items():
+            personalizatoin.append(node_importance_pb2.DictIn(node=k, value=vv))
 
-        # Directed Test
-        result = self.client.find_pagerank(self.stub, self.graph, alpha=0.95,
-                                           personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                            '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
-                                           tol=1e-07,
-                                           nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                           weight=True,
-                                           dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                     '6': 0.125, '7': 0.125, '8': 0.125}, directed=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
-        # weight less test
-        expected_output = {'pagerank': {'1': 0.12113884704299357, '2': 0.23955113750178236, '3': 0.23955113750178236,
-                                        '4': 0.12113884704299356, '5': 0.06965500772761204, '6': 0.06965500772761204,
-                                        '7': 0.06965500772761204, '8': 0.06965500772761204}}
-        pagerank_output_edges = []
-        pagerank_output_value = []
-        for k, v in expected_output["pagerank"].items():
-            pagerank_output_edges.append(k)
-            pagerank_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(node=pagerank_output_edges, output=pagerank_output_value)
+        result = self.client.find_pagerank(self.stub, self.graph, personalization=personalizatoin)
+        self.assertIn('personalization parameter contains a node at zero-indexed position 2 that does not exist in the graph', result[1])
 
-        result = self.client.find_pagerank(self.stub, self.graph_03)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
 
     def test_find_eigenvector_centrality(self):
         # Default test
