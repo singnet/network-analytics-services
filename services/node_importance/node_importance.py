@@ -169,6 +169,9 @@ class NodeImportance:
         weight = None if weight == False else 'weights'
         nstart = None if nstart == None else nstart
 
+        if 'weights' not in graph and weight:
+            return False, 'weight parameter specified but weights are not given in input graph', {}
+
 
         ret = self.cv.is_valid_pagerank(graph,personalization,dangling,nstart)
         if not ret[0]:

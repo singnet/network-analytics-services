@@ -251,7 +251,7 @@ class TestNodeImportance(unittest.TestCase):
                          '4': 0.12113884655309375, '5': 0.06965500888990583, '6': 0.06965500888990583,
                          '7': 0.06965500888990583, '8': 0.06965500888990583}})
 
-        # Non Default Test
+        # Non Default Test, all default values used
         result = self.N.find_pagerank(self.graph, alpha=0.95,
                                       personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
@@ -273,7 +273,7 @@ class TestNodeImportance(unittest.TestCase):
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                       tol=1e-07,
                                       nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight=True,
+                                      weight=False,
                                       dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                 '6': 0.125, '7': 0.125, '8': 0.125})
         self.assertEqual(result[0], True)
@@ -289,7 +289,7 @@ class TestNodeImportance(unittest.TestCase):
                                                        '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
                                       tol=1e-07,
                                       nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight=True,
+                                      weight=False,
                                       dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
                                                 '6': 0.125, '7': 0.125, '8': 0.125}, directed=True)
         self.assertEqual(result[0], True)
@@ -298,6 +298,55 @@ class TestNodeImportance(unittest.TestCase):
                          {'pagerank': {'1': 0.08514279383409741, '2': 0.1255854995423924, '3': 0.12491155064890427,
                                        '4': 0.16514082203112918, '5': 0.12491155064890427, '6': 0.12469811632283417,
                                        '7': 0.12491155064890427, '8': 0.12469811632283417}})
+
+        result = self.N.find_pagerank(self.graph,personalization={'1': 0.125, '112': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                       '6': 0.125, '7': 0.125, '8': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'personalization parameter contains a node at zero-indexed position 1 that does not exist in the graph')
+
+        result = self.N.find_pagerank(self.graph,
+                                      personalization={'1': 0, '2': 0, '3': 0, '4': 0, '5': 0,
+                                                       '6': 0, '7': 0, '8': 0})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'one personalization value should at lease be non-zero')
+
+        result = self.N.find_pagerank(self.graph,
+                                      nstart={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                       '6': 0.125, '71': 0.125, '8': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'nstart parameter contains a node at zero-indexed position 6 that does not exist in the graph')
+
+        result = self.N.find_pagerank(self.graph,
+                                      dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                              '6': 0.125, '71': 0.125, '18': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'dangling parameter contains a node at zero-indexed position 6 that does not exist in the graph')
+
+        result = self.N.find_pagerank(self.graph,
+                                      dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                '6': 0.125, '7': 0.125, '181': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'dangling parameter contains a node at zero-indexed position 7 that does not exist in the graph')
+
+        result = self.N.find_pagerank(self.graph,
+                                      dangling={'111': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                '6': 0.125, '7': 0.125, '181': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'dangling parameter contains a node at zero-indexed position 0 that does not exist in the graph')
+
+        result = self.N.find_pagerank(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'edge value at [3][1] is not a node')
+
+        result = self.N.find_pagerank(self.graph_06, weight=True)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'weight parameter specified but weights are not given in input graph')
 
     def test_find_eigenvector_centrality(self):
         # Default Test
