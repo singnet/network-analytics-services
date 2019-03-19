@@ -177,6 +177,15 @@ def graph_center():
     res = nx.algorithms.betweenness_centrality(Gd,k=1,normalized=False,weight='weights',endpoints=True,seed=1)
     res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,weight='weights',seed=1)
     res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,seed=1)
+    res = nx.algorithms.link_analysis.pagerank(Gd,alpha=0.95,
+                                      personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                       '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
+                                      tol=1e-07,
+                                      nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
+                                      weight=True,
+                                      dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                                '6': 0.125, '7': 0.125, '8': 0.125})
+
 
 
     print(res)

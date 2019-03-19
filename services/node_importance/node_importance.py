@@ -125,6 +125,8 @@ class NodeImportance:
         weight = None if weight == False else 'weights'
         seed = None if seed == 0 else seed
         k = None if k == 0 else k
+
+
         if type != 'node' and type != 'edge':
             return False,'type parameter can only be node or edge',{}
         if 'weights' not in graph and weight:
@@ -160,46 +162,25 @@ class NodeImportance:
         G = self.construct_graph(graph, directed)
 
         alpha = 0.85 if alpha == 0.0 else alpha
-        personalization = None if personalization == '' else personalization
+        personalization = None if personalization == None else personalization
         max_iter = 100 if max_iter == 0 else max_iter
         tol = 1e-06 if tol == 0.0 else tol
-        dangling = None if dangling == '' else dangling
+        dangling = None if dangling == None else dangling
         weight = None if weight == False else 'weights'
-        nstart_dict = None
-        personalization_dict = None
-        dangling_list = None
+        nstart = None if nstart == None else nstart
 
-        try:
-            if len(personalization.key) > 0:
-                keys = personalization.key
-                values = personalization.value
-                for i in range(len(keys)):
-                    personalization_dict[keys[i]] = values[i]
-        except Exception as e:
-            personalization_dict = None
+        if 'weights' not in graph and weight:
+            return False, 'weight parameter specified but weights are not given in input graph', {}
 
-        try:
-            if len(nstart.key) > 0:
-                keys = nstart.key
-                values = nstart.value
-                for i in range(len(keys)):
-                    nstart_dict[keys[i]] = values[i]
-        except Exception as e:
-            nstart_dict = None
 
-        try:
-            if len(dangling.key) > 0:
-                keys = dangling.key
-                values = dangling.value
-                for i in range(len(keys)):
-                    dangling_list[keys[i]] = values[i]
-        except Exception as e:
-            dangling_list = None
+        ret = self.cv.is_valid_pagerank(graph,personalization,dangling,nstart)
+        if not ret[0]:
+            return ret
 
-        result = nx.algorithms.link_analysis.pagerank_alg.pagerank(G, alpha=alpha, personalization=personalization_dict,
+        result = nx.algorithms.link_analysis.pagerank_alg.pagerank(G, alpha=alpha, personalization=personalization,
                                                                    max_iter=max_iter,
-                                                                   tol=tol, nstart=nstart_dict, weight=weight,
-                                                                   dangling=dangling_list)
+                                                                   tol=tol, nstart=nstart, weight=weight,
+                                                                   dangling=dangling)
         output = {"pagerank": result}
         return True, 'success', output
 

@@ -128,5 +128,39 @@ class Graphs:
             return isValid
 
 
+    def is_valid_pagerank(self, graph,personalization,dangling,nstart):
+
+        # Personalization check
+
+        if personalization is not None:
+            c = 0
+            for v in personalization:
+                if v not in graph['nodes']:
+                    return False,'personalization parameter contains a node at zero-indexed position {} that does not exist in the graph'.format(c),{}
+                c = c + 1
+
+            if not any(i != 0 for i in list(personalization.values())):
+                return False, 'one personalization value should at lease be non-zero'
+
+        # nstart check
+
+        if nstart is not None:
+            c = 0
+            for v in nstart:
+                if v not in graph['nodes']:
+                    return False,'nstart parameter contains a node at zero-indexed position {} that does not exist in the graph'.format(c),{}
+                c = c + 1
+
+        # dangling check
+
+        if dangling is not None:
+            c = 0
+            for v in dangling:
+                if v not in graph['nodes']:
+                    return False,'dangling parameter contains a node at zero-indexed position {} that does not exist in the graph'.format(c),{}
+                c = c + 1
+
+        return [True]
+
 __end__ = '__end__'
 

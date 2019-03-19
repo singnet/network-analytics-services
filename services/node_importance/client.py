@@ -101,43 +101,13 @@ class ClientTest():
 
     def find_pagerank(self, stub, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
                       weight=False, dangling=None, directed=False):
-        nstart_key_list = []
-        nstart_value_list = []
-        nstart_new = None
-        personalization_key_list = []
-        personalization_value_list = []
-        personalization_new = None
-        dangling_key_list = []
-        dangling_value_list = []
-        dangling_new = None
-        try:
-            if personalization is not None:
-                for k, v in personalization.items():
-                    personalization_key_list.append(k)
-                    personalization_value_list.append(v)
-                personalization_new = node_importance_pb2.Personalization(key=personalization_key_list,
-                                                                          value=personalization_value_list)
-            if dangling is not None:
-                for k, v in dangling.items():
-                    dangling_key_list.append(k)
-                    dangling_value_list.append(v)
-                dangling_new = node_importance_pb2.Dangling(key=dangling_key_list, value=dangling_value_list)
-
-            if nstart is not None:
-                for k, v in nstart.items():
-                    nstart_key_list.append(k)
-                    nstart_value_list.append(v)
-                nstart_new = node_importance_pb2.Nstart(key=nstart_key_list, value=nstart_value_list)
-        except Exception as e:
-            return [False, str(e), {}]
-
         try:
             graph_in = self.get_graph(graph=graph)
             Request_data = node_importance_pb2.PageRankRequest(graph=graph_in, alpha=alpha,
-                                                               personalization=personalization_new,
-                                                               max_iter=max_iter, tol=tol, nstart=nstart_new,
+                                                               personalization=personalization,
+                                                               max_iter=max_iter, tol=tol, nstart=nstart,
                                                                weight=weight,
-                                                               dangling=dangling_new, directed=directed)
+                                                               dangling=dangling, directed=directed)
             response = stub.PageRank(Request_data)
             return response
         except Exception as e:
