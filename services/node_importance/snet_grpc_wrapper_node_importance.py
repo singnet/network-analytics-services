@@ -301,7 +301,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
 
             ret = ni.find_pagerank(graph_in, alpha=request.alpha, personalization=personalization_dict, max_iter=request.max_iter,
-                                         tol=request.tol, nstart=nstart_dict, weight=weights_list, dangling=dangling_dict, directed=request.directed)
+                                         tol=request.tol, nstart=nstart_dict, weight=request.weight, dangling=dangling_dict, directed=request.directed)
 
 
             if ret[0]:
@@ -346,32 +346,62 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+
+            weights_list = list(graph.weights)
+
+            nodes_list = list(graph.nodes)
+
+            if len(weights_list) > 0:
+                graph_in = {"nodes": nodes_list, "edges": edges_list, "weights": weights_list}
+            else:
+                graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+            nstart_dict = {}
+
+            for p in request.nstart:
+                nstart_dict[p.node] = p.value
+
+            if len(nstart_dict) == 0:
+                nstart_dict = None
+
+            ret = ni.find_eigenvector_centrality(graph_in, max_iter=request.max_iter, tol=request.tol,
+                                                 nstart=nstart_dict, weight=request.weight,
+                                   directed=request.directed,in_out=request.in_out)
+
+            if ret[0]:
+                dict_resp = []
+                for node_ele, val_ele in (ret[2]["eigenvector_centrality"]).items():
+                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+
+                resp = node_importance_pb2.EigenvectorCentralityResponse(status=ret[0], message=ret[1],
+                                                            output=dict_resp)
+
+            else:
+
+                print(time.strftime("%c"))
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:', resp.status)
+            print('message:', resp.message)
+            print(time.strftime("%c"))
+            print('Waiting for next call on port 5002.')
+
+            return resp
+
+
         except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_eigenvector_centrality(graph_in, request.max_iter, request.tol, request.nstart,
-                                                       request.weight)
-        eigenvector_output_edges = []
-        eigenvector_output_value = []
-        if temp_response[0]:
-            for k, v in temp_response[2]["eigenvector_centrality"].items():
-                eigenvector_output_edges.append(k)
-                eigenvector_output_value.append(v)
+            logging.exception("message")
 
-        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
-                                                output=eigenvector_output_value)
+            print(time.strftime("%c"))
 
-        response = node_importance_pb2.EigenvectorCentralityResponse(status=temp_response[0], message=temp_response[1],
-                                                                     output=output)
+            print('Waiting for next call on port 5002.')
 
-        return response
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
     def Hits(self, request, context):
         ni = NodeImportance()
