@@ -114,26 +114,14 @@ class ClientTest():
             return [False, str(e), {}]
 
     def find_eigenvector_centrality(self, stub, graph, max_iter=100, tol=1e-06, nstart=None,
-                                    weight=None, directed=False):
-
-        nstart_key_list = []
-        nstart_value_list = []
-        nstart_new = None
-        try:
-            if nstart is not None:
-                for k, v in nstart.items():
-                    nstart_key_list.append(k)
-                    nstart_value_list.append(v)
-                nstart_new = node_importance_pb2.Nstart(key=nstart_key_list, value=nstart_value_list)
-        except Exception as e:
-            return [False, str(e), {}]
+                                    weight=None, directed=False, in_out=True):
 
         try:
 
             graph_in = self.get_graph(graph=graph)
             Request_data = node_importance_pb2.EigenvectorCentralityRequest(graph=graph_in, max_iter=max_iter, tol=tol,
-                                                                            nstart=nstart_new, weight=weight,
-                                                                            directed=directed)
+                                                                            nstart=nstart, weight=weight,
+                                                                            directed=directed,in_out=in_out)
             response = stub.EigenvectorCentrality(Request_data)
             return response
         except Exception as e:

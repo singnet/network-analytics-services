@@ -162,5 +162,25 @@ class Graphs:
 
         return [True]
 
+
+    def is_valid_eigenvector_centrality(self, graph,nstart):
+
+
+        # nstart check
+
+        if nstart is not None:
+            c = 0
+            for v in nstart:
+                if v not in graph['nodes']:
+                    return False,'nstart parameter contains a node at zero-indexed position {} that does not exist in the graph'.format(c),{}
+                c = c + 1
+
+            if not any(i != 0 for i in list(nstart.values())):
+                return False, 'one nstart value should at lease be non-zero'
+
+
+        return [True]
+
+
 __end__ = '__end__'
 

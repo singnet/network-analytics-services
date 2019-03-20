@@ -310,87 +310,60 @@ class TestNodeImportance(unittest.TestCase):
 
 
     def test_find_eigenvector_centrality(self):
-        # Default test
-        expected_output = {
-            'eigenvector_centrality': {'1': 0.35775018836999806, '2': 0.5298994260311778, '3': 0.5298994260311778,
-                                       '4': 0.35775018836999806, '5': 0.2135666184274351, '6': 0.2135666184274351,
-                                       '7': 0.2135666184274351, '8': 0.2135666184274351}}
 
-        eigenvector_output_edges = []
-        eigenvector_output_value = []
-        for k, v in expected_output["eigenvector_centrality"].items():
-            eigenvector_output_edges.append(k)
-            eigenvector_output_value.append(v)
+        # Default Test
+        result = self.client.find_eigenvector_centrality(self.stub, self.graph)
+        print(result)
 
-        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
-                                                output=eigenvector_output_value)
+        dict_resp = []
+        for n, v in {'1': 0.35775018836999806, '2': 0.5298994260311778,
+                                                                '3': 0.5298994260311778, '4': 0.35775018836999806,
+                                                                '5': 0.2135666184274351, '6': 0.2135666184274351,
+                                                                '7': 0.2135666184274351, '8': 0.2135666184274351}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph, )
+        expected = node_importance_pb2.EigenvectorCentralityResponse(status=True, message='success', output=dict_resp)
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
+        #
+        # # Non Default Test
 
-        # non Default Test
-        expected_output_nstart = {
-            'eigenvector_centrality': {'1': 0.35774203080090017, '2': 0.5299019638339402, '3': 0.5299019638339402,
-                                       '4': 0.3577420308009002, '5': 0.21357030238703748, '6': 0.21357030238703748,
-                                       '7': 0.21357030238703748, '8': 0.21357030238703748}}
+        nstart = []
+        for k, vv in {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
+                                                            '8': 1}.items():
+            nstart.append(node_importance_pb2.DictIn(node=k, value=vv))
 
-        eigenvector_output_edges = []
-        eigenvector_output_value = []
-        for k, v in expected_output_nstart["eigenvector_centrality"].items():
-            eigenvector_output_edges.append(k)
-            eigenvector_output_value.append(v)
 
-        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
-                                                output=eigenvector_output_value)
+        result = self.client.find_eigenvector_centrality(self.stub, self.graph,max_iter=500, tol=1e-05,
+                                                    nstart=nstart, weight=True, directed=True,in_out=True)
+        print(result)
 
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
-                                                         nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                                 '8': 1}, weight=True, directed=False)
-        # print(result)
+        dict_resp = []
+        for n, v in {'1': 1.9935012399077745e-07, '2': 5.183103223760218e-05,
+                                                                '3': 0.0067123180248934745, '4': 0.5773456687445266,
+                                                                '5': 0.0067123180248934745, '6': 0.5772940370624132, '7': 0.0067123180248934745, '8': 0.5772940370624132}.items():
+            dict_resp.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.EigenvectorCentralityResponse(status=True, message='success', output=dict_resp)
+
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        self.assertCountEqual(result.output, expected.output)
+        #
+        # # Error raising test
 
-        # Graph With No Nodes Test
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph_01)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        nstart = []
+        for k, vv in {'1': 0.125, '2': 0.125, '31': 0.125, '4': 0.125, '5': 0.125,
+                      '6': 0.125, '7': 0.125, '8': 0.125}.items():
+            nstart.append(node_importance_pb2.DictIn(node=k, value=vv))
 
-        # Graph With No edges Test
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph_02)
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
-
-        # directed Test
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph, max_iter=110, tol=1e-05,
-                                                         nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                                 '8': 1}, weight=True, directed=True)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
-
-        # weight less Test
-        expected_out = {
-            'eigenvector_centrality': {'1': 0.35775018836999806, '2': 0.5298994260311778, '3': 0.5298994260311778,
-                                       '4': 0.35775018836999806, '5': 0.2135666184274351, '6': 0.2135666184274351,
-                                       '7': 0.2135666184274351, '8': 0.2135666184274351}}
-        eigenvector_output_edges = []
-        eigenvector_output_value = []
-        for k, v in expected_out["eigenvector_centrality"].items():
-            eigenvector_output_edges.append(k)
-            eigenvector_output_value.append(v)
-
-        output = node_importance_pb2.DictOutput(node=eigenvector_output_edges,
-                                                output=eigenvector_output_value)
-
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph_03)
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        self.assertEqual(result.output, output)
+        result = self.client.find_eigenvector_centrality(self.stub, self.graph, nstart=nstart)
+        self.assertIn(
+            'nstart parameter contains a node at zero-indexed position 2 that does not exist in the graph',
+            result[1])
+        
 
     def test_find_hits(self):
         # Hub Matrix Hits Test with default node

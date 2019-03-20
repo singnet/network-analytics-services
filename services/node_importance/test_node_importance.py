@@ -349,6 +349,28 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result[1], 'weight parameter specified but weights are not given in input graph')
 
     def test_find_eigenvector_centrality(self):
+
+        # Invalid graph
+        result = self.N.find_eigenvector_centrality(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],'edge value at [3][1] is not a node')
+
+        # nstart ... faulty node
+        result = self.N.find_eigenvector_centrality(self.graph,
+                                      nstart={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+                                              '6': 0.125, '71': 0.125, '8': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'nstart parameter contains a node at zero-indexed position 6 that does not exist in the graph')
+
+        # nstart ... all zero values
+        result = self.N.find_eigenvector_centrality(self.graph,
+                                      nstart={'1': 0, '2': 0, '3': 0, '4': 0, '5': 0,
+                                                       '6': 0, '7': 0, '8': 0})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],
+                         'one nstart value should at lease be non-zero')
+
         # Default Test
         result = self.N.find_eigenvector_centrality(self.graph)
         self.assertEqual(result[0], True)
@@ -358,7 +380,12 @@ class TestNodeImportance(unittest.TestCase):
                                                                 '5': 0.2135666184274351, '6': 0.2135666184274351,
                                                                 '7': 0.2135666184274351, '8': 0.2135666184274351}})
 
-        # Non Default Test
+        # Weight parameter fallacy
+        result = self.N.find_eigenvector_centrality(self.graph_06, weight=True)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'weight parameter specified but weights are not given in input graph')
+
+        # Non Default Test ... undirected graph
         result = self.N.find_eigenvector_centrality(self.graph, max_iter=110, tol=1e-05,
                                                     nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
                                                             '8': 1}, weight=True, directed=False)
@@ -369,7 +396,7 @@ class TestNodeImportance(unittest.TestCase):
                                        '4': 0.3577420308009002, '5': 0.21357030238703748, '6': 0.21357030238703748,
                                        '7': 0.21357030238703748, '8': 0.21357030238703748}})
 
-        # Non weighted Test
+        # Non weighted Test ... directed graph ... in_out=False
         result = self.N.find_eigenvector_centrality(self.graph, max_iter=500, tol=1e-05,
                                                     nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
                                                             '8': 1}, weight=True, directed=True)
@@ -379,6 +406,16 @@ class TestNodeImportance(unittest.TestCase):
                                                                 '3': 0.0067123180248934745, '4': 0.5773456687445266,
                                                                 '5': 0.0067123180248934745, '6': 0.5772940370624132,
                                                                 '7': 0.0067123180248934745, '8': 0.5772940370624132}})
+
+        # Non weighted Test ... undirected graph ... in_out=True
+        result = self.N.find_eigenvector_centrality(self.graph, max_iter=500, tol=1e-05,
+                                                    nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
+                                                            '8': 1}, weight=True, directed=True,in_out=True)
+        self.assertEqual(result[0], True)
+        self.assertEqual(result[1], 'success')
+        self.assertEqual(result[2], {'eigenvector_centrality': {'1': 1.9935012399077745e-07, '2': 5.183103223760218e-05,
+                                                                '3': 0.0067123180248934745, '4': 0.5773456687445266,
+                                                                '5': 0.0067123180248934745, '6': 0.5772940370624132, '7': 0.0067123180248934745, '8': 0.5772940370624132}})
 
     def test_find_hits(self):
         # Default Test

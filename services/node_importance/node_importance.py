@@ -184,25 +184,32 @@ class NodeImportance:
         output = {"pagerank": result}
         return True, 'success', output
 
-    def find_eigenvector_centrality(self, graph, max_iter=100, tol=1e-06, nstart=None, weight=False, directed=False):
+    def find_eigenvector_centrality(self, graph, max_iter=100, tol=1e-06, nstart=None, weight=False, directed=False, in_out=True):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
 
-        weight = None if weight == False else "weights"
-        nstart_dict = {}
-        try:
-            if len(nstart.keys) > 0:
-                keys = nstart.key
-                values = nstart.value
-                for i in range(len(keys)):
-                    nstart_dict[keys[i]] = values[i]
-        except Exception as e:
-            nstart_dict = None
+        # Done for out-edges eigenvector centrality
+        if not in_out and directed:
+            G.reverse()
 
-        result = nx.algorithms.centrality.eigenvector_centrality(G, max_iter=max_iter, tol=tol, nstart=nstart_dict,
+        max_iter = 100 if max_iter == 0 else max_iter
+        tol = 1e-06 if tol == 0.0 else tol
+        weight = None if weight == False else 'weights'
+        nstart = None if nstart == None else nstart
+
+        if 'weights' not in graph and weight:
+            return False, 'weight parameter specified but weights are not given in input graph', {}
+
+        ret = self.cv.is_valid_eigenvector_centrality(graph, nstart)
+
+        if not ret[0]:
+            return ret
+
+
+        result = nx.algorithms.centrality.eigenvector_centrality(G, max_iter=max_iter, tol=tol, nstart=nstart,
                                                                  weight=weight)
         output = {"eigenvector_centrality": result}
         return True, 'success', output
