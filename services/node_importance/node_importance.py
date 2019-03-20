@@ -203,7 +203,7 @@ class NodeImportance:
         if 'weights' not in graph and weight:
             return False, 'weight parameter specified but weights are not given in input graph', {}
 
-        ret = self.cv.is_valide_eignevector_centrality(graph, nstart)
+        ret = self.cv.is_valid_eigenvector_centrality(graph, nstart)
 
         if not ret[0]:
             return ret

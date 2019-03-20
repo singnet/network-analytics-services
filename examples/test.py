@@ -187,6 +187,12 @@ def graph_center():
                                                 '6': 0.125, '7': 0.125, '8': 0.125})
 
 
+    Gd.reverse()
+    res = nx.algorithms.centrality.eigenvector_centrality(Gd,max_iter=500, tol=1e-05,
+                                                    nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
+                                                            '8': 1}, weight='weights')
+
+
 
     print(res)
 
