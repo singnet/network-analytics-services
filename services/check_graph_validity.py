@@ -182,5 +182,23 @@ class Graphs:
         return [True]
 
 
+    def is_valid_hits(self, graph,nstart):
+
+
+        # nstart check
+
+        if nstart is not None:
+            c = 0
+            for v in nstart:
+                if v not in graph['nodes']:
+                    return False,'nstart parameter contains a node at zero-indexed position {} that does not exist in the graph'.format(c),{}
+                c = c + 1
+
+
+
+        return [True]
+
+
+
 __end__ = '__end__'
 

@@ -137,15 +137,18 @@ message HitsOutput{
 }
 message HitsRequest {
     Graph graph = 1;
-    repeated string nodelist = 2;
-    string mode = 3;
-    bool directed = 4;
+    int64 max_iter = 2;
+    double tol = 3;
+    repeated DictIn nstart = 4;
+    bool normalized = 5;
+    bool directed = 6;
 }
 
 message HitsResponse {
     bool status = 1;
     string message = 2;
-    repeated HitsOutput output = 3;
+    repeated DictOutput hubs = 3;
+    repeated DictOutput authorities = 4;
 }
 
 

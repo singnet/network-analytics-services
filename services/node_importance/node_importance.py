@@ -214,19 +214,24 @@ class NodeImportance:
         output = {"eigenvector_centrality": result}
         return True, 'success', output
 
-    def find_hits(self, graph, nodelist=None, mode='hub_matrix', directed=False):
+    def find_hits(self, graph, max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False):
         ret = self.cv.is_valid_graph(graph)
         if not ret[0]:
             return ret
 
         G = self.construct_graph(graph, directed)
 
-        nodelist = None if nodelist == '' else nodelist
-        if mode == 'authority_matrix':
-            result = nx.algorithms.link_analysis.hits_alg.authority_matrix(G, nodelist)
-            output = {"authority_matrix": result.tolist()}
 
-        else:
-            result = nx.algorithms.link_analysis.hits_alg.hub_matrix(G, nodelist)
-            output = {"hub_matrix": result.tolist()}
+        max_iter = 100 if max_iter == 0 else max_iter
+        tol = 1e-08 if tol == 0.0 else tol
+        nstart = None if nstart == None else nstart
+
+        ret = self.cv.is_valid_hits(graph, nstart)
+
+        if not ret[0]:
+            return ret
+
+        result = nx.algorithms.link_analysis.hits_alg.hits(G, max_iter=max_iter, tol=tol, nstart=nstart,
+                                                                 normalized=normalized)
+        output = {"hubs": result[0],"authorities":result[1]}
         return True, 'success', output
