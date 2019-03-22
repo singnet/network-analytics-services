@@ -158,7 +158,6 @@ def graph_center():
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7, 8, 9, 10]
         }
-
     G = nx.Graph()
     G.add_nodes_from(graph['nodes'])
     G.add_edges_from(graph['edges'])
@@ -167,6 +166,7 @@ def graph_center():
     Gd.add_nodes_from(graph['nodes'])
     Gd.add_edges_from(graph['edges'])
 
+
     # res = nx.algorithms.distance_measures.center(G,usebounds=True)
 
     # res = nx.algorithms.centrality.closeness_centrality(G)
@@ -174,23 +174,29 @@ def graph_center():
     #
     # res = nx.algorithms.edge_betweenness_centrality(Gd, k=1, normalized=False, weight=True, seed=1)
 
-    res = nx.algorithms.betweenness_centrality(Gd,k=1,normalized=False,weight='weights',endpoints=True,seed=1)
-    res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,weight='weights',seed=1)
-    res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,seed=1)
-    res = nx.algorithms.link_analysis.pagerank(Gd,alpha=0.95,
-                                      personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                       '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
-                                      tol=1e-07,
-                                      nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
-                                      weight=True,
-                                      dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
-                                                '6': 0.125, '7': 0.125, '8': 0.125})
+    # res = nx.algorithms.betweenness_centrality(Gd,k=1,normalized=False,weight='weights',endpoints=True,seed=1)
+    # res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,weight='weights',seed=1)
+    # res = nx.algorithms.edge_betweenness_centrality(Gd,k=1,normalized=False,seed=1)
+    # res = nx.algorithms.link_analysis.pagerank(Gd,alpha=0.95,
+    #                                   personalization={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+    #                                                    '6': 0.125, '7': 0.125, '8': 0.125}, max_iter=100,
+    #                                   tol=1e-07,
+    #                                   nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},
+    #                                   weight=True,
+    #                                   dangling={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,
+    #                                             '6': 0.125, '7': 0.125, '8': 0.125})
+    #
+    #
+    # # Gd.reverse()
+    # res = nx.algorithms.centrality.eigenvector_centrality(Gd,max_iter=500, tol=1e-05,
+    #                                                 nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
+    #                                                         '8': 1}, weight='weights')
+    res = nx.algorithms.link_analysis.hits(G)
+    print(res)
+
+    res = nx.algorithms.hits(Gd,max_iter=110,tol=11.0e-7,nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},normalized=False)
 
 
-    Gd.reverse()
-    res = nx.algorithms.centrality.eigenvector_centrality(Gd,max_iter=500, tol=1e-05,
-                                                    nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
-                                                            '8': 1}, weight='weights')
 
 
 

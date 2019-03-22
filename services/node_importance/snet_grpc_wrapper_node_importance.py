@@ -409,26 +409,65 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
         try:
             edges_list = []
-            weights_list = []
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            if len(graph.weights) > 0:
-                for weights_proto in graph.weights:
-                    weights_list.append(int(weights_proto))
-            graph_in = {"nodes": list(graph.nodes), "edges": edges_list, "weights": weights_list}
+
+            nodes_list = list(graph.nodes)
+
+            graph_in = {"nodes": nodes_list, "edges": edges_list}
+
+            nstart_dict = {}
+
+            for p in request.nstart:
+                nstart_dict[p.node] = p.value
+
+            if len(nstart_dict) == 0:
+                nstart_dict = None
+
+            ret = ni.find_hits(graph_in, max_iter=request.max_iter, tol=request.tol,
+                                                 nstart=nstart_dict, normalized=request.normalized,
+                                                 directed=request.directed)
+
+            if ret[0]:
+
+                dict_resp_hubs = []
+                dict_resp_authorities = []
+
+                for node_ele, val_ele in (ret[2]["hubs"]).items():
+                    dict_resp_hubs.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                for node_ele, val_ele in (ret[2]["authorities"]).items():
+                    dict_resp_authorities.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+
+                resp = node_importance_pb2.HitsResponse(status=ret[0], message=ret[1], hubs=dict_resp_hubs, authorities=dict_resp_authorities)
+
+
+            else:
+
+                print(time.strftime("%c"))
+
+                print('Waiting for next call on port 5002.')
+
+                raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
+
+            print('status:', resp.status)
+
+            print('message:', resp.message)
+
+            print(time.strftime("%c"))
+
+            print('Waiting for next call on port 5002.')
+
+            return resp
+
         except Exception as e:
-            return [False, str(e), {}]
 
-        temp_response = ni.find_hits(graph_in, request.nodelist, request.mode)
-        hits_list = []
-        if temp_response[0]:
-            for i in temp_response[2][request.mode]:
-                hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+            logging.exception("message")
 
-        response = node_importance_pb2.HitsResponse(status=temp_response[0], message=temp_response[1],
-                                                    output=hits_list)
+            print(time.strftime("%c"))
 
-        return response
+            print('Waiting for next call on port 5002.')
+
+            raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
 
 class Server():

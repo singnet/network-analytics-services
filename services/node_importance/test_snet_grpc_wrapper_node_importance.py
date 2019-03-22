@@ -22,6 +22,10 @@ class TestNodeImportance(unittest.TestCase):
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7, 8, 9, 10]
         }
+        self.graph_no_weights = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']]
+        }
         self.graph_01 = {
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7, 8, 9, 10]
@@ -313,7 +317,6 @@ class TestNodeImportance(unittest.TestCase):
 
         # Default Test
         result = self.client.find_eigenvector_centrality(self.stub, self.graph)
-        print(result)
 
         dict_resp = []
         for n, v in {'1': 0.35775018836999806, '2': 0.5298994260311778,
@@ -366,119 +369,62 @@ class TestNodeImportance(unittest.TestCase):
         
 
     def test_find_hits(self):
-        # Hub Matrix Hits Test with default node
-        hub_matrix_expected_out = {
-            'hub_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0], [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
-                           [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0], [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
-                           [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0], [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
-                           [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0], [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
 
-        hits_list = []
-        for i in hub_matrix_expected_out["hub_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+        # Default Test
+        result = self.client.find_hits(self.stub, self.graph_no_weights)
 
-        result = self.client.find_hits(self.stub, self.graph, nodelist=None, mode='hub_matrix')
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
+        dict_resp_hubs = []
+        for n, v in {'1': 0.13604957690850644, '2': 0.2015158583139189, '3': 0.2015158583139189, '4': 0.13604957690850644, '5': 0.08121728238878734, '6': 0.08121728238878734, '7': 0.08121728238878734, '8': 0.08121728238878734}.items():
+            dict_resp_hubs.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        # Authority Matrix Hits Test with default node
-        authority_matrix_expected_out = {
-            'authority_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0],
-                                 [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
-                                 [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0],
-                                 [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
-                                 [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0],
-                                 [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
-                                 [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0],
-                                 [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
-        hits_list = []
-        for i in authority_matrix_expected_out["authority_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+        dict_resp_authorities = []
+        for n, v in {'1': 0.13604957688814256, '2': 0.2015158585243154, '3': 0.2015158585243154, '4': 0.13604957688814256, '5': 0.08121728229377104, '6': 0.08121728229377104, '7': 0.08121728229377104, '8': 0.08121728229377104}.items():
+            dict_resp_authorities.append(node_importance_pb2.DictOutput(node=n, output=v))
 
-        result = self.client.find_hits(self.stub, self.graph, nodelist=None, mode='authority_matrix')
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
-
-        # Hub Matrix Hits Test with  node
-
-        expected_with_node_hub = {'hub_matrix': [[9.0, 0.0], [0.0, 9.0]]}
-
-        result = self.client.find_hits(self.stub, self.graph, nodelist=['1', '2'], mode='hub_matrix')
-        hits_list = []
-        for i in expected_with_node_hub["hub_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+        expected = node_importance_pb2.HitsResponse(status=True, message='success', hubs=dict_resp_hubs, authorities=dict_resp_authorities)
 
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
+        self.assertCountEqual(result.hubs, expected.hubs)
+        self.assertCountEqual(result.authorities, expected.authorities)
 
-        # Authority Matrix Hits Test with  node
+        # # Non Default Test
 
-        expected_with_node_authority = {'authority_matrix': [[9.0, 0.0], [0.0, 9.0]]}
+        nstart = []
+        for k, vv in {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1}.items():
+            nstart.append(node_importance_pb2.DictIn(node=k, value=vv))
 
-        result = self.client.find_hits(self.stub, self.graph, nodelist=['1', '2'], mode='authority_matrix')
-        hits_list = []
-        for i in expected_with_node_authority["authority_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
+        result = self.client.find_hits(self.stub, self.graph_no_weights,max_iter=110,tol=11.0e-7,nstart=nstart,normalized=False,directed=True)
 
+        dict_resp_hubs = []
+        for n, v in {'1': 0.6180339887498948, '2': 5.309100041157175e-06, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
+            dict_resp_hubs.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        dict_resp_authorities = []
+        for n, v in {'1': 0.0, '2': 0.38196601125010515, '3': 3.957169530458124e-06, '4': 1.0, '5': 3.957169530458124e-06, '6': 0.6180339887498948, '7': 3.957169530458124e-06, '8': 0.6180339887498948}.items():
+            dict_resp_authorities.append(node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = node_importance_pb2.HitsResponse(status=True, message='success', hubs=dict_resp_hubs,
+                                                    authorities=dict_resp_authorities)
+
+        print(result.hubs)
+        print(expected.hubs)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
+        self.assertCountEqual(result.hubs, expected.hubs)
+        self.assertCountEqual(result.authorities, expected.authorities)
 
-        # Graph With No Nodes Test
-        result = self.client.find_hits(self.stub, self.graph_01, mode='authority_matrix')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        # # Error raising test
 
-        result = self.client.find_hits(self.stub, self.graph_01, mode='hub_matrix')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "'nodes'")
-        self.assertEqual(result[2], {})
+        nstart = []
+        for k, vv in {'1': 0.125, '2': 0.125, '31': 0.125, '4': 0.125, '5': 0.125,
+                      '6': 0.125, '7': 0.125, '8': 0.125}.items():
+            nstart.append(node_importance_pb2.DictIn(node=k, value=vv))
 
-        # Graph With No edges Test
-        result = self.client.find_hits(self.stub, self.graph_02, mode='authority_matrix')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
+        result = self.client.find_hits(self.stub, self.graph, nstart=nstart)
+        self.assertIn('nstart parameter contains a node at zero-indexed position 2 that does not exist in the graph',result[1])
 
-        result = self.client.find_hits(self.stub, self.graph_02, mode='hub_matrix')
-        self.assertEqual(result[0], False)
-        self.assertEqual(result[1], "Parameter to MergeFrom() must be instance of same class: expected Graph got list.")
-        self.assertEqual(result[2], {})
 
-        # directed Graph test
-
-        expected_with_node_authority = {'hub_matrix': [[9.0, 0.0], [0.0, 9.0]]}
-
-        result = self.client.find_hits(self.stub, self.graph, nodelist=['1', '2'], directed=True)
-        hits_list = []
-        for i in expected_with_node_authority["hub_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
-
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
-
-        # weightless test
-        expected_result = {'hub_matrix': [[1.0, 0.0], [0.0, 1.0]]}
-
-        hits_list = []
-        for i in expected_result["hub_matrix"]:
-            hits_list.append(node_importance_pb2.HitsOutput(hits_out=list(i)))
-
-        result = self.client.find_hits(self.stub, self.graph_03, nodelist=['1', '2'])
-        self.assertEqual(result.status, True)
-        self.assertEqual(result.message, 'success')
-        for i in range(len(result.output)):
-            self.assertEqual(result.output[i], hits_list[i])
 
     def test_additional(self):
         # wrong Number of wrights test taking one functionality as example
