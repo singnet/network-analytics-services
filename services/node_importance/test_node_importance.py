@@ -20,6 +20,13 @@ class TestNodeImportance(unittest.TestCase):
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7, 8, 9, 10]
         }
+
+        self.graph_no_weights = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']]
+        }
+
+
         self.graph_01 = {
             "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8']],
             "weights": [3, 4, 5, 6, 7, 8, 9, 10]
@@ -418,57 +425,33 @@ class TestNodeImportance(unittest.TestCase):
                                                                 '5': 0.0067123180248934745, '6': 0.5772940370624132, '7': 0.0067123180248934745, '8': 0.5772940370624132}})
 
     def test_find_hits(self):
+        # Invalid graph
+        result = self.N.find_hits(self.graph_05)
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1], 'edge value at [3][1] is not a node')
+
+        # nstart ... faulty node
+        result = self.N.find_hits(self.graph,nstart={'1': 0.125, '2': 0.125, '3': 0.125, '4': 0.125, '5': 0.125,'6': 0.125, '71': 0.125, '8': 0.125})
+        self.assertEqual(result[0], False)
+        self.assertEqual(result[1],'nstart parameter contains a node at zero-indexed position 6 that does not exist in the graph')
+
+
         # Default Test
-        result = self.N.find_hits(self.graph, mode='hub_matrix')
+        result = self.N.find_hits(self.graph_no_weights)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'hub_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0],
-                           [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
-                           [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0],
-                           [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
-                           [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0],
-                           [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
-                           [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0],
-                           [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]})
+        self.assertEqual(result[2]['hubs'],{'1': 0.13604957690850644, '2': 0.2015158583139189, '3': 0.2015158583139189, '4': 0.13604957690850644, '5': 0.08121728238878734, '6': 0.08121728238878734, '7': 0.08121728238878734, '8': 0.08121728238878734})
+        self.assertEqual(result[2]['authorities'],{'1': 0.13604957688814256, '2': 0.2015158585243154, '3': 0.2015158585243154, '4': 0.13604957688814256, '5': 0.08121728229377104, '6': 0.08121728229377104, '7': 0.08121728229377104, '8': 0.08121728229377104})
 
-        # Non Default Test
-        result = self.N.find_hits(self.graph, mode='authority_matrix')
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {'authority_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0],
-                                                          [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0],
-                                                          [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0],
-                                                          [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
-                                                          [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0],
-                                                          [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
-                                                          [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0],
-                                                          [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]})
 
-        # Non weighted Test
-        result = self.N.find_hits(self.graph_03, mode='authority_matrix')
+        # # non Default Test
+        result = self.N.find_hits(self.graph_no_weights,max_iter=110,tol=11.0e-7,nstart={'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1},normalized=False,directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'authority_matrix': [[2.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0, 0.0], [0.0, 4.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0],
-                                 [2.0, 0.0, 4.0, 0.0, 1.0, 0.0, 1.0, 0.0], [0.0, 2.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0],
-                                 [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], [0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0],
-                                 [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0],
-                                 [0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]]})
+        self.assertEqual(result[2]['hubs'],{'1': 0.6180339887498948, '2': 5.309100041157175e-06, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0})
+        self.assertEqual(result[2]['authorities'],{'1': 0.0, '2': 0.38196601125010515, '3': 3.957169530458124e-06, '4': 1.0, '5': 3.957169530458124e-06, '6': 0.6180339887498948, '7': 3.957169530458124e-06, '8': 0.6180339887498948})
 
-        # Non default Test 2
-        result = self.N.find_hits(self.graph, mode='authority_matrix', directed=True)
-        self.assertEqual(result[0], True)
-        self.assertEqual(result[1], 'success')
-        self.assertEqual(result[2], {
-            'authority_matrix': [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-                                 [0.0, 9.0, 0.0, 12.0, 0.0, 0.0, 0.0, 0.0],
-                                 [0.0, 0.0, 25.0, 0.0, 30.0, 0.0, 45.0, 0.0],
-                                 [0.0, 12.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0],
-                                 [0.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0],
-                                 [0.0, 0.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0],
-                                 [0.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0],
-                                 [0.0, 0.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]})
+
 
     def test_construct_graph(self):
         # Default Test
@@ -498,5 +481,4 @@ class TestNodeImportance(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    suite = unittest.TestSuite()
     unittest.main()
