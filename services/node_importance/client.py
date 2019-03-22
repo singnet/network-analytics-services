@@ -127,11 +127,11 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_hits(self, stub, graph, nodelist=None, mode='hub_matrix', directed=False):
+    def find_hits(self, stub, graph, max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False):
         try:
             graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.HitsRequest(graph=graph_in, nodelist=nodelist, mode=mode,
-                                                           directed=False)
+            Request_data = node_importance_pb2.HitsRequest(graph=graph_in,max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False)
+
             response = stub.Hits(Request_data)
             return response
         except Exception as e:
