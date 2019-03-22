@@ -433,7 +433,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 dict_resp_hubs = []
                 dict_resp_authorities = []
 
-                for node_ele, val_ele in (ret[2]["hits"]).items():
+                for node_ele, val_ele in (ret[2]["hubs"]).items():
                     dict_resp_hubs.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
                 for node_ele, val_ele in (ret[2]["authorities"]).items():
                     dict_resp_authorities.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))

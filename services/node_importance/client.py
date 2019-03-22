@@ -130,7 +130,7 @@ class ClientTest():
     def find_hits(self, stub, graph, max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False):
         try:
             graph_in = self.get_graph(graph=graph)
-            Request_data = node_importance_pb2.HitsRequest(graph=graph_in,max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False)
+            Request_data = node_importance_pb2.HitsRequest(graph=graph_in,max_iter=max_iter, tol=tol, nstart=nstart, normalized=normalized, directed=directed)
 
             response = stub.Hits(Request_data)
             return response
