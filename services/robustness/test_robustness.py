@@ -202,6 +202,15 @@ class TestRobustness(unittest.TestCase):
         ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes, 1)
         self.assertEqual([False, 'all edge weights must be greater than zero', {}],ret)
 
+        # Error
+        graph = {
+            "nodes": [1, 2, 3, 4, 5, 6, 7, 8],
+            "edges": [[1, 2], [1, 4], [2, 3], [2, 5], [3, 4], [3, 6], [2, 7], [3, 8]],
+        }
+        source_nodes = [5, 7]
+        target_nodes = [6]
+        ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes, 1, weight=True)
+        self.assertEqual([False,'weight parameter specified but weights are not given in input graph'],ret)
 
         graph = {
             "nodes": [1,2,3,4,5,6,7,8],
