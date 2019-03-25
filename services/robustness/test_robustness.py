@@ -57,6 +57,33 @@ class TestRobustness(unittest.TestCase):
         }
         ret = b.min_nodes_to_remove(graph, source_node, target_node)
         self.assertEqual([False, 'Element of the input array edges at zero-indexed poistion 1 does contain an empty node',{}],ret)
+        # a
+        graph = {
+            "nodes": [1, 2, 3],
+            "edges": [[1, 2], ['',2]]
+        }
+        ret = b.min_nodes_to_remove(graph, source_node, target_node)
+        self.assertEqual(
+            [False, 'Element of the input array edges at zero-indexed poistion 1 does contain an empty node', {}], ret)
+        # a
+        # a
+        graph = {
+            "nodes": [1, 2, 3],
+            "edges": [['', 2], [5, 2]]
+        }
+        ret = b.min_nodes_to_remove(graph, source_node, target_node)
+        self.assertEqual(
+            [False, 'Element of the input array edges at zero-indexed poistion 0 does contain an empty node', {}], ret)
+        # a
+        # a
+        graph = {
+            "nodes": [1, 2, 3],
+            "edges": [[3, 2], [2, 2],['', 2], [5, 2]]
+        }
+        ret = b.min_nodes_to_remove(graph, source_node, target_node)
+        self.assertEqual(
+            [False, 'Element of the input array edges at zero-indexed poistion 2 does contain an empty node', {}], ret)
+        # a
         graph = {
         "nodes": [1,2,3],
         "edges": [[1,2],[2,3]]
@@ -89,6 +116,19 @@ class TestRobustness(unittest.TestCase):
         target_node = 6
         ret = b.min_nodes_to_remove(graph, source_node, target_node)
         self.assertEqual([False, 'edge value at [5][1] is not a node',{}],ret)
+
+        # a
+
+        graph = {
+            "nodes": [1, 2, 3, 4, 5],
+            "edges": [[1, 2], [1, 4], [2, 3], [2, 5], [3, 4], [6, 3], [4, 6]]
+        }
+        source_node = 1
+        target_node = 6
+        ret = b.min_nodes_to_remove(graph, source_node, target_node)
+        self.assertEqual([False, 'edge value at [5][0] is not a node', {}], ret)
+
+        # a
 
         graph = {
         "nodes": [1,2,3,4,5,6],
@@ -123,6 +163,14 @@ class TestRobustness(unittest.TestCase):
         }
         ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes)
         self.assertEqual([False, 'the supplied edge is not type array',{}],ret)
+        # v
+        graph = {
+            "nodes": 1,
+            "edges": 3
+        }
+        ret = b.most_important_nodes_edges_subset(graph, source_nodes, target_nodes)
+        self.assertEqual([False, 'the supplied nodes is not type array', {}], ret)
+        # v
         graph = {
             "nodes": [1,2],
             "edges": [[1,2]],
