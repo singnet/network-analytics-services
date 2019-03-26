@@ -131,10 +131,7 @@ message EigenvectorCentralityResponse {
     repeated DictOutput output = 3;
 }
 
-// find_hits
-message HitsOutput{
-    repeated double hits_out = 1;
-}
+
 message HitsRequest {
     Graph graph = 1;
     int64 max_iter = 2;

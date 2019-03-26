@@ -426,12 +426,6 @@ class TestNodeImportance(unittest.TestCase):
 
 
 
-    def test_additional(self):
-        # wrong Number of wrights test taking one functionality as example
-        result = self.client.find_central(self.stub, self.graph_04)
-        self.assertEqual(result.status, False)
-        self.assertEqual(result.message, 'the length of supplied edges and weights does not match')
-
     def tearDown(self):
         self.server.stop_server()
 

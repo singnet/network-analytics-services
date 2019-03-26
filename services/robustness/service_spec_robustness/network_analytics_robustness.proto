@@ -62,6 +62,7 @@ message MostImportantNodesEdgesSubsetRequest {
     int32 Type=4; 
     bool normalized = 5;
     bool directed = 6;
+    bool weight = 7;
 
 }
 

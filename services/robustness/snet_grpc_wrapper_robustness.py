@@ -106,14 +106,21 @@ class NetworkAnalyticsRobustness(network_analytics_robustness_pb2_grpc.NetworkAn
 
             for edges_proto in graph.edges:
                 edges_list.append(list(edges_proto.edge))
-            
-        
-            graph_in ={"nodes":list(graph.nodes),"edges":edges_list}
+
+            weights_list = list(graph.weights)
+
+            nodes_list = list(graph.nodes)
+
+            if len(weights_list) > 0:
+                graph_in = {"nodes": nodes_list, "edges": edges_list, "weights": weights_list}
+            else:
+                graph_in = {"nodes": nodes_list, "edges": edges_list}
+
             source_nodes_in = list(source_nodes)
             target_nodes_in = list(target_nodes)
 
 
-            ret = g.most_important_nodes_edges_subset(graph_in, source_nodes_in, target_nodes_in, T, request.normalized, request.directed)
+            ret = g.most_important_nodes_edges_subset(graph_in, source_nodes_in, target_nodes_in, T, request.normalized, request.directed, request.weight)
             
             resp = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=ret[0],message=ret[1])
 

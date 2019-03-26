@@ -53,9 +53,15 @@ class Robustness:
 
         return [True, 'success', output]
 
-    def most_important_nodes_edges_subset(self, graph, source_nodes, target_nodes, T=0, normalized=False, directed=False):
+    def most_important_nodes_edges_subset(self, graph, source_nodes, target_nodes, T=0, normalized=False, directed=False, weight=False):
 
         cv=check_graph_validity.Graphs()
+
+        weight = None if weight == False else 'weights'
+
+        if 'weights' not in graph and weight:
+            return [False, 'weight parameter specified but weights are not given in input graph']
+
         ret = cv.is_valid_most_important_graph(graph, source_nodes, target_nodes,T)
         if(not ret[0]):
             ret.append({})
@@ -84,7 +90,7 @@ class Robustness:
 
         if (T == 0):
             
-            result=nx.betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
+            result=nx.betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight=weight)
             #remove nodes that are either in source_node or in target_node
             # for key,val in result.items():
             #     if (not(key in source_nodes or key in target_nodes)):
@@ -93,7 +99,7 @@ class Robustness:
 
             
         elif (T == 1):
-            result =nx.edge_betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight='weights')
+            result =nx.edge_betweenness_centrality_subset(G, source_nodes, target_nodes, normalized, weight=weight)
             # for key,val in result.items():
             #      #remove nodes that are either in source_node or in target_node
             #     if(not(key[0] in source_nodes or key[0] in target_nodes or key[1] in source_nodes or key[1] in target_nodes)):

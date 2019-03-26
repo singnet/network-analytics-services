@@ -270,6 +270,48 @@ class TestSnetWrapperRobustness(unittest.TestCase):
         self.assertEqual(response,expected)
 
 
+        #
+
+        channel = grpc.insecure_channel('localhost:5000')
+        stub = network_analytics_robustness_pb2_grpc.NetworkAnalyticsRobustnessStub(channel)
+
+        graph = {
+            "nodes": ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+            "edges": [['1', '2'], ['1', '4'], ['2', '3'], ['2', '5'], ['3', '4'], ['3', '6'], ['2', '7'], ['3', '8'], ['7', '9'], ['5', '9'], ['9', '10'], ['10', '6']],
+            "weights": [1,2,3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+        }
+
+        source_nodes = ['5', '7']
+        target_nodes = ['6']
+
+
+        edges_req = []
+        for e in graph["edges"]:
+            edges_req.append(network_analytics_robustness_pb2.Edge(edge=e))
+
+        if('weights' in graph):
+            graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req, weights=graph['weights'])
+        else:
+            graph_in = network_analytics_robustness_pb2.Graph(nodes=graph["nodes"],edges=edges_req)
+
+
+        graph_1 = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetRequest(graph=graph_in,source_nodes=source_nodes,target_nodes=target_nodes,Type=1,directed=True,weight=True)
+
+        response = stub.MostImportantNodesEdgesSubset(graph_1)
+        print(response.status)
+        print(response.message)
+        print(response.node_betweenness_centrality)
+        print(response.edge_betweenness_centrality)
+        expected = None
+        edges_resp = []
+        for edge_ret in [('9', '10'), ('10', '6')]:
+            edges_resp.append(network_analytics_robustness_pb2.Edge(edge=list(edge_ret)))
+        graph_resp = network_analytics_robustness_pb2.edge_betweenness(edge=edges_resp, edge_centrality_value=2.0)
+        expected = network_analytics_robustness_pb2.MostImportantNodesEdgesSubsetResponse(status=True, message='success',edge_betweenness_centrality=graph_resp)
+        self.assertEqual(response,expected)
+
+
 __end__ = '__end__'
 
 if __name__ == '__main__':
