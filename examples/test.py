@@ -204,6 +204,11 @@ def graph_center():
 
 
 
+def fun(x=4):
+
+    print(x)
+
+
 
 
 
@@ -215,7 +220,8 @@ __end__ = '__end__'
 
 if __name__ == '__main__':
 
-    graph_center()
+    fun(9)
+    # graph_center()
     # bet_subset()
     # graph_2()
     # graph_1()
