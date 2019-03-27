@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "display_name": "network-analytics-bipartite",
+    "encoding": "proto",
+    "service_type": "grpc",
+    "payment_expiration_threshold": 40320,
+    "model_ipfs_hash": "QmUhFjt3ANwNySdCZen5hZKR7M7VLCDTzTizxiDJUbJuTD",
+    "mpe_address": "0x7E6366Fbe3bdfCE3C906667911FC5237Cc96BD08",
+    "pricing": {
+        "price_model": "fixed_price",
+        "price_in_cogs": 1
+    },
+    "groups": [
+        {
+            "group_name": "default_group",
+            "group_id": "xdCOZbsz/OIx59xbrQGvFioMPOUm9UzC/KbKX+EPjXw=",
+            "payment_address": "0x32Cb8b6a2E3A8cB319dBBbECb354F23197746704"
+        }
+    ],
+    "endpoints": [
+        {
+            "group_name": "default_group",
+            "endpoint": "https://tz-services-1.snet.sh:2232"
+        }
+    ],
+    "service_description": {
+        "url": "https://github.com/singnet/network-analytics-services",
+        "description": "Network analytics services for bipartite graphs"
+    }
+}
