@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "display_name": "network-analytics-node-importance",
+    "encoding": "proto",
+    "service_type": "grpc",
+    "payment_expiration_threshold": 40320,
+    "model_ipfs_hash": "QmaEsn4xMEU5wn3uYyumSVQq4k24cUUYmdqQjm2MKYPdjj",
+    "mpe_address": "0x39f31Ac7B393fE2C6660b95b878FEB16eA8f3156",
+    "pricing": {
+        "price_model": "fixed_price",
+        "price_in_cogs": 1
+    },
+    "groups": [
+        {
+            "group_name": "default_group",
+            "group_id": "MuuNUf708hIkvQEzlONPpzW1d1bI4MOBRkZ5EgqUMaY=",
+            "payment_address": "0x32Cb8b6a2E3A8cB319dBBbECb354F23197746704"
+        }
+    ],
+    "endpoints": [
+        {
+            "group_name": "default_group",
+            "endpoint": "https://tz-services-1.snet.sh:2224"
+        }
+    ]
+}
