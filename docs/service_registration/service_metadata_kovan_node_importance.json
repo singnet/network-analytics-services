@@ -22,5 +22,9 @@
             "group_name": "default_group",
             "endpoint": "https://tz-services-1.snet.sh:2224"
         }
-    ]
+    ],
+    "service_description": {
+        "description": "Network analytics services covering node importance",
+        "url": "https://github.com/singnet/network-analytics-services"
+    }
 }
