@@ -1,0 +1,32 @@
+{
+   "DAEMON_END_POINT": "0.0.0.0:2223",
+   "ETHEREUM_JSON_RPC_ENDPOINT": "https://kovan.infura.io",
+   "IPFS_END_POINT": "http://ipfs.singularitynet.io:80",
+   "REGISTRY_ADDRESS_KEY": "0xe331bf20044a5b24c1a744abc90c1fd711d2c08d",
+   "PASSTHROUGH_ENABLED": true,
+   "PASSTHROUGH_ENDPOINT": "http://127.0.0.1:5002",
+   "ORGANIZATION_ID": "snet",
+   "SERVICE_ID": "network-analytics-robustness",
+   "ssl_cert": "/etc/letsencrypt/live/tz-services-1.snet.sh/fullchain.pem",
+   "ssl_key": "/etc/letsencrypt/live/tz-services-1.snet.sh/privkey.pem",
+   "PAYMENT_CHANNEL_STORAGE_SERVER": {
+       "id":"st1",
+       "host" : "127.0.0.1",
+       "client_port": 2381,
+       "peer_port": 2382,
+       "enabled": true,
+       "cluster": "st1=http://127.0.0.1:2382",
+       "DATA_DIR": "/home/netk/pay/robustness_kovan/"
+   },
+   "payment_channel_storage_client": {
+            "connection_timeout": "5s",
+            "request_timeout": "3s",
+            "endpoints": ["http://127.0.0.1:2381"]
+   },
+   "LOG": {
+       "LEVEL": "debug",
+       "OUTPUT": {
+              "TYPE": "stdout"
+           }
+   }
+}

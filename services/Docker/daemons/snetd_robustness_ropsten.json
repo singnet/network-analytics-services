@@ -1,0 +1,33 @@
+{
+   "DAEMON_END_POINT": "0.0.0.0:2233",
+   "ETHEREUM_JSON_RPC_ENDPOINT": "https://ropsten.infura.io",
+   "IPFS_END_POINT": "http://ipfs.singularitynet.io:80",
+   "REGISTRY_ADDRESS_KEY": "0x5156fde2ca71da4398f8c76763c41bc9633875e4",
+   "PASSTHROUGH_ENABLED": true,
+   "PASSTHROUGH_ENDPOINT": "http://127.0.0.1:5002",
+   "ORGANIZATION_ID": "snet",
+   "SERVICE_ID": "network-analytics-robustness",
+   "ssl_cert": "/etc/letsencrypt/live/tz-services-1.snet.sh/fullchain.pem",
+   "ssl_key": "/etc/letsencrypt/live/tz-services-1.snet.sh/privkey.pem",
+   "PAYMENT_CHANNEL_STORAGE_SERVER": {
+       "id":"st11",
+       "host" : "127.0.0.1",
+       "client_port": 2387,
+       "peer_port": 2388,
+       "enabled": true,
+       "cluster": "st11=http://127.0.0.1:2388",
+       "DATA_DIR": "/home/netk/pay/robustness_ropsten/"
+   },
+   "payment_channel_storage_client": {
+            "connection_timeout": "5s",
+            "request_timeout": "3s",
+            "endpoints": ["http://127.0.0.1:2387"]
+   },
+   "LOG": {
+       "LEVEL": "debug",
+       "OUTPUT": {
+              "TYPE": "stdout"
+           }
+   }
+}
+
