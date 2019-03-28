@@ -431,6 +431,4 @@ class TestNodeImportance(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    suite = unittest.TestSuite()
-
     unittest.main()

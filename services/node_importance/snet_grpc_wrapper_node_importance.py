@@ -9,6 +9,8 @@ from service_spec_node_importance import node_importance_pb2_grpc
 from node_importance import NodeImportance
 
 
+SLEEP_TIME = 86400 # One day
+
 class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
     def CentralNodes(self, request, context):
         ni = NodeImportance()
@@ -32,7 +34,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             else:
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, temp_response[1])
 
@@ -42,7 +44,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             logging.exception("message")
 
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -69,7 +71,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             else:
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, temp_response[1])
 
@@ -79,7 +81,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             logging.exception("message")
 
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -122,14 +124,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:',resp.status)
             print('message:',resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -139,7 +141,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             logging.exception("message")
 
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -172,14 +174,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:', resp.status)
             print('message:', resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -192,7 +194,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -236,14 +238,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:', resp.status)
             print('message:', resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -254,7 +256,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -315,14 +317,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:', resp.status)
             print('message:', resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -334,7 +336,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -381,14 +383,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             else:
 
                 print(time.strftime("%c"))
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
             print('status:', resp.status)
             print('message:', resp.message)
             print(time.strftime("%c"))
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -399,7 +401,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
@@ -445,7 +447,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
                 print(time.strftime("%c"))
 
-                print('Waiting for next call on port 5002.')
+                print('Waiting for next call on port 5001.')
 
                 raise grpc.RpcError(grpc.StatusCode.UNKNOWN, ret[1])
 
@@ -455,7 +457,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             return resp
 
@@ -465,22 +467,49 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             print(time.strftime("%c"))
 
-            print('Waiting for next call on port 5002.')
+            print('Waiting for next call on port 5001.')
 
             raise grpc.RpcError(grpc.StatusCode.UNKNOWN, str(e))
 
 
 class Server():
     def __init__(self):
-        self.port = '[::]:5002'
+        self.port = '[::]:5001'
         self.server = None
 
     def start_server(self):
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
-        print('Starting server. Listening on port 5002.')
+        print('Starting server. Listening on port 5001.')
         self.server.add_insecure_port(self.port)
         self.server.start()
 
     def stop_server(self):
         self.server.stop(0)
+
+
+def serve(self):
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
+    print('Starting server. Listening on port 5001.')
+    self.server.add_insecure_port(self.port)
+    self.server.start()
+
+    try:
+        while True:
+            time.sleep(SLEEP_TIME)
+    except KeyboardInterrupt:
+        server.stop(0)
+
+
+
+__end__ = '__end__'
+
+
+
+if __name__ == '__main__':
+
+
+    serve()
+
+    pass
