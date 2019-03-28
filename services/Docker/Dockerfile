@@ -53,14 +53,18 @@ RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/ \
     /home/netk/pay/bipartite_kovan/ \
     /home/netk/pay/robustness_kovan/ \
+    /home/netk/pay/node_importance_kovan/ \
     /home/netk/pay/bipartite_ropsten/ \
     /home/netk/pay/robustness_ropsten/ \
+    /home/netk/pay/node_importance_ropsten/ \
     /home/netk/pay/bipartite_mainnet/ \
     /home/netk/pay/robustness_mainnet/ \
     /home/netk/daemons/bipartite_kovan/ \
     /home/netk/daemons/robustness_kovan/ \
+    /home/netk/daemons/node_importance_kovan/ \
     /home/netk/daemons/bipartite_ropsten/ \
     /home/netk/daemons/robustness_ropsten/ \
+    /home/netk/daemons/node_importance_ropsten/ \
     /home/netk/daemons/bipartite_mainnet/ \
     /home/netk/daemons/robustness_mainnet/ \
     /home/netk/dep
@@ -71,16 +75,20 @@ RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/d
     tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
     cp snetd /home/netk/daemons/bipartite_kovan/ && \
     cp snetd /home/netk/daemons/robustness_kovan/ && \
+    cp snetd /home/netk/daemons/node_importance_kovan/ && \
     cp snetd /home/netk/daemons/bipartite_ropsten/ && \
     cp snetd /home/netk/daemons/robustness_ropsten/ && \
+    cp snetd /home/netk/daemons/node_importance_ropsten/ && \
     cp snetd /home/netk/daemons/bipartite_mainnet/ && \
     cp snetd /home/netk/daemons/robustness_mainnet/
 
 
 COPY daemons/snetd_bipartite_kovan.json /home/netk/daemons/bipartite_kovan/
 COPY daemons/snetd_robustness_kovan.json /home/netk/daemons/robustness_kovan/
+COPY daemons/snetd_node_importance_kovan.json /home/netk/daemons/node_importance_kovan/
 COPY daemons/snetd_bipartite_ropsten.json /home/netk/daemons/bipartite_ropsten/
 COPY daemons/snetd_robustness_ropsten.json /home/netk/daemons/robustness_ropsten/
+COPY daemons/snetd_node_importance_ropsten.json /home/netk/daemons/node_importance_ropsten/
 COPY daemons/snetd_bipartite_mainnet.json /home/netk/daemons/bipartite_mainnet/
 COPY daemons/snetd_robustness_mainnet.json /home/netk/daemons/robustness_mainnet/
 COPY supervisor/bipartite_grpc.conf /etc/supervisor/conf.d/
@@ -91,6 +99,11 @@ COPY supervisor/robustness_grpc.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_ropstend.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_mainnetd.conf /etc/supervisor/conf.d/
+COPY supervisor/node_importance_grpc.conf /etc/supervisor/conf.d/
+COPY supervisor/node_importance_kovand.conf /etc/supervisor/conf.d/
+COPY supervisor/node_importance_ropsten.conf /etc/supervisor/conf.d/
+
+
 COPY supervisor/supervisord.conf /etc/supervisor/
 
 

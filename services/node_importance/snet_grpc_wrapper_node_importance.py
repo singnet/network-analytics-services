@@ -3,15 +3,15 @@ from concurrent import futures
 import time
 import logging
 
-from service_spec_node_importance import node_importance_pb2
-from service_spec_node_importance import node_importance_pb2_grpc
+from service_spec_node_importance import network_analytics_node_importance_pb2
+from service_spec_node_importance import network_analytics_node_importance_pb2_grpc
 
 from node_importance import NodeImportance
 
 
 SLEEP_TIME = 86400 # One day
 
-class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
+class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImportanceServicer):
     def CentralNodes(self, request, context):
         ni = NodeImportance()
         graph = request.graph
@@ -29,7 +29,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             if temp_response[0]:
 
 
-                response = node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1], output=temp_response[2])
+                response = network_analytics_node_importance_pb2.CentralNodeResponse(status=temp_response[0], message=temp_response[1], output=temp_response[2])
                 return response
 
             else:
@@ -65,7 +65,7 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             if temp_response[0]:
 
-                response = node_importance_pb2.PeripheryResponse(status=temp_response[0], message=temp_response[1],
+                response = network_analytics_node_importance_pb2.PeripheryResponse(status=temp_response[0], message=temp_response[1],
                                                                    output=temp_response[2])
                 return response
 
@@ -111,15 +111,15 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
 
             ret = ni.find_closeness_centrality(graph_in, distance = distance, wf_improved = wf_improved, reverse = reverse, directed = directed)
 
-            resp = node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1])
+            resp = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1])
 
 
             if resp.status:
                 dict_resp = []
                 for node_ele,val_ele in (ret[2]["closeness_centrality"]).items():
-                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
 
-                resp = node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
+                resp = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
 
             else:
 
@@ -166,9 +166,9 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             if ret[0]:
                 dict_resp = []
                 for node_ele, val_ele in (ret[2]["degree_centrality"]).items():
-                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
 
-                resp = node_importance_pb2.DegreeCentralityResponse(status=ret[0], message=ret[1],
+                resp = network_analytics_node_importance_pb2.DegreeCentralityResponse(status=ret[0], message=ret[1],
                                                                          output=dict_resp)
 
             else:
@@ -226,14 +226,14 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 dict_resp = []
                 if ret[2]['type'] == 'node':
                     for node_ele, val_ele in (ret[2]["betweenness_centrality"]).items():
-                        dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                        dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
                 else:
                     for edge_ele, val_ele in (ret[2]["betweenness_centrality"]).items():
-                        edges_resp = node_importance_pb2.Edge(edge=list(edge_ele))
-                        dict_resp.append(node_importance_pb2.DictOutput(edge=edges_resp, output=val_ele))
+                        edges_resp = network_analytics_node_importance_pb2.Edge(edge=list(edge_ele))
+                        dict_resp.append(network_analytics_node_importance_pb2.DictOutput(edge=edges_resp, output=val_ele))
 
 
-                resp = node_importance_pb2.BetweennessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
+                resp = network_analytics_node_importance_pb2.BetweennessCentralityResponse(status=ret[0], message=ret[1], output=dict_resp)
 
             else:
 
@@ -309,9 +309,9 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             if ret[0]:
                 dict_resp = []
                 for node_ele, val_ele in (ret[2]["pagerank"]).items():
-                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
 
-                resp = node_importance_pb2.PageRankResponse(status=ret[0], message=ret[1],
+                resp = network_analytics_node_importance_pb2.PageRankResponse(status=ret[0], message=ret[1],
                                                                     output=dict_resp)
 
             else:
@@ -375,9 +375,9 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
             if ret[0]:
                 dict_resp = []
                 for node_ele, val_ele in (ret[2]["eigenvector_centrality"]).items():
-                    dict_resp.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
 
-                resp = node_importance_pb2.EigenvectorCentralityResponse(status=ret[0], message=ret[1],
+                resp = network_analytics_node_importance_pb2.EigenvectorCentralityResponse(status=ret[0], message=ret[1],
                                                             output=dict_resp)
 
             else:
@@ -436,11 +436,11 @@ class NodeImportanceServicer(node_importance_pb2_grpc.NodeImportanceServicer):
                 dict_resp_authorities = []
 
                 for node_ele, val_ele in (ret[2]["hubs"]).items():
-                    dict_resp_hubs.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp_hubs.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
                 for node_ele, val_ele in (ret[2]["authorities"]).items():
-                    dict_resp_authorities.append(node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
+                    dict_resp_authorities.append(network_analytics_node_importance_pb2.DictOutput(node=node_ele, output=val_ele))
 
-                resp = node_importance_pb2.HitsResponse(status=ret[0], message=ret[1], hubs=dict_resp_hubs, authorities=dict_resp_authorities)
+                resp = network_analytics_node_importance_pb2.HitsResponse(status=ret[0], message=ret[1], hubs=dict_resp_hubs, authorities=dict_resp_authorities)
 
 
             else:
@@ -479,7 +479,7 @@ class Server():
 
     def start_server(self):
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
+        network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
         print('Starting server. Listening on port 5001.')
         self.server.add_insecure_port(self.port)
         self.server.start()
@@ -490,7 +490,7 @@ class Server():
 
 def serve(self):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
+    network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
     print('Starting server. Listening on port 5001.')
     self.server.add_insecure_port(self.port)
     self.server.start()
