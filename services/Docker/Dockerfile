@@ -125,6 +125,7 @@ WORKDIR /home/netk/dep
 #
 #RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
 #RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
+#RUN cd network-analytics-services/services/node_importance && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
 #
 #WORKDIR /home/netk/network-analytics-services/services
 
