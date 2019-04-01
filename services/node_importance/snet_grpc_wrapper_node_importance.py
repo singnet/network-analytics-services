@@ -490,7 +490,7 @@ class Server():
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
+    network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), server)
     print('Starting server. Listening on port 5001.')
     server.add_insecure_port('127.0.0.1:5001')
     server.start()
