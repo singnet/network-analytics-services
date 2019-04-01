@@ -44,6 +44,11 @@ jobs:
             python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
             python3 test_robustness.py
             python3 test_snet_grpc_wrapper_robustness.py
+            echo 'unit tests for node importance'
+            cd ../node_importance
+            python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
+            python3 test_node_importance.py
+            python3 test_snet_grpc_wrapper_node_importance.py
 
 
   deploy:

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "display_name": "network-analytics-nodeImportance",
+    "encoding": "proto",
+    "service_type": "grpc",
+    "payment_expiration_threshold": 40320,
+    "model_ipfs_hash": "QmaEsn4xMEU5wn3uYyumSVQq4k24cUUYmdqQjm2MKYPdjj",
+    "mpe_address": "0x7E6366Fbe3bdfCE3C906667911FC5237Cc96BD08",
+    "pricing": {
+        "price_model": "fixed_price",
+        "price_in_cogs": 1
+    },
+    "groups": [
+        {
+            "group_name": "default_group",
+            "group_id": "mWm/QakmEdSYOwKxc9jNdK8WphEA3Val00bQBUwtswI=",
+            "payment_address": "0x32Cb8b6a2E3A8cB319dBBbECb354F23197746704"
+        }
+    ],
+    "endpoints": [
+        {
+            "group_name": "default_group",
+            "endpoint": "https://tz-services-1.snet.sh:2234"
+        }
+    ],
+    "service_description": {
+        "description": "Network analytics services covering node importance",
+        "url": "https://github.com/singnet/network-analytics-services"
+    }
+}

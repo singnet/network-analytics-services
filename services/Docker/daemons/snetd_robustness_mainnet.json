@@ -1,0 +1,33 @@
+{
+   "DAEMON_END_POINT": "0.0.0.0:2243",
+   "ETHEREUM_JSON_RPC_ENDPOINT": "https://mainnet.infura.io",
+   "IPFS_END_POINT": "http://ipfs.singularitynet.io:80",
+   "REGISTRY_ADDRESS_KEY": "0xb3180a92e210b45e3447976a412ac0df859febaf",
+   "PASSTHROUGH_ENABLED": true,
+   "PASSTHROUGH_ENDPOINT": "http://127.0.0.1:5002",
+   "ORGANIZATION_ID": "snet",
+   "SERVICE_ID": "network-analytics-robustness",
+   "ssl_cert": "/etc/letsencrypt/live/tz-services-1.snet.sh/fullchain.pem",
+   "ssl_key": "/etc/letsencrypt/live/tz-services-1.snet.sh/privkey.pem",
+   "PAYMENT_CHANNEL_STORAGE_SERVER": {
+       "id":"st21",
+       "host" : "127.0.0.1",
+       "client_port": 2357,
+       "peer_port": 2358,
+       "enabled": true,
+       "cluster": "st21=http://127.0.0.1:2358",
+       "DATA_DIR": "/home/netk/pay/robustness_mainnet/"
+   },
+   "payment_channel_storage_client": {
+            "connection_timeout": "5s",
+            "request_timeout": "3s",
+            "endpoints": ["http://127.0.0.1:2357"]
+   },
+   "LOG": {
+       "LEVEL": "debug",
+       "OUTPUT": {
+              "TYPE": "stdout"
+           }
+   }
+}
+
