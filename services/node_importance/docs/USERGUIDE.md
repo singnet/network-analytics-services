@@ -1,197 +1,235 @@
 [![SingnetLogo](../../../docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')](https://singularitynet.io/)
 
-# Network Analytics Services
-## Node Importance
+# Node Importance Services
 
 
-### Welcome
+## Methods
 
-This repository contains various network analytics services for SingularityNET. The services are wrapped using gRPC. To work with the service wrapper code "snet_grpc_wrapper.py" and other code that make use of gRPC functionality, run the following in the "services" directory
+The corresponding methods from the networkx library are wrapped and put as a service. Some of the parameter descriptions
+are credited to NetworkX Developers.
 
-
-### How Does It Work
-This service have The following functionalities
-       
-       - find_central_nodes
-       - find_eccentricity
-       - find_Periphery
-       - find_closeness_centrality
-       - find_betweenness_centrality
-       - find_pagerank
-       - find_eigenvector_centrality
-       - find_Hits
+* [center nodes](#centernodes)
+* [peripheral nodes](#peripheralnodes)
+* [degree centrality](#degreecentrality)
+* [closeness centrality](#closenesscentrality)
+* [betweeness centrality](#betweenesscentrality)
+* [eigenvector centrality](#eigenvectorcentrality)
+* [pagerank](#pagerank)
+* [hits](#hits)
 
 
-The user must provide a request satisfying the [proto descriptions](https://github.com/IsraelAbebe/network-analytics-services/blob/master/services/node_importance/service_spec/node_importance.proto) given.
+## CentralNodes
 
-#### Example input 
-The following Graph is used as an input for the following examples
-```bash
-graph = {
-	"nodes": ['1','2','3','4','5','6','7','8'],
-	"edges": [['1','2'],['1','4'],['2','3'],['2','5'],['3','4'],['3','6'],['2','7'],['3','8']],
-	"weights": [3,4,5,6,7,8,9,10]
+Identify the central nodes from the given input graph
+
+### Inputs
+
+* A graph (required)
+* usebounds (optional,default value is False): When this option is used, the [extrema_bounding](https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.distance_measures.extrema_bounding.html#networkx.algorithms.distance_measures.extrema_bounding) method is used for calculating central nodes.
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance CentralNodes centralnodes.json -y
+```
+
+where the content of the file `centralnodes.json` is
+
+```
+{
+ "graph": {
+        "nodes": ["1","2","3","4","5","6"],
+        "edges": [{"edge": ["1","2"]},{"edge": ["1","4"]},{"edge": ["2","3"]},{"edge": ["2","5"]},{"edge": ["3","4"]},{"edge": ["3","6"]},{"edge": ["4","6"]}]
 }
 ```
 
-### Sample  Outputs
-#### Find Central Nodes [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.distance_measures.center.html?highlight=algorithms%20distance_measures%20center#networkx.algorithms.distance_measures.center)
-An example result obtained after passing the Input
-```bash
+#### Sample output
+
+```
+status: true
+message: "success"
+output: "2"
+output: "3"
+```
+
+## Periphery
+
+Identify the peripheral/remote nodes from the given input graph
+
+### Inputs
+
+* A graph (required)
+* usebounds (optional,default value is False): When this option is used, the [extrema_bounding](https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.distance_measures.extrema_bounding.html#networkx.algorithms.distance_measures.extrema_bounding) method is used for calculating peripheral nodes.
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance Periphery periphery.json -y
+```
+
+where the content of the file `periphery.json` is
+
+```
+{
+ "graph": {
+        "nodes": ["1","2","3","4","5","6"],
+        "edges": [{"edge": ["1","2"]},{"edge": ["1","4"]},{"edge": ["2","3"]},{"edge": ["2","5"]},{"edge": ["3","4"]},{"edge": ["3","6"]},{"edge": ["4","6"]}]
+}
+```
+
+#### Sample output
+
+```
+status: true
+message: "success"
+output: "1"
+output: "4"
+output: "5"
+output: "6"
+output: "7"
+output: "8"
+```
+
+## DegreeCentrality
+
+Find the degree centrality of nodes.
+
+### Inputs
+
+* A graph (required)
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance DegreeCentrality degreecentrality.json -y
+```
+
+where the content of the file `degreecentrality.json` is
+
+```
+{
+ "graph": {
+        "nodes": ["1","2","3","4","5","6"],
+        "edges": [{"edge": ["1","2"]},{"edge": ["1","4"]},{"edge": ["2","3"]},{"edge": ["2","5"]},{"edge": ["3","4"]},{"edge": ["3","6"]},{"edge": ["4","6"]}]
+}
+```
+
+#### Sample output
+
+```
 status: true
 message: "success"
 output {
-  output_nodes: "2"
-  output_nodes: "3"
+  node: "1"
+  output: 0.2857142857142857
+}
+output {
+  node: "2"
+  output: 0.5714285714285714
+}
+output {
+  node: "3"
+  output: 0.5714285714285714
+}
+output {
+  node: "4"
+  output: 0.2857142857142857
+}
+output {
+  node: "5"
+  output: 0.14285714285714285
+}
+output {
+  node: "6"
+  output: 0.14285714285714285
+}
+output {
+  node: "7"
+  output: 0.14285714285714285
+}
+output {
+  node: "8"
+  output: 0.14285714285714285
 }
 ```
 
-#### Find Periphery [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.distance_measures.periphery.html#networkx.algorithms.distance_measures.periphery)
-An example result obtained after passing the Input
-```bash
+## BetweennessCentrality
+
+Find the BetweennessCentrality of nodes.
+
+### Inputs
+
+* A graph (required)
+* type (Required. Possible values are 'node' and 'edge'): Indicates to calculate node or edge betweeness centrality
+* k (optional. Default value is zero meaning that the parameter is not used)
+* normalized (Optional. Default is True): If k is not zero use k node samples to estimate betweenness. The value of k <= n where n is the number of nodes in the graph. Higher values give better approximation.
+* weight (Optional. Default is False): If True, then the weights in the given graph are used
+* endpoints (Optional. Default is False): If True include the endpoints in the shortest path counts.
+* seed (Optional. Default is zero meaning that the parameter is not used): – Indicator of random number generation state. This is only used if k is not None.
+* directed (Optional. Default is False). If True the graph is treated as a directed graph where the first specified node in an edge is the source node.
+
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance BetweennessCentrality betweennesscentrality.json -y
+```
+
+where the content of the file `betweennesscentrality.json` is
+
+```
+{
+    "graph":
+           {
+            "nodes": ["1", "2", "3", "4", "5", "6", "7", "8"],
+            "edges": [{"edge": ["1", "2"]}, {"edge": ["1", "4"]}, {"edge": ["2", "3"]}, {"edge": ["2", "5"]}, {"edge": ["3", "4"]}, {"edge": ["3", "6"]}, {"edge": ["2", "7"]}, {"edge": ["3", "8"]}]
+        },
+    "type":"node"
+
+}
+```
+
+#### Sample output
+
+```
 status: true
 message: "success"
 output {
-  output_nodes: "1"
-  output_nodes: "4"
-  output_nodes: "5"
-  output_nodes: "6"
-  output_nodes: "7"
-  output_nodes: "8"
+  node: "1"
+  output: 1.5
 }
-```
- 
-#### Find Degree Centrality [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/centrality.html)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
 output {
-  edge: "1"
-  edge: "2"
-  edge: "3"
-  edge: "4"
-  edge: "5"
-  edge: "6"
-  edge: "7"
-  edge: "8"
-  output: 0.2857142984867096
-  output: 0.4285714328289032
-  output: 0.4285714328289032
-  output: 0.0
-  output: 0.0
-  output: 0.0
-  output: 0.0
-  output: 0.0
+  node: "2"
+  output: 12.5
 }
-```
-
-#### Find Closeness Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.bipartite.centrality.closeness_centrality.html?highlight=algorithms%20bipartite%20centrality%20closeness_centrality#networkx.algorithms.bipartite.centrality.closeness_centrality)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
 output {
-  edge: "1"
-  edge: "2"
-  edge: "8"
-  edge: "4"
-  edge: "5"
-  edge: "7"
-  edge: "3"
-  edge: "6"
-  output: 0.5714285969734192
-  output: 0.800000011920929
-  output: 0.75
-  output: 0.8571428656578064
-  output: 0.75
-  output: 0.75
-  output: 1.2000000476837158
-  output: 0.75
+  node: "3"
+  output: 12.5
 }
-```
-
-#### Find Betweenness Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.bipartite.centrality.betweenness_centrality.html?highlight=algorithms%20centrality%20betweenness_centrality#networkx.algorithms.bipartite.centrality.betweenness_centrality)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
 output {
-  edge: "1"
-  edge: "2"
-  edge: "3"
-  edge: "4"
-  edge: "5"
-  edge: "6"
-  edge: "7"
-  edge: "8"
-  output: 0.0714285746216774
-  output: 0.5952380895614624
-  output: 0.5952380895614624
-  output: 0.0714285746216774
-  output: 0.0
-  output: 0.0
-  output: 0.0
-  output: 0.0
+  node: "4"
+  output: 1.5
 }
-
-```
-
-#### Find Page Rank [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html#networkx.algorithms.link_analysis.pagerank_alg.pagerank)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
 output {
-  edge: "1"
-  edge: "2"
-  edge: "3"
-  edge: "4"
-  edge: "5"
-  edge: "6"
-  edge: "7"
-  edge: "8"
-  output: 0.07655997574329376
-  output: 0.21930024027824402
-  output: 0.264370322227478
-  output: 0.10837001353502274
-  output: 0.06737788021564484
-  output: 0.0786743313074112
-  output: 0.09169182181358337
-  output: 0.09365541487932205
+  node: "5"
 }
-```
-
-#### Find Eigen Vector Centrality [networkx](https://networkx.github.io/documentation/latest/reference/algorithms/generated/networkx.algorithms.centrality.eigenvector_centrality.html?highlight=algorithms%20centrality%20eigenvector_centrality#networkx.algorithms.centrality.eigenvector_centrality)
-An example result obtained after passing the Input
-```bash
-status: true
-message: "success"
 output {
-  edge: "1"
-  edge: "2"
-  edge: "3"
-  edge: "4"
-  edge: "5"
-  edge: "6"
-  edge: "7"
-  edge: "8"
-  output: 0.35775017738342285
-  output: 0.5298994183540344
-  output: 0.5298994183540344
-  output: 0.35775017738342285
-  output: 0.2135666161775589
-  output: 0.2135666161775589
-  output: 0.2135666161775589
-  output: 0.2135666161775589
+  node: "6"
+}
+output {
+  node: "7"
+}
+output {
+  node: "8"
 }
 ```
-
-#### Find Hits [networkx](https://networkx.github.io/documentation/stable/reference/algorithms/link_analysis.html)
-An example result obtained after passing the Input
-```bash
-{'hub_matrix': [[25.0, 0.0, 43.0, 0.0, 18.0, 0.0, 27.0, 0.0], [0.0, 151.0, 0.0, 47.0, 0.0, 40.0, 0.0, 50.0], [43.0, 0.0, 238.0, 0.0, 30.0, 0.0, 45.0, 0.0], [0.0, 47.0, 0.0, 65.0, 0.0, 56.0, 0.0, 70.0], [18.0, 0.0, 30.0, 0.0, 36.0, 0.0, 54.0, 0.0], [0.0, 40.0, 0.0, 56.0, 0.0, 64.0, 0.0, 80.0], [27.0, 0.0, 45.0, 0.0, 54.0, 0.0, 81.0, 0.0], [0.0, 50.0, 0.0, 70.0, 0.0, 80.0, 0.0, 100.0]]}
-```
-
 
 
