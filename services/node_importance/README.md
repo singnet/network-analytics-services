@@ -1,32 +1,56 @@
-# Network Analytics Services
-## Node Importance
+[![SingnetLogo](docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')](https://singularitynet.io/)
+
+[![CircleCI](https://circleci.com/gh/singnet/network-analytics-services.svg?style=svg)](https://circleci.com/gh/singnet/network-analytics-services)
+
+Given an input graph, the list of available servcies include:
 
 
-### Welcome
-This repository contains various network analytics services for SingularityNET. The services are wrapped using gRPC. To work with the service wrapper code "snet_grpc_wrapper.py" and other code that make use of gRPC functionality, run the following in the "services" directory
+* Finding set of nodes with the lowest eccentricity (center nodes)
+* Finding set of nodes with the highest eccentricity (Peripheral/remote nodes)
+* Finding the degree centrality of nodes
+* Finding the closeness centrality of nodes
+* Finding the betweeness centrality of nodes
+* Finding the eigenvector centrality of nodes
+* Finding the pagerank of nodes
+* Finding the authorities and hubs of nodes using the hits algorithm
 
-### Install prerequisites
-#### Using pip
+## User Guide
+
+Please look at the [user guide](docs/USERGUIDE.md) for a detailed spec of the services and how to use the services.
+
+## Running the service locally
+
+### Install preprequisites
+
 ```
 pip install -r requirements.txt
 ```
 
 
 ### Setup
-- run the following command to generate gRPC classes for Python in node_importance folder
-```bash
-$ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service_spec/node_importance.proto
+
+Run the following commands to generate gRPC classes for Python
+
+```
+cd robustness
+python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
 ```
 
+### Running unit tests
 
-## Usage
-To run the server
-```bash
-# on project directory this will start the server 
-$ python  start_service.py
+For testing the core functionalities
+```
+python3.6 test_node_importance.py
 ```
 
+For testing the gRPC wrapper code
+```
+python3.6 test_snet_grpc_wrapper_node_importance.py
+```
 
+### Usage
 
-## Authors
-- [Israel Abebe](https://github.com/IsraelAbebe) - [SingularityNet.io](https://singularitynet.io/)
+To start the gRPC server locally
+
+```
+python3.6 snet_grpc_wrapper_node_importance.py

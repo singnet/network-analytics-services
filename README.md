@@ -8,6 +8,7 @@ This repository contains various network analytics services for SingularityNET. 
 
 * [Bipartite graphs services](services/bipartite/README.md)
 * [Network robustness services](services/robustness/README.md)
+* [Node importance services](services/node_importance/README.md)
 
 Other services would be added and each service would be expanded with additional functionalities in due course.
 

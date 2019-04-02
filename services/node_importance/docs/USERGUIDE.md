@@ -1,3 +1,4 @@
+[![SingnetLogo](../../../docs/assets/singnet-logo.jpg?raw=true 'SingularityNET')](https://singularitynet.io/)
 
 # Network Analytics Services
 ## Node Importance
