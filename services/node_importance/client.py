@@ -86,14 +86,9 @@ class ClientTest():
             return [False, str(e), {}]
 
 
-    def find_betweenness_centrality(self, stub, graph, k=None, normalized=True, weight=None, endpoints=False,
-                                    seed=None, type='node', directed=False):
+    def find_betweenness_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=graph_in, k=k, normalized=normalized,
-                                                                            weight=weight, endpoints=endpoints,
-                                                                            seed=seed, type=type,
-                                                                            directed=directed)
+
             response = stub.BetweennessCentrality(Request_data)
             return response
         except Exception as e:

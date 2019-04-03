@@ -218,9 +218,12 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             else:
                 graph_in = {"nodes": nodes_list, "edges": edges_list}
 
-            ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
+            normalized = 'n' if request.normalized == 'n' or request.normalized == '' else 'u'
+            type = 'node' if request.type == 'node' or request.type == '' else 'edge'
+
+            ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=normalized,
                                            weight=request.weight, endpoints=request.endpoints,
-                                           type=request.type, seed=request.seed, directed=request.directed)
+                                           type=type, seed=request.seed, directed=request.directed)
 
             if ret[0]:
                 dict_resp = []

@@ -217,14 +217,14 @@ class TestNodeImportance(unittest.TestCase):
                                        ('2', '3'): 0.42857142857142855, ('2', '5'): 0.25, ('2', '7'): 0.25,
                                        ('3', '4'): 0.21428571428571427, ('3', '6'): 0.25, ('3', '8'): 0.25})
         # Non Default Test 1
-        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight=True, endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized='u', weight=True, endpoints=True,
                                                     seed=1)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertDictEqual(result[2]['betweenness_centrality'], {'1': 4.0, '2': 14.0, '3': 28.0, '4': 6.0, '5': 4.0, '6': 4.0, '7': 4.0,'8': 4.0})
 
         # Non weighted Test 1
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=False, endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized='u', weight=False, endpoints=True,
                                                     seed=1)
 
         self.assertEqual(result[0], True)
@@ -234,14 +234,14 @@ class TestNodeImportance(unittest.TestCase):
                                        '8': 4.0})
 
         # Non Default Test 2
-        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized=False, weight=False, endpoints=True,
+        result = self.N.find_betweenness_centrality(self.graph_03, k=1, normalized='u', weight=False, endpoints=True,
                                                     seed=1, directed=True)
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertEqual(result[2]['betweenness_centrality'], {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0})
 
         # Non Default Test 1
-        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized=False, weight=True, seed=1,directed=True,type='edge')
+        result = self.N.find_betweenness_centrality(self.graph, k=1, normalized='u', weight=True, seed=1,directed=True,type='edge')
         self.assertEqual(result[0], True)
         self.assertEqual(result[1], 'success')
         self.assertDictEqual(result[2]['betweenness_centrality'],

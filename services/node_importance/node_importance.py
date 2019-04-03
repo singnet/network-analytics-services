@@ -101,7 +101,7 @@ class NodeImportance:
         output = {"closeness_centrality": result}
         return True, 'success', output
 
-    def find_betweenness_centrality(self, graph, k=None, normalized=True, weight=False, endpoints=False, seed=None,
+    def find_betweenness_centrality(self, graph, k=None, normalized='n', weight=False, endpoints=False, seed=None,
                                     type='node', directed=False):
 
         ret = self.cv.is_valid_graph(graph)
@@ -112,6 +112,7 @@ class NodeImportance:
         weight = None if weight == False else 'weights'
         seed = None if seed == 0 else seed
         k = None if k == 0 else k
+        normalized = True if normalized == 'n' else False
 
 
         if type != 'node' and type != 'edge':

@@ -78,7 +78,7 @@ message ClosenessCentralityResponse {
 message BetweennessCentralityRequest {
     Graph graph = 1;
     int64 k = 2;
-    bool normalized = 3;
+    string normalized = 3;
     bool weight = 4;
     bool endpoints = 5;
     int64 seed = 6;

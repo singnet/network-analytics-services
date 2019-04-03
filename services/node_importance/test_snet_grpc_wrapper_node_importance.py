@@ -176,10 +176,44 @@ class TestNodeImportance(unittest.TestCase):
         self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_betweenness_centrality(self):
+
+        # Default Test
+
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.07142857142857142, '2': 0.5952380952380952,'3': 0.5952380952380952, '4': 0.07142857142857142,'5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.BetweennessCentralityResponse(status=True, message='success',
+                                                                                       output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
+        # Default Test 2
+
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph), normalized='n', type='node')
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.07142857142857142, '2': 0.5952380952380952, '3': 0.5952380952380952,
+                     '4': 0.07142857142857142, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.BetweennessCentralityResponse(status=True, message='success',
+                                                                                       output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
         # non Default Test with weight for node betweeness
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
-                                                         endpoints=True, seed=1, directed=True)
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph), k=1, normalized='u', weight=True, endpoints=True, seed=1, directed=True)
+        result = self.client.find_betweenness_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
@@ -194,8 +228,8 @@ class TestNodeImportance(unittest.TestCase):
 
         # non Default Test with weight for node betweeness and with type parameter specified
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False, weight=True,
-                                                         endpoints=True, seed=1, directed=True, type='node')
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph), k=1, normalized='u', weight=True, endpoints=True, seed=1, directed=True, type='node')
+        result = self.client.find_betweenness_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
@@ -209,8 +243,8 @@ class TestNodeImportance(unittest.TestCase):
 
         # non Default Test without weight for node betweeness
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
-                                                         endpoints=True, seed=1, directed=True)
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph),k=1, normalized='u', endpoints=True, seed=1, directed=True)
+        result = self.client.find_betweenness_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
@@ -226,8 +260,10 @@ class TestNodeImportance(unittest.TestCase):
 
         # non Default Test with weight for edge betweeness
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=1, normalized=False,
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph),k=1, normalized='u',
                                                          seed=1, directed=True, type='edge', weight=True)
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
 
         dict_resp = []
         for e, v in {('1', '2'): 0.0, ('1', '4'): 0.0, ('2', '3'): 0.0, ('2', '5'): 0.0, ('2', '7'): 0.0, ('3', '4'): 1.0,
@@ -244,8 +280,10 @@ class TestNodeImportance(unittest.TestCase):
 
         # error raising test
 
-        result = self.client.find_betweenness_centrality(self.stub, self.graph, k=15, normalized=False, weight=True,
-                                                         endpoints=True, seed=1, directed=True)
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph),k=15, normalized='u', weight=True, endpoints=True, seed=1, directed=True)
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
+
         self.assertIn('parameter k is larger than the number of nodes in the graph',result[1])
 
 
