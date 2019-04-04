@@ -109,6 +109,8 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             else:
                 graph_in = {"nodes": nodes_list, "edges": edges_list}
 
+            wf_improved = True if request.wf_improved == 'wf_improved' or request.wf_improved == '' else False
+
             ret = ni.find_closeness_centrality(graph_in, distance = distance, wf_improved = wf_improved, reverse = reverse, directed = directed)
 
             resp = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1])
@@ -218,7 +220,7 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             else:
                 graph_in = {"nodes": nodes_list, "edges": edges_list}
 
-            normalized = 'n' if request.normalized == 'n' or request.normalized == '' else 'u'
+            normalized = True if request.normalized == 'n' or request.normalized == '' else False
             type = 'node' if request.type == 'node' or request.type == '' else 'edge'
 
             ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=normalized,

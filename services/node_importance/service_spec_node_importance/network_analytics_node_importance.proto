@@ -63,7 +63,7 @@ message DegreeCentralityResponse {
 message ClosenessCentralityRequest {
     Graph graph = 1;
     bool distance = 2;
-    bool wf_improved = 3;
+    string wf_improved = 3;
     bool reverse = 4;
     bool directed = 5;
 }

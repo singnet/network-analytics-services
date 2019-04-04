@@ -58,15 +58,14 @@ class ClientTest():
 
         return graph_in
 
-    def find_closeness_centrality(self, stub, graph, distance=False, wf_improved=True, reverse=False, directed=False):
+    def find_closeness_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, distance=distance, wf_improved=wf_improved, reverse=reverse, directed=directed)
             response = stub.ClosenessCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
+  
     def find_Periphery(self, stub, graph, usebounds=False):
         try:
             graph_in = self.get_graph(graph=graph)

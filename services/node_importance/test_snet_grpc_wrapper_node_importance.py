@@ -147,7 +147,9 @@ class TestNodeImportance(unittest.TestCase):
     def test_find_closeness_centrality(self):
 
         # Deafault test
-        result = self.client.find_closeness_centrality(self.stub, self.graph)
+
+        request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_closeness_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375, '8': 0.4375}.items():
@@ -159,7 +161,9 @@ class TestNodeImportance(unittest.TestCase):
         self.assertCountEqual(result.output, expected.output)
 
         # Non Deafault test
-        result = self.client.find_closeness_centrality(self.stub, self.graph, distance=True, wf_improved=False, reverse=True, directed=True)
+
+        request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=self.client.get_graph(self.graph),distance=True, wf_improved='not_wf_improved', reverse=True, directed=True)
+        result = self.client.find_closeness_centrality(self.stub, request)
 
         dict_resp = []
         for n,v in {'1': 0.5, '2': 0.6666666666666666, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
@@ -172,7 +176,8 @@ class TestNodeImportance(unittest.TestCase):
         self.assertCountEqual(result.output, expected.output)
 
         # # Graph With No Nodes Test
-        result = self.client.find_closeness_centrality(self.stub, self.graph_01)
+        request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=self.client.get_graph(self.graph_01))
+        result = self.client.find_closeness_centrality(self.stub, request)
         self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_betweenness_centrality(self):
