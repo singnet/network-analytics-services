@@ -290,6 +290,40 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.message, 'success')
         self.assertCountEqual(result.output, expected.output)
 
+        # non Default Test 2 with weight for node betweeness and with type parameter specified with ''
+
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(
+            graph=self.client.get_graph(self.graph), k=1, normalized='u', weight=True, endpoints=True, seed=1,directed=True, type='')
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.BetweennessCentralityResponse(status=True, message='success',
+                                                                                       output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
+        # non Default Test 2 with weight for node betweeness and without type parameter specified
+
+        request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph), k=1, normalized='u', weight=True, endpoints=True, seed=1, directed=True)
+        result = self.client.find_betweenness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.0, '2': 0.0, '3': 3.0, '4': 1.0, '5': 0.0, '6': 1.0, '7': 0.0, '8': 1.0}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.BetweennessCentralityResponse(status=True, message='success',
+                                                                                       output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
+
         # non Default Test without weight for node betweeness
 
         request = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=self.client.get_graph(self.graph),k=1, normalized='u', endpoints=True, seed=1, directed=True)
