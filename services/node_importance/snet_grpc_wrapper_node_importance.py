@@ -433,8 +433,11 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             if len(nstart_dict) == 0:
                 nstart_dict = None
 
+
+            normalized = True if request.normalized == 'n' or request.normalized == '' else False
+
             ret = ni.find_hits(graph_in, max_iter=request.max_iter, tol=request.tol,
-                                                 nstart=nstart_dict, normalized=request.normalized,
+                                                 nstart=nstart_dict, normalized=normalized,
                                                  directed=request.directed)
 
             if ret[0]:

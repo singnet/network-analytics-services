@@ -115,11 +115,8 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_hits(self, stub, graph, max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False):
+    def find_hits(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.HitsRequest(graph=graph_in,max_iter=max_iter, tol=tol, nstart=nstart, normalized=normalized, directed=directed)
-
             response = stub.Hits(Request_data)
             return response
         except Exception as e:

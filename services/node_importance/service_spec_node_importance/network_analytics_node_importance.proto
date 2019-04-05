@@ -137,7 +137,7 @@ message HitsRequest {
     int64 max_iter = 2;
     double tol = 3;
     repeated DictIn nstart = 4;
-    bool normalized = 5;
+    string normalized = 5;
     bool directed = 6;
 }
 

@@ -458,7 +458,8 @@ class TestNodeImportance(unittest.TestCase):
     def test_find_hits(self):
 
         # Default Test
-        result = self.client.find_hits(self.stub, self.graph_no_weights)
+        request = network_analytics_node_importance_pb2.HitsRequest(graph=self.client.get_graph(self.graph_no_weights))
+        result = self.client.find_hits(self.stub, request)
 
         dict_resp_hubs = []
         for n, v in {'1': 0.13604957690850644, '2': 0.2015158583139189, '3': 0.2015158583139189, '4': 0.13604957690850644, '5': 0.08121728238878734, '6': 0.08121728238878734, '7': 0.08121728238878734, '8': 0.08121728238878734}.items():
@@ -475,13 +476,64 @@ class TestNodeImportance(unittest.TestCase):
         self.assertCountEqual(result.hubs, expected.hubs)
         self.assertCountEqual(result.authorities, expected.authorities)
 
+        # Default Test 2
+        request = network_analytics_node_importance_pb2.HitsRequest(graph=self.client.get_graph(self.graph_no_weights), normalized='n')
+        result = self.client.find_hits(self.stub, request)
+
+        dict_resp_hubs = []
+        for n, v in {'1': 0.13604957690850644, '2': 0.2015158583139189, '3': 0.2015158583139189,
+                     '4': 0.13604957690850644, '5': 0.08121728238878734, '6': 0.08121728238878734,
+                     '7': 0.08121728238878734, '8': 0.08121728238878734}.items():
+            dict_resp_hubs.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        dict_resp_authorities = []
+        for n, v in {'1': 0.13604957688814256, '2': 0.2015158585243154, '3': 0.2015158585243154,
+                     '4': 0.13604957688814256, '5': 0.08121728229377104, '6': 0.08121728229377104,
+                     '7': 0.08121728229377104, '8': 0.08121728229377104}.items():
+            dict_resp_authorities.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.HitsResponse(status=True, message='success',
+                                                                      hubs=dict_resp_hubs,
+                                                                      authorities=dict_resp_authorities)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.hubs, expected.hubs)
+        self.assertCountEqual(result.authorities, expected.authorities)
+
+        # Default Test 3
+        request = network_analytics_node_importance_pb2.HitsRequest(graph=self.client.get_graph(self.graph_no_weights), normalized='')
+        result = self.client.find_hits(self.stub, request)
+
+        dict_resp_hubs = []
+        for n, v in {'1': 0.13604957690850644, '2': 0.2015158583139189, '3': 0.2015158583139189,
+                     '4': 0.13604957690850644, '5': 0.08121728238878734, '6': 0.08121728238878734,
+                     '7': 0.08121728238878734, '8': 0.08121728238878734}.items():
+            dict_resp_hubs.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        dict_resp_authorities = []
+        for n, v in {'1': 0.13604957688814256, '2': 0.2015158585243154, '3': 0.2015158585243154,
+                     '4': 0.13604957688814256, '5': 0.08121728229377104, '6': 0.08121728229377104,
+                     '7': 0.08121728229377104, '8': 0.08121728229377104}.items():
+            dict_resp_authorities.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.HitsResponse(status=True, message='success',
+                                                                      hubs=dict_resp_hubs,
+                                                                      authorities=dict_resp_authorities)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.hubs, expected.hubs)
+        self.assertCountEqual(result.authorities, expected.authorities)
+
         # # Non Default Test
 
         nstart = []
         for k, vv in {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1}.items():
             nstart.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
 
-        result = self.client.find_hits(self.stub, self.graph_no_weights,max_iter=110,tol=11.0e-7,nstart=nstart,normalized=False,directed=True)
+        request = network_analytics_node_importance_pb2.HitsRequest(graph=self.client.get_graph(self.graph_no_weights),max_iter=110,tol=11.0e-7,nstart=nstart,normalized='u',directed=True)
+        result = self.client.find_hits(self.stub, request)
 
         dict_resp_hubs = []
         for n, v in {'1': 0.6180339887498948, '2': 5.309100041157175e-06, '3': 1.0, '4': 0.0, '5': 0.0, '6': 0.0, '7': 0.0, '8': 0.0}.items():
@@ -508,7 +560,9 @@ class TestNodeImportance(unittest.TestCase):
                       '6': 0.125, '7': 0.125, '8': 0.125}.items():
             nstart.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
 
-        result = self.client.find_hits(self.stub, self.graph, nstart=nstart)
+        request = network_analytics_node_importance_pb2.HitsRequest(graph=self.client.get_graph(self.graph), nstart=nstart)
+        result = self.client.find_hits(self.stub, request)
+
         self.assertIn('nstart parameter contains a node at zero-indexed position 2 that does not exist in the graph',result[1])
 
 
