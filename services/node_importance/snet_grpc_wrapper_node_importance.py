@@ -373,9 +373,11 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             if len(nstart_dict) == 0:
                 nstart_dict = None
 
+            in_out = True if request.in_out == 'in' or request.in_out == '' else False
+
             ret = ni.find_eigenvector_centrality(graph_in, max_iter=request.max_iter, tol=request.tol,
                                                  nstart=nstart_dict, weight=request.weight,
-                                   directed=request.directed,in_out=request.in_out)
+                                   directed=request.directed,in_out=in_out)
 
             if ret[0]:
                 dict_resp = []

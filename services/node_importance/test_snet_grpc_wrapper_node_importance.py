@@ -160,6 +160,23 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual([result.status, result.message], [expected.status, expected.message])
         self.assertCountEqual(result.output, expected.output)
 
+        # Deafault test 2
+
+        request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(
+            graph=self.client.get_graph(self.graph),wf_improved='wf_improved')
+        result = self.client.find_closeness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                     '8': 0.4375}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=True, message='success',
+                                                                                     output=dict_resp)
+
+        self.assertEqual([result.status, result.message], [expected.status, expected.message])
+        self.assertCountEqual(result.output, expected.output)
+
         # Non Deafault test
 
         request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=self.client.get_graph(self.graph),distance=True, wf_improved='not_wf_improved', reverse=True, directed=True)
@@ -359,7 +376,9 @@ class TestNodeImportance(unittest.TestCase):
     def test_find_eigenvector_centrality(self):
 
         # Default Test
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph)
+
+        request = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_eigenvector_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.35775018836999806, '2': 0.5298994260311778,
@@ -381,10 +400,9 @@ class TestNodeImportance(unittest.TestCase):
                                                             '8': 1}.items():
             nstart.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
 
+        request = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=self.client.get_graph(self.graph),max_iter=500, tol=1e-05,nstart=nstart, weight=True, directed=True,in_out='in')
+        result = self.client.find_eigenvector_centrality(self.stub, request)
 
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph,max_iter=500, tol=1e-05,
-                                                    nstart=nstart, weight=True, directed=True,in_out=True)
-        print(result)
 
         dict_resp = []
         for n, v in {'1': 1.9935012399077745e-07, '2': 5.183103223760218e-05,
@@ -397,6 +415,32 @@ class TestNodeImportance(unittest.TestCase):
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertCountEqual(result.output, expected.output)
+
+        # # Non Default Test 2 when in_out=''
+
+        nstart = []
+        for k, vv in {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1,
+                      '8': 1}.items():
+            nstart.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
+
+        request = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=self.client.get_graph(self.graph), max_iter=500, tol=1e-05, nstart=nstart, weight=True, directed=True)
+        result = self.client.find_eigenvector_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 1.9935012399077745e-07, '2': 5.183103223760218e-05,
+                     '3': 0.0067123180248934745, '4': 0.5773456687445266,
+                     '5': 0.0067123180248934745, '6': 0.5772940370624132, '7': 0.0067123180248934745,
+                     '8': 0.5772940370624132}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.EigenvectorCentralityResponse(status=True, message='success',
+                                                                                       output=dict_resp)
+
+        self.assertEqual(result.status, True)
+        self.assertEqual(result.message, 'success')
+        self.assertCountEqual(result.output, expected.output)
+
+
         #
         # # Error raising test
 
@@ -405,10 +449,10 @@ class TestNodeImportance(unittest.TestCase):
                       '6': 0.125, '7': 0.125, '8': 0.125}.items():
             nstart.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
 
-        result = self.client.find_eigenvector_centrality(self.stub, self.graph, nstart=nstart)
-        self.assertIn(
-            'nstart parameter contains a node at zero-indexed position 2 that does not exist in the graph',
-            result[1])
+        request = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=self.client.get_graph(self.graph), nstart=nstart)
+        result = self.client.find_eigenvector_centrality(self.stub, request)
+
+        self.assertIn('nstart parameter contains a node at zero-indexed position 2 that does not exist in the graph',result[1])
         
 
     def test_find_hits(self):

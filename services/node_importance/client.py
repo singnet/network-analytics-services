@@ -65,7 +65,7 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-  
+
     def find_Periphery(self, stub, graph, usebounds=False):
         try:
             graph_in = self.get_graph(graph=graph)
@@ -107,15 +107,9 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_eigenvector_centrality(self, stub, graph, max_iter=100, tol=1e-06, nstart=None,
-                                    weight=None, directed=False, in_out=True):
+    def find_eigenvector_centrality(self, stub, Request_data):
 
         try:
-
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=graph_in, max_iter=max_iter, tol=tol,
-                                                                            nstart=nstart, weight=weight,
-                                                                            directed=directed,in_out=in_out)
             response = stub.EigenvectorCentrality(Request_data)
             return response
         except Exception as e:

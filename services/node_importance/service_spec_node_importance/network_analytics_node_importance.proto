@@ -121,7 +121,7 @@ message EigenvectorCentralityRequest {
     repeated DictIn nstart = 4;
     bool weight = 5;
     bool directed = 6;
-    bool in_out = 7;
+    string in_out = 7;
 }
 
 
