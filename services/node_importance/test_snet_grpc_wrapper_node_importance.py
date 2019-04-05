@@ -73,28 +73,33 @@ class TestNodeImportance(unittest.TestCase):
         expected_result = ['1', '4', '5', '6', '7', '8']
 
         # Default Test
-        result = self.client.find_Periphery(self.stub, self.graph)
+        request = network_analytics_node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_Periphery(self.stub, request)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertCountEqual(list(result.output), expected_result)
 
         # Non Deafault test
-        result = self.client.find_Periphery(self.stub, self.graph, usebounds=True)
+        request = network_analytics_node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph), usebounds=True)
+        result = self.client.find_Periphery(self.stub, request)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertCountEqual(list(result.output), expected_result)
 
         # Graph With No Nodes Test
-        result = self.client.find_Periphery(self.stub, self.graph_01)
+        request = network_analytics_node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph_01))
+        result = self.client.find_Periphery(self.stub, request)
         self.assertIn('graph should at least contain two nodes',result[1])
 
 
         # Graph With No edges Test
-        result = self.client.find_Periphery(self.stub, self.graph_02)
+        request = network_analytics_node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph_02))
+        result = self.client.find_Periphery(self.stub, request)
         self.assertIn('graph should at least contain one edge',result[1])
 
         # weight less graph test
-        result = self.client.find_Periphery(self.stub, self.graph_03)
+        request = network_analytics_node_importance_pb2.PeripheryRequest(graph=self.client.get_graph(self.graph_03))
+        result = self.client.find_Periphery(self.stub, request)
         self.assertEqual(result.status, True)
         self.assertEqual(result.message, 'success')
         self.assertCountEqual(list(result.output), expected_result)
@@ -111,7 +116,8 @@ class TestNodeImportance(unittest.TestCase):
     def test_find_degree_centrality(self):
 
         # Default test
-        result = self.client.find_degree_centrality(self.stub, self.graph)
+        request = network_analytics_node_importance_pb2.DegreeCentralityRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_degree_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.2857142857142857, '2': 0.5714285714285714, '3': 0.5714285714285714,
@@ -125,7 +131,8 @@ class TestNodeImportance(unittest.TestCase):
         self.assertCountEqual(result.output, expected.output)
 
         # Non Default test
-        result = self.client.find_degree_centrality(self.stub, self.graph,'in')
+        request = network_analytics_node_importance_pb2.DegreeCentralityRequest(graph=self.client.get_graph(self.graph),in_out='in')
+        result = self.client.find_degree_centrality(self.stub, request)
 
         dict_resp = []
         for n, v in {'1': 0.0, '2': 0.14285714285714285, '3': 0.14285714285714285,
@@ -141,7 +148,8 @@ class TestNodeImportance(unittest.TestCase):
         self.assertCountEqual(result.output, expected.output)
 
         # # Graph With No Nodes Test
-        result = self.client.find_degree_centrality(self.stub, self.graph_01)
+        request = network_analytics_node_importance_pb2.DegreeCentralityRequest(graph=self.client.get_graph(self.graph_01))
+        result = self.client.find_degree_centrality(self.stub, request)
         self.assertIn('graph should at least contain two nodes', result[1])
 
     def test_find_closeness_centrality(self):
@@ -176,6 +184,25 @@ class TestNodeImportance(unittest.TestCase):
 
         self.assertEqual([result.status, result.message], [expected.status, expected.message])
         self.assertCountEqual(result.output, expected.output)
+
+        # Deafault test 3
+
+        request = network_analytics_node_importance_pb2.ClosenessCentralityRequest(
+            graph=self.client.get_graph(self.graph), wf_improved='')
+        result = self.client.find_closeness_centrality(self.stub, request)
+
+        dict_resp = []
+        for n, v in {'1': 0.5, '2': 0.7, '3': 0.7, '4': 0.5, '5': 0.4375, '6': 0.4375, '7': 0.4375,
+                     '8': 0.4375}.items():
+            dict_resp.append(network_analytics_node_importance_pb2.DictOutput(node=n, output=v))
+
+        expected = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=True, message='success',
+                                                                                     output=dict_resp)
+
+        self.assertEqual([result.status, result.message], [expected.status, expected.message])
+        self.assertCountEqual(result.output, expected.output)
+
+
 
         # Non Deafault test
 
@@ -311,7 +338,8 @@ class TestNodeImportance(unittest.TestCase):
 
     def test_find_pagerank(self):
         # Default Test
-        result = self.client.find_pagerank(self.stub, self.graph)
+        request = network_analytics_node_importance_pb2.PageRankRequest(graph=self.client.get_graph(self.graph))
+        result = self.client.find_pagerank(self.stub, request)
         print(result)
 
         dict_resp = []
@@ -342,12 +370,8 @@ class TestNodeImportance(unittest.TestCase):
                                                 '6': 0.125, '7': 0.125, '8': 0.125}.items():
             dangling.append(network_analytics_node_importance_pb2.DictIn(node=k, value=vv))
 
-        result = self.client.find_pagerank(self.stub, self.graph,alpha=0.95,
-                                      personalization=personalizatoin, max_iter=100,
-                                      tol=1e-07,
-                                      nstart=nstart,
-                                      weight=True,
-                                      dangling=dangling,directed=True)
+        request = network_analytics_node_importance_pb2.PageRankRequest(graph=self.client.get_graph(self.graph),alpha=0.95,personalization=personalizatoin, max_iter=100,tol=1e-07,nstart=nstart,weight=True,dangling=dangling,directed=True)
+        result = self.client.find_pagerank(self.stub, request)
         print(result)
 
         dict_resp = []
@@ -369,7 +393,8 @@ class TestNodeImportance(unittest.TestCase):
 
 
 
-        result = self.client.find_pagerank(self.stub, self.graph, personalization=personalizatoin)
+        request = network_analytics_node_importance_pb2.PageRankRequest(graph=self.client.get_graph(self.graph), personalization=personalizatoin)
+        result = self.client.find_pagerank(self.stub, request)
         self.assertIn('personalization parameter contains a node at zero-indexed position 2 that does not exist in the graph', result[1])
 
 

@@ -66,19 +66,15 @@ class ClientTest():
             return [False, str(e), {}]
 
 
-    def find_Periphery(self, stub, graph, usebounds=False):
+    def find_Periphery(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.PeripheryRequest(graph=graph_in, usebounds=usebounds)
             response = stub.Periphery(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_degree_centrality(self, stub, graph, in_out=None, directed=False):
+    def find_degree_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.DegreeCentralityRequest(graph=graph_in, in_out=in_out)
             response = stub.DegreeCentrality(Request_data)
             return response
         except Exception as e:
@@ -93,15 +89,8 @@ class ClientTest():
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_pagerank(self, stub, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
-                      weight=False, dangling=None, directed=False):
+    def find_pagerank(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.PageRankRequest(graph=graph_in, alpha=alpha,
-                                                               personalization=personalization,
-                                                               max_iter=max_iter, tol=tol, nstart=nstart,
-                                                               weight=weight,
-                                                               dangling=dangling, directed=directed)
             response = stub.PageRank(Request_data)
             return response
         except Exception as e:
