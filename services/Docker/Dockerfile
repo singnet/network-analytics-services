@@ -69,7 +69,7 @@ RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/robustness_mainnet/ \
     /home/netk/dep
 
-ENV DAEMON_VERSION 0.1.9
+ENV DAEMON_VERSION 0.1.10
 
 RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/download/v$DAEMON_VERSION/snet-daemon-v$DAEMON_VERSION-linux-amd64.tar.gz && \
     tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
