@@ -109,6 +109,8 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             else:
                 graph_in = {"nodes": nodes_list, "edges": edges_list}
 
+            wf_improved = True if request.wf_improved == 'wf_improved' or request.wf_improved == '' else False
+
             ret = ni.find_closeness_centrality(graph_in, distance = distance, wf_improved = wf_improved, reverse = reverse, directed = directed)
 
             resp = network_analytics_node_importance_pb2.ClosenessCentralityResponse(status=ret[0], message=ret[1])
@@ -218,9 +220,12 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             else:
                 graph_in = {"nodes": nodes_list, "edges": edges_list}
 
-            ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=request.normalized,
+            normalized = True if request.normalized == 'n' or request.normalized == '' else False
+            type = 'node' if request.type == 'node' or request.type == '' else 'edge'
+
+            ret = ni.find_betweenness_centrality(graph_in, k=request.k, normalized=normalized,
                                            weight=request.weight, endpoints=request.endpoints,
-                                           type=request.type, seed=request.seed, directed=request.directed)
+                                           type=type, seed=request.seed, directed=request.directed)
 
             if ret[0]:
                 dict_resp = []
@@ -368,9 +373,11 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             if len(nstart_dict) == 0:
                 nstart_dict = None
 
+            in_out = True if request.in_out == 'in' or request.in_out == '' else False
+
             ret = ni.find_eigenvector_centrality(graph_in, max_iter=request.max_iter, tol=request.tol,
                                                  nstart=nstart_dict, weight=request.weight,
-                                   directed=request.directed,in_out=request.in_out)
+                                   directed=request.directed,in_out=in_out)
 
             if ret[0]:
                 dict_resp = []
@@ -426,8 +433,11 @@ class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImpo
             if len(nstart_dict) == 0:
                 nstart_dict = None
 
+
+            normalized = True if request.normalized == 'n' or request.normalized == '' else False
+
             ret = ni.find_hits(graph_in, max_iter=request.max_iter, tol=request.tol,
-                                                 nstart=nstart_dict, normalized=request.normalized,
+                                                 nstart=nstart_dict, normalized=normalized,
                                                  directed=request.directed)
 
             if ret[0]:

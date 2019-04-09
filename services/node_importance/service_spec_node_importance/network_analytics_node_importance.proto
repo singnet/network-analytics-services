@@ -63,7 +63,7 @@ message DegreeCentralityResponse {
 message ClosenessCentralityRequest {
     Graph graph = 1;
     bool distance = 2;
-    bool wf_improved = 3;
+    string wf_improved = 3;
     bool reverse = 4;
     bool directed = 5;
 }
@@ -78,7 +78,7 @@ message ClosenessCentralityResponse {
 message BetweennessCentralityRequest {
     Graph graph = 1;
     int64 k = 2;
-    bool normalized = 3;
+    string normalized = 3;
     bool weight = 4;
     bool endpoints = 5;
     int64 seed = 6;
@@ -121,7 +121,7 @@ message EigenvectorCentralityRequest {
     repeated DictIn nstart = 4;
     bool weight = 5;
     bool directed = 6;
-    bool in_out = 7;
+    string in_out = 7;
 }
 
 
@@ -137,7 +137,7 @@ message HitsRequest {
     int64 max_iter = 2;
     double tol = 3;
     repeated DictIn nstart = 4;
-    bool normalized = 5;
+    string normalized = 5;
     bool directed = 6;
 }
 

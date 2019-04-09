@@ -58,80 +58,54 @@ class ClientTest():
 
         return graph_in
 
-    def find_closeness_centrality(self, stub, graph, distance=False, wf_improved=True, reverse=False, directed=False):
+    def find_closeness_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.ClosenessCentralityRequest(graph=graph_in, distance=distance, wf_improved=wf_improved, reverse=reverse, directed=directed)
             response = stub.ClosenessCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_Periphery(self, stub, graph, usebounds=False):
+
+    def find_Periphery(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.PeripheryRequest(graph=graph_in, usebounds=usebounds)
             response = stub.Periphery(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_degree_centrality(self, stub, graph, in_out=None, directed=False):
+    def find_degree_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.DegreeCentralityRequest(graph=graph_in, in_out=in_out)
             response = stub.DegreeCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
 
-    def find_betweenness_centrality(self, stub, graph, k=None, normalized=True, weight=None, endpoints=False,
-                                    seed=None, type='node', directed=False):
+    def find_betweenness_centrality(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.BetweennessCentralityRequest(graph=graph_in, k=k, normalized=normalized,
-                                                                            weight=weight, endpoints=endpoints,
-                                                                            seed=seed, type=type,
-                                                                            directed=directed)
+
             response = stub.BetweennessCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_pagerank(self, stub, graph, alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None,
-                      weight=False, dangling=None, directed=False):
+    def find_pagerank(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.PageRankRequest(graph=graph_in, alpha=alpha,
-                                                               personalization=personalization,
-                                                               max_iter=max_iter, tol=tol, nstart=nstart,
-                                                               weight=weight,
-                                                               dangling=dangling, directed=directed)
             response = stub.PageRank(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_eigenvector_centrality(self, stub, graph, max_iter=100, tol=1e-06, nstart=None,
-                                    weight=None, directed=False, in_out=True):
+    def find_eigenvector_centrality(self, stub, Request_data):
 
         try:
-
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.EigenvectorCentralityRequest(graph=graph_in, max_iter=max_iter, tol=tol,
-                                                                            nstart=nstart, weight=weight,
-                                                                            directed=directed,in_out=in_out)
             response = stub.EigenvectorCentrality(Request_data)
             return response
         except Exception as e:
             return [False, str(e), {}]
 
-    def find_hits(self, stub, graph, max_iter=100, tol=1e-08, nstart=None, normalized=True, directed=False):
+    def find_hits(self, stub, Request_data):
         try:
-            graph_in = self.get_graph(graph=graph)
-            Request_data = network_analytics_node_importance_pb2.HitsRequest(graph=graph_in,max_iter=max_iter, tol=tol, nstart=nstart, normalized=normalized, directed=directed)
-
             response = stub.Hits(Request_data)
             return response
         except Exception as e:
