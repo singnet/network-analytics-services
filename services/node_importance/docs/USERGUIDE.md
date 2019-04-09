@@ -230,8 +230,6 @@ output {
   node: "8"
   output: 0.4375
 }
-de: "8"
-}
 ```
 
 
@@ -268,9 +266,7 @@ where the content of the file `betweennesscentrality.json` is
            {
             "nodes": ["1", "2", "3", "4", "5", "6", "7", "8"],
             "edges": [{"edge": ["1", "2"]}, {"edge": ["1", "4"]}, {"edge": ["2", "3"]}, {"edge": ["2", "5"]}, {"edge": ["3", "4"]}, {"edge": ["3", "6"]}, {"edge": ["2", "7"]}, {"edge": ["3", "8"]}]
-        },
-    "type":"node"
-
+        }
 }
 ```
 
