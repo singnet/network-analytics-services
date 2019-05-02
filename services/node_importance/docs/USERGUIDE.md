@@ -378,3 +378,78 @@ output {
   output: 0.2135666184274351
 }
 ```
+
+## PageRank
+
+Find the PageRank of nodes.
+
+### Inputs
+
+* A graph (required)
+* alpha (Optional. Float. Default is 0.85): Damping parameter.
+* personalization (Optional. Dictionary. If you skip setting this field, you will get the default behavior). A dictionary with a key for some subset of graph nodes and personalization value each of those. At least one personalization value must be non-zero. If not specfiied, a nodes personalization value will be zero. By default, a uniform distribution is used.
+* max_iter (Optional. Integer. Default is 100): Maximum number of iterations in power method eigenvalue solver.
+* tol (Optional. Float. Default is 1e-06): Maximum number of iterations in power method eigenvalue solver.
+* nstart (Optional. Dictionary. If you skip setting this field, you will get the default behavior): It is a dictionary of starting values of eigenvector iteration for each node. I.e., each node would have a corresponding value.
+* weight (Optional. Default is False): If True, then the weights in the given graph are used. If no weights are given, all edge weights are set to one.
+* dangling (Optional. Dictionary. If you skip setting this field, you will get the default behavior): The outedges to be assigned to  nodes without any outedges. The dict key is the node the outedge points to and the dict value is the weight of that outedge. By default, dangling nodes are given outedges according to the personalization vector (uniform if not specified). This must be selected to result in an irreducible transition matrix. It may be common to have the dangling dict to be the same as the personalization dict.
+* directed (Optional. Default is False). If True the graph is treated as a directed graph where the first specified node in an edge is the source node.
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance PageRank pagerank.json -y
+```
+
+where the content of the file `pagerank.json` is
+
+```
+{
+    "graph":
+           {
+            "nodes": ["1", "2", "3", "4", "5", "6", "7", "8"],
+            "edges": [{"edge": ["1", "2"]}, {"edge": ["1", "4"]}, {"edge": ["2", "3"]}, {"edge": ["2", "5"]}, {"edge": ["3", "4"]}, {"edge": ["3", "6"]}, {"edge": ["2", "7"]}, {"edge": ["3", "8"]}]
+        }
+}
+```
+
+#### Sample output
+
+```
+status: true
+message: "success"
+output {
+  node: "1"
+  output: 0.12113884655309373
+}
+output {
+  node: "2"
+  output: 0.23955113566709454
+}
+output {
+  node: "3"
+  output: 0.23955113566709454
+}
+output {
+  node: "4"
+  output: 0.12113884655309375
+}
+output {
+  node: "5"
+  output: 0.06965500888990583
+}
+output {
+  node: "6"
+  output: 0.06965500888990583
+}
+output {
+  node: "7"
+  output: 0.06965500888990583
+}
+output {
+  node: "8"
+  output: 0.06965500888990583
+}
+```
