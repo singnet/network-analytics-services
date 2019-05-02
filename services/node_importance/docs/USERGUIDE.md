@@ -13,9 +13,9 @@ are credited to NetworkX Developers.
 * [DegreeCentrality](#degreecentrality)
 * [ClosenessCentrality](#closenesscentrality)
 * [BetweennessCentrality](#betweennesscentrality)
-* [eigenvector centrality](#eigenvectorcentrality)
-* [pagerank](#pagerank)
-* [hits](#hits)
+* [EigenvectorCentrality](#eigenvectorcentrality)
+* [PageRank](#pagerank)
+* [Hits](#hits)
 
 
 ## CentralNodes
@@ -304,4 +304,77 @@ output {
 }
 ```
 
+## EigenvectorCentrality
 
+Find the EigenvectorCentrality of nodes.
+
+### Inputs
+
+* A graph (required)
+* max_iter (Optional. Integer. Default is 100): Maximum number of iterations in power method.
+* tol (Optional. Float. Default is 1e-06): Error tolerance used to check convergence in power method iteration.
+* nstart (Optional. If you skip setting this field, you will get the default behavior): It is a dictionary of starting values of eigenvector iteration for each node. I.e., each node would have a corresponding value.
+* weight (Optional. Default is False): If True, then the weights in the given graph are used. If no weights are given, all edge weights are considered equal.
+* directed (Optional. Default is False). If True the graph is treated as a directed graph where the first specified node in an edge is the source node.
+* in_out (Optinal. String value. Default is the empty string ''). This is used when the graph is a directed graph. Supply the string 'in' if you want to calculate 'left' eigenvector centrality which corresponds to the in-edges in the graph. Use the string 'out' or anyother string including the null string to calculate the out-edges eigenvector centrality.
+
+
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance EigenvectorCentrality eigenvectorcentrality.json -y
+```
+
+where the content of the file `eigenvectorcentrality.json` is
+
+```
+{
+    "graph":
+           {
+            "nodes": ["1", "2", "3", "4", "5", "6", "7", "8"],
+            "edges": [{"edge": ["1", "2"]}, {"edge": ["1", "4"]}, {"edge": ["2", "3"]}, {"edge": ["2", "5"]}, {"edge": ["3", "4"]}, {"edge": ["3", "6"]}, {"edge": ["2", "7"]}, {"edge": ["3", "8"]}]
+        }
+}
+```
+
+#### Sample output
+
+```
+status: true
+message: "success"
+output {
+  node: "1"
+  output: 0.35775018836999806
+}
+output {
+  node: "2"
+  output: 0.5298994260311778
+}
+output {
+  node: "3"
+  output: 0.5298994260311778
+}
+output {
+  node: "4"
+  output: 0.35775018836999806
+}
+output {
+  node: "5"
+  output: 0.2135666184274351
+}
+output {
+  node: "6"
+  output: 0.2135666184274351
+}
+output {
+  node: "7"
+  output: 0.2135666184274351
+}
+output {
+  node: "8"
+  output: 0.2135666184274351
+}
+```
