@@ -316,7 +316,7 @@ Find the EigenvectorCentrality of nodes.
 * nstart (Optional. If you skip setting this field, you will get the default behavior): It is a dictionary of starting values of eigenvector iteration for each node. I.e., each node would have a corresponding value.
 * weight (Optional. Default is False): If True, then the weights in the given graph are used. If no weights are given, all edge weights are considered equal.
 * directed (Optional. Default is False). If True the graph is treated as a directed graph where the first specified node in an edge is the source node.
-* in_out (Optinal. String value. Default is the empty string ''). This is used when the graph is a directed graph. Supply the string 'in' if you want to calculate 'left' eigenvector centrality which corresponds to the in-edges in the graph. Use the string 'out' or anyother string including the null string to calculate the out-edges eigenvector centrality.
+* in_out (Optinal. String value. Default is the empty string '' or the string 'in'). This is used when the graph is a directed graph. Supply the string 'in' or leave setting the parameter (that is it will have value of the null string '') if you want to calculate 'left' eigenvector centrality which corresponds to the in-edges in the graph. Use the string 'out' or anyother string to calculate the out-edges eigenvector centrality.
 
 
 
@@ -452,4 +452,109 @@ output {
   node: "8"
   output: 0.06965500888990583
 }
+```
+
+## Hits
+
+Find the HITS hubs and authorities values for nodes.
+
+### Inputs
+
+* A graph (required)
+* max_iter (Optional. Integer. Default is 100): Maximum number of iterations in power method.
+* tol (Optional. Float. Default is 1e-08): Maximum number of iterations in power method eigenvalue solver.
+* nstart (Optional. Dictionary. If you skip setting this field, you will get the default behavior): It is a dictionary of starting values of eigenvector iteration for each node. I.e., each node would have a corresponding value.
+* normalized (Optinal. String value. Default is the empty string '' or the string 'n'). This is used to normalize results by the sum of all of the values. Any string value except 'n' and '' would not use normalization.
+* directed (Optional. Default is False). If True the graph is treated as a directed graph where the first specified node in an edge is the source node.
+
+#### Sample call
+
+Sample call while using the SingularityNET CLI terminal application
+
+```
+snet client call snet network-analytics-nodeImportance Hits hits.json -y
+```
+
+where the content of the file `hits.json` is
+
+```
+{
+    "graph":
+           {
+            "nodes": ["1", "2", "3", "4", "5", "6", "7", "8"],
+            "edges": [{"edge": ["1", "2"]}, {"edge": ["1", "4"]}, {"edge": ["2", "3"]}, {"edge": ["2", "5"]}, {"edge": ["3", "4"]}, {"edge": ["3", "6"]}, {"edge": ["2", "7"]}, {"edge": ["3", "8"]}]
+        }
+}
+```
+
+#### Sample output
+
+```
+status: true
+message: "success"
+hubs {
+  node: "1"
+  output: 0.13604957690850644
+}
+hubs {
+  node: "2"
+  output: 0.2015158583139189
+}
+hubs {
+  node: "3"
+  output: 0.2015158583139189
+}
+hubs {
+  node: "4"
+  output: 0.13604957690850644
+}
+hubs {
+  node: "5"
+  output: 0.08121728238878734
+}
+hubs {
+  node: "6"
+  output: 0.08121728238878734
+}
+hubs {
+  node: "7"
+  output: 0.08121728238878734
+}
+hubs {
+  node: "8"
+  output: 0.08121728238878734
+}
+authorities {
+  node: "1"
+  output: 0.13604957688814256
+}
+authorities {
+  node: "2"
+  output: 0.2015158585243154
+}
+authorities {
+  node: "3"
+  output: 0.2015158585243154
+}
+authorities {
+  node: "4"
+  output: 0.13604957688814256
+}
+authorities {
+  node: "5"
+  output: 0.08121728229377104
+}
+authorities {
+  node: "6"
+  output: 0.08121728229377104
+}
+authorities {
+  node: "7"
+  output: 0.08121728229377104
+}
+authorities {
+  node: "8"
+  output: 0.08121728229377104
+}
+
 ```
