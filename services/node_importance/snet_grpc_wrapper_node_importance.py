@@ -11,7 +11,7 @@ from node_importance import NodeImportance
 
 SLEEP_TIME = 86400 # One day
 
-class NodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NodeImportanceServicer):
+class NetworkAnalyticsNodeImportanceServicer(network_analytics_node_importance_pb2_grpc.NetworkAnalyticsNodeImportanceServicer):
     def CentralNodes(self, request, context):
         ni = NodeImportance()
         graph = request.graph
@@ -489,7 +489,7 @@ class Server():
 
     def start_server(self):
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), self.server)
+        network_analytics_node_importance_pb2_grpc.add_NetworkAnalyticsNodeImportanceServicer_to_server(NetworkAnalyticsNodeImportanceServicer(), self.server)
         print('Starting server. Listening on port 5001.')
         self.server.add_insecure_port(self.port)
         self.server.start()
@@ -500,7 +500,7 @@ class Server():
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    network_analytics_node_importance_pb2_grpc.add_NodeImportanceServicer_to_server(NodeImportanceServicer(), server)
+    network_analytics_node_importance_pb2_grpc.add_NetworkAnalyticsNodeImportanceServicer_to_server(NetworkAnalyticsNodeImportanceServicer(), server)
     print('Starting server. Listening on port 5001.')
     server.add_insecure_port('127.0.0.1:5001')
     server.start()
