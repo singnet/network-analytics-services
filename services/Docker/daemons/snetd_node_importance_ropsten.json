@@ -6,7 +6,7 @@
    "PASSTHROUGH_ENABLED": true,
    "PASSTHROUGH_ENDPOINT": "http://127.0.0.1:5001",
    "ORGANIZATION_ID": "snet",
-   "SERVICE_ID": "network-analytics-nodeImportance",
+   "SERVICE_ID": "network-analytics-nodeimportance",
    "ssl_cert": "/etc/letsencrypt/live/tz-services-1.snet.sh/fullchain.pem",
    "ssl_key": "/etc/letsencrypt/live/tz-services-1.snet.sh/privkey.pem",
    "PAYMENT_CHANNEL_STORAGE_SERVER": {

@@ -32,7 +32,7 @@ Identify the central nodes from the given input graph
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance CentralNodes centralnodes.json -y
+snet client call snet network-analytics-nodeimportance CentralNodes centralnodes.json -y
 ```
 
 where the content of the file `centralnodes.json` is
@@ -68,7 +68,7 @@ Identify the peripheral/remote nodes from the given input graph
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance Periphery periphery.json -y
+snet client call snet network-analytics-nodeimportance Periphery periphery.json -y
 ```
 
 where the content of the file `periphery.json` is
@@ -107,7 +107,7 @@ Find the degree centrality of nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance DegreeCentrality degreecentrality.json -y
+snet client call snet network-analytics-nodeimportance DegreeCentrality degreecentrality.json -y
 ```
 
 where the content of the file `degreecentrality.json` is
@@ -176,7 +176,7 @@ Compute closeness centrality for nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance ClosenessCentrality closenesscentrality.json -y
+snet client call snet network-analytics-nodeimportance ClosenessCentrality closenesscentrality.json -y
 ```
 
 where the content of the file `betweennesscentrality.json` is
@@ -254,7 +254,7 @@ Find the BetweennessCentrality of nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance BetweennessCentrality betweennesscentrality.json -y
+snet client call snet network-analytics-nodeimportance BetweennessCentrality betweennesscentrality.json -y
 ```
 
 where the content of the file `betweennesscentrality.json` is
@@ -325,7 +325,7 @@ Find the EigenvectorCentrality of nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance EigenvectorCentrality eigenvectorcentrality.json -y
+snet client call snet network-analytics-nodeimportance EigenvectorCentrality eigenvectorcentrality.json -y
 ```
 
 where the content of the file `eigenvectorcentrality.json` is
@@ -400,7 +400,7 @@ Find the PageRank of nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance PageRank pagerank.json -y
+snet client call snet network-analytics-nodeimportance PageRank pagerank.json -y
 ```
 
 where the content of the file `pagerank.json` is
@@ -472,7 +472,7 @@ Find the HITS hubs and authorities values for nodes.
 Sample call while using the SingularityNET CLI terminal application
 
 ```
-snet client call snet network-analytics-nodeImportance Hits hits.json -y
+snet client call snet network-analytics-nodeimportance Hits hits.json -y
 ```
 
 where the content of the file `hits.json` is
