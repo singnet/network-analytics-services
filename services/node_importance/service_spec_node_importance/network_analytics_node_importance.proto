@@ -150,7 +150,7 @@ message HitsResponse {
 
 
 
-service NodeImportance {
+service NetworkAnalyticsNodeImportance {
     rpc CentralNodes (CentralNodeRequest) returns (CentralNodeResponse) {};
     rpc Periphery (PeripheryRequest) returns (PeripheryResponse) {};
     rpc DegreeCentrality (DegreeCentralityRequest) returns (DegreeCentralityResponse) {};

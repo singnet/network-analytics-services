@@ -12,7 +12,7 @@ class ClientTest():
 
     def open_grpc_channel(self):
         channel = grpc.insecure_channel(self.port)
-        stub = network_analytics_node_importance_pb2_grpc.NodeImportanceStub(channel)
+        stub = network_analytics_node_importance_pb2_grpc.NetworkAnalyticsNodeImportanceStub(channel)
         return stub
 
     def get_graph(self, graph):

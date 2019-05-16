@@ -1,10 +1,10 @@
 {
     "version": 1,
-    "display_name": "network-analytics-node-importance",
+    "display_name": "network-analytics-nodeimportance",
     "encoding": "proto",
     "service_type": "grpc",
     "payment_expiration_threshold": 40320,
-    "model_ipfs_hash": "Qmdj9UfvLwkTAKZVTnyAuPEhbuskMcxFzK5jEckjVk7ypX",
+    "model_ipfs_hash": "QmPXiAorZRKWKCwWbbe3gRusKvtXvQd1pfwDDA3UpzyfZW",
     "mpe_address": "0x39f31Ac7B393fE2C6660b95b878FEB16eA8f3156",
     "pricing": {
         "price_model": "fixed_price",
@@ -13,7 +13,7 @@
     "groups": [
         {
             "group_name": "default_group",
-            "group_id": "MuuNUf708hIkvQEzlONPpzW1d1bI4MOBRkZ5EgqUMaY=",
+            "group_id": "F0H45NjLOTOIAqu+9xTBAvkZoZ4BwxG3FnN60hFmPuE=",
             "payment_address": "0x32Cb8b6a2E3A8cB319dBBbECb354F23197746704"
         }
     ],

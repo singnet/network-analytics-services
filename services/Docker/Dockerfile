@@ -82,6 +82,7 @@ RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/d
     cp snetd /home/netk/daemons/bipartite_mainnet/ && \
     cp snetd /home/netk/daemons/robustness_mainnet/
 
+RUN echo 10
 
 COPY daemons/snetd_bipartite_kovan.json /home/netk/daemons/bipartite_kovan/
 COPY daemons/snetd_robustness_kovan.json /home/netk/daemons/robustness_kovan/
