@@ -145,6 +145,9 @@ def named_entity_disambiguation(output):
 
 def topic_analysis(output,x):
 
+    # RAM estimation formula
+    # s = (float(docs * W) + float(docs + W) * float(K * docs * 2)) * 8.0 / float(G)
+
     multiplier = 10
     time.sleep(x*multiplier)
 
