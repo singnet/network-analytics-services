@@ -74,18 +74,25 @@ def multi_pro(service_name,num_requests):
 
     results = [output.get() for p in processes]
 
+    if service_name == 'topic_analysis':
+        process_topic_anal_output(results)
+
     print(results)
     summed = sum([t[0] for t in results])
     print(summed , '/' , len(results))
 
 
+def process_topic_anal_output(results):
+    print('Processing results for topic analysis')
+    for r in results:
+        print(r[0])
 
 def find_central_nodes(output):
 
 
     try:
-        channel = grpc.insecure_channel('tz-services-1.snet.sh:2234')
-        # channel = grpc.insecure_channel('localhost:5001')
+        # channel = grpc.insecure_channel('tz-services-1.snet.sh:2234')
+        channel = grpc.insecure_channel('localhost:5001')
         stub = network_analytics_node_importance_pb2_grpc.NetworkAnalyticsNodeImportanceStub(channel)
 
         graph = {
@@ -107,6 +114,7 @@ def find_central_nodes(output):
         resp = stub.CentralNodes(center_req)
 
         # print('done')
+        print(resp)
         output.put((1,resp.message))
 
     except  Exception as e:
@@ -148,7 +156,7 @@ def topic_analysis(output,x):
     # RAM estimation formula
     # s = (float(docs * W) + float(docs + W) * float(K * docs * 2)) * 8.0 / float(G)
 
-    multiplier = 10
+    multiplier = 0
     time.sleep(x*multiplier)
 
     # sample_doc = 'topic_analysis/test_doc.txt'
@@ -161,7 +169,7 @@ def topic_analysis(output,x):
 
     try:
         channel = grpc.insecure_channel('tz-services-1.snet.sh:2301')
-        # channel = grpc.insecure_channel('localhost:5001')
+        # channel = grpc.insecure_channel('localhost:5000')
         stub = topic_analysis_pb2_grpc.TopicAnalysisStub(channel)
         req = topic_analysis_pb2.PLSARequest(docs=docs, num_topics=2, maxiter=22, beta=1)
 
@@ -208,13 +216,14 @@ def emotion_recognition(output):
         print('done')
         output.put((0,str(e)))
 
+
 if __name__ == '__main__':
 
     start_time = time.time()
 
-    # multi_pro('find_central_nodes',3000)
+    # multi_pro('find_central_nodes',100)
     # multi_pro('named_entity_disambiguation',200)
-    multi_pro('topic_analysis',10)
+    multi_pro('topic_analysis',1)
     # multi_pro('emotion_recognition',70)
 
 
