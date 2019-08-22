@@ -69,6 +69,7 @@ RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/bipartite_mainnet/ \
     /home/netk/daemons/robustness_mainnet/ \
     /home/netk/daemons/bipartite_mainnet_2/ \
+    /home/netk/daemons/robustness_mainnet_2/ \
     /home/netk/dep
 
 ENV DAEMON_VERSION 1.0.0
@@ -86,11 +87,12 @@ RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/d
     rm -r snet-daemon.tar.gz && \
     rm snetd
 
-ENV DAEMON_VERSION_2 2.0.1
+ENV DAEMON_VERSION_2 2.0.2
 
 RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/download/v$DAEMON_VERSION_2/snet-daemon-v$DAEMON_VERSION_2-linux-amd64.tar.gz && \
     tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
-    cp snetd /home/netk/daemons/bipartite_mainnet_2/
+    cp snetd /home/netk/daemons/bipartite_mainnet_2/  && \
+    cp snetd /home/netk/daemons/robustness_mainnet_2/
 
 
 RUN echo 10
@@ -113,6 +115,7 @@ COPY supervisor/robustness_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/robustness_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_ropstend.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_mainnetd.conf /etc/supervisor/conf.d/
+COPY supervisor/robustness_mainnetd_2.conf /etc/supervisor/conf.d/
 COPY supervisor/node_importance_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/node_importance_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/node_importance_ropsten.conf /etc/supervisor/conf.d/
@@ -140,7 +143,7 @@ WORKDIR /home/netk/dep
 #RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
 #RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
 #RUN cd network-analytics-services/services/node_importance && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
-#
+
 #WORKDIR /home/netk/network-analytics-services/services
 
 # End of Can be uncommented for local docker building
