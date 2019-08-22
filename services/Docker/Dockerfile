@@ -47,7 +47,7 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_kovan/ \
 #    /var/log/robustness_ropsten/
 
-RUN echo 10
+RUN echo 11
 
 RUN mkdir /home/netk/pay/ \
     /home/netk/ssl/ \
@@ -106,6 +106,7 @@ COPY daemons/snetd_node_importance_ropsten.json /home/netk/daemons/node_importan
 COPY daemons/snetd_bipartite_mainnet.json /home/netk/daemons/bipartite_mainnet/
 COPY daemons/snetd_robustness_mainnet.json /home/netk/daemons/robustness_mainnet/
 COPY daemons/snetd_bipartite_mainnet_2.json /home/netk/daemons/bipartite_mainnet_2/
+COPY daemons/snetd_robustness_mainnet_2.json /home/netk/daemons/robustness_mainnet_2/
 COPY supervisor/bipartite_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/bipartite_kovand.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_ropstend.conf /etc/supervisor/conf.d/
