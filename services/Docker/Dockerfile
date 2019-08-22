@@ -47,7 +47,7 @@ RUN sudo apt-get install -y supervisor && \
 #    /var/log/robustness_kovan/ \
 #    /var/log/robustness_ropsten/
 
-RUN echo 9
+RUN echo 10
 
 RUN mkdir /home/netk/pay/ \
     /home/netk/ssl/ \
@@ -143,7 +143,7 @@ WORKDIR /home/netk/dep
 #RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
 #RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
 #RUN cd network-analytics-services/services/node_importance && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
-
+#
 #WORKDIR /home/netk/network-analytics-services/services
 
 # End of Can be uncommented for local docker building
