@@ -87,10 +87,12 @@ def process_topic_anal_output(results):
     print('Processing results for topic analysis')
     url = 'http://127.0.0.1:4998/topic-analysis/api/v1.0/results?handle='
     success_count = 0
+    running_times = []
     text = 'y'
     while(text == 'y'):
         print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSTART')
         success_count = 0
+        running_times = []
         for r in results:
             print(url+r[2])
             resp = (requests.get(url+r[2])).json()
@@ -101,12 +103,16 @@ def process_topic_anal_output(results):
                 print(resp)
             try:
                 print(resp['status'])
+                print(resp['total running time in minutes'])
+                running_times.append(resp['total running time in minutes'])
             except:
                 print('???????????????????????????No status field')
         print(results)
         summed = sum([t[0] for t in results])
         print('Immediate resp:',summed, '/', len(results))
         print('rest response:',success_count, '/', len(results))
+        print('Sorted running times:')
+        print(sorted(running_times))
         text = input("Continue?(y/any):")
         if text != 'y':
             print('Please confirm again to abort')
