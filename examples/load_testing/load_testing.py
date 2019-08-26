@@ -85,17 +85,24 @@ def multi_pro(service_name,num_requests):
 
 def process_topic_anal_output(results):
     print('Processing results for topic analysis')
-    url = 'http://127.0.0.1:4998/topic-analysis/api/v1.0/results?handle='
+    # url = 'http://127.0.0.1:4998/topic-analysis/api/v1.0/results?handle='
+    url = 'https://tz-services-1.snet.sh:2298/topic-analysis/api/v1.0/results?handle='
     success_count = 0
     running_times = []
     text = 'y'
+    resp_exception=False
     while(text == 'y'):
         print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSTART')
         success_count = 0
         running_times = []
         for r in results:
             print(url+r[2])
-            resp = (requests.get(url+r[2])).json()
+            try:
+                resp = (requests.get(url+r[2])).json()
+            except:
+                text = 'y'
+                resp_exception = True
+                break
             if 'docs_list' in resp:
                 success_count += 1
             else:
@@ -107,6 +114,11 @@ def process_topic_anal_output(results):
                 running_times.append(resp['total running time in minutes'])
             except:
                 print('???????????????????????????No status field')
+
+        if resp_exception:
+            resp_exception = False
+            continue
+
         print(results)
         summed = sum([t[0] for t in results])
         print('Immediate resp:',summed, '/', len(results))
@@ -191,8 +203,8 @@ def topic_analysis(output,x):
     # multiplier = 0
     # time.sleep(x*multiplier)
 
-    sample_doc = 'topic_analysis/test_doc.txt'
-    # sample_doc = 'topic_analysis/test_doc_4MB.txt'
+    # sample_doc = 'topic_analysis/test_doc.txt'
+    sample_doc = 'topic_analysis/test_doc_4MB.txt'
     with open(sample_doc, 'r') as f:
         docs = [f.read()]
 
@@ -200,8 +212,8 @@ def topic_analysis(output,x):
     # print(docs)
 
     try:
-        # channel = grpc.insecure_channel('tz-services-1.snet.sh:2301')
-        channel = grpc.insecure_channel('localhost:5000')
+        channel = grpc.insecure_channel('tz-services-1.snet.sh:2301')
+        # channel = grpc.insecure_channel('localhost:5000')
         stub = topic_analysis_pb2_grpc.TopicAnalysisStub(channel)
         req = topic_analysis_pb2.PLSARequest(docs=docs, num_topics=2, maxiter=22, beta=1)
 
@@ -255,7 +267,7 @@ if __name__ == '__main__':
 
     # multi_pro('find_central_nodes',100)
     # multi_pro('named_entity_disambiguation',200)
-    multi_pro('topic_analysis',5)
+    multi_pro('topic_analysis',20)
     # multi_pro('emotion_recognition',70)
 
 
