@@ -87,7 +87,7 @@ RUN mkdir /home/netk/pay/ \
 #    rm -r snet-daemon.tar.gz && \
 #    rm snetd
 
-ENV DAEMON_VERSION_2 3.1.2
+ENV DAEMON_VERSION_2 4.0.0
 
 RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/download/v$DAEMON_VERSION_2/snet-daemon-v$DAEMON_VERSION_2-linux-amd64.tar.gz && \
     tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
@@ -131,20 +131,20 @@ WORKDIR /home/netk/dep
 #	cd network-analytics-services
 
 
-# Can be uncommented for local docker building
+# Needs to be uncommented for deploying. Comment out for circleci tests to pass.
+'''
+RUN whoami
+RUN pwd
 
-#RUN whoami
-#RUN pwd
-#
-#RUN echo 8 && \
-#	git clone https://github.com/edyirdaw/network-analytics-services.git && \
-#	cd network-analytics-services && \
-#	git checkout --track origin/example_bipartition
-#
-#RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
-#RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
-#RUN cd network-analytics-services/services/node_importance && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
-#
-#WORKDIR /home/netk/network-analytics-services/services
+RUN echo 8 && \
+	git clone https://github.com/edyirdaw/network-analytics-services.git && \
+	cd network-analytics-services && \
+	git checkout --track origin/example_bipartition
 
-# End of Can be uncommented for local docker building
+RUN cd network-analytics-services/services/bipartite && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_bipartite/network_analytics_bipartite.proto
+RUN cd network-analytics-services/services/robustness && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_robustness/network_analytics_robustness.proto
+RUN cd network-analytics-services/services/node_importance && python3.6 -m grpc_tools.protoc -I. --python_out=.  --grpc_python_out=. service_spec_node_importance/network_analytics_node_importance.proto
+
+WORKDIR /home/netk/network-analytics-services/services
+'''
+# Needs to be uncommented for deploying. Comment out for circleci tests to pass.
