@@ -70,6 +70,8 @@ RUN mkdir /home/netk/pay/ \
     /home/netk/daemons/robustness_mainnet/ \
     /home/netk/daemons/bipartite_mainnet_2/ \
     /home/netk/daemons/robustness_mainnet_2/ \
+    /home/netk/daemons/bipartite_mainnet_3/ \
+    /home/netk/daemons/robustness_mainnet_3/ \
     /home/netk/dep
 
 #ENV DAEMON_VERSION 1.0.0
@@ -94,6 +96,13 @@ RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/d
     cp snetd /home/netk/daemons/bipartite_mainnet_2/  && \
     cp snetd /home/netk/daemons/robustness_mainnet_2/
 
+ENV DAEMON_VERSION_3 5.0.1
+
+RUN wget -O snet-daemon.tar.gz https://github.com/singnet/snet-daemon/releases/download/v$DAEMON_VERSION_3/snet-daemon-v$DAEMON_VERSION_3-linux-amd64.tar.gz && \
+    tar  --strip-components=1 -xzf snet-daemon.tar.gz && \
+    cp snetd /home/netk/daemons/bipartite_mainnet_3/  && \
+    cp snetd /home/netk/daemons/robustness_mainnet_3/
+
 
 RUN echo 10
 
@@ -107,16 +116,20 @@ RUN echo 10
 #COPY daemons/snetd_robustness_mainnet.json /home/netk/daemons/robustness_mainnet/
 COPY daemons/snetd_bipartite_mainnet_2.json /home/netk/daemons/bipartite_mainnet_2/
 COPY daemons/snetd_robustness_mainnet_2.json /home/netk/daemons/robustness_mainnet_2/
+COPY daemons/snetd_bipartite_mainnet_3.json /home/netk/daemons/bipartite_mainnet_3/
+COPY daemons/snetd_robustness_mainnet_3.json /home/netk/daemons/robustness_mainnet_3/
 COPY supervisor/bipartite_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/bipartite_kovand.conf /etc/supervisor/conf.d/
 #COPY supervisor/bipartite_ropstend.conf /etc/supervisor/conf.d/
 #COPY supervisor/bipartite_mainnetd.conf /etc/supervisor/conf.d/
 COPY supervisor/bipartite_mainnetd_2.conf /etc/supervisor/conf.d/
+COPY supervisor/bipartite_mainnetd_3.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/robustness_kovand.conf /etc/supervisor/conf.d/
 #COPY supervisor/robustness_ropstend.conf /etc/supervisor/conf.d/
 #COPY supervisor/robustness_mainnetd.conf /etc/supervisor/conf.d/
 COPY supervisor/robustness_mainnetd_2.conf /etc/supervisor/conf.d/
+COPY supervisor/robustness_mainnetd_3.conf /etc/supervisor/conf.d/
 COPY supervisor/node_importance_grpc.conf /etc/supervisor/conf.d/
 #COPY supervisor/node_importance_kovand.conf /etc/supervisor/conf.d/
 #COPY supervisor/node_importance_ropsten.conf /etc/supervisor/conf.d/
