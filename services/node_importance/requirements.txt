@@ -1,4 +1,4 @@
-grpcio==1.17.1
+grpcio==1.53.0
 grpcio-tools==1.17.1
 networkx==2.2
 numpy==1.15.4
